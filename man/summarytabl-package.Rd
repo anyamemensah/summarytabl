@@ -4,7 +4,7 @@
 \name{summarytabl-package}
 \alias{summarytabl}
 \alias{summarytabl-package}
-\title{summarytabl: Creation of Summary Tables for Continuous, Ordinal, and Categorical Data}
+\title{summarytabl: Generate Summary Tables for Continuous, Ordinal, and Categorical Data}
 \description{
 This package creates simple summary tables for continuous, ordinal, and categorical data.
 }
