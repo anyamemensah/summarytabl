@@ -39,8 +39,8 @@ deviation (sd), minimum value (min), maximum value (max), and non-missing respon
 labels to variable names. If any element is unnamed or if any labels do not match variables
 in returned from `data`, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional character string or vector of values to omit from the data and
-subsequent analysis. Default is `NULL`, which includes all present values.}
+\item{ignore}{An optional vector of values to omit from the data and subsequent analysis. 
+Default is `NULL`, which includes all present values.}
 }
 \value{
 A tibble presenting summary statistics for series of continuous variables with

@@ -28,8 +28,8 @@
 #' @param var_labels An optional named character vector or list where each element maps
 #' labels to variable names. If any element is unnamed or if any labels do not match variables
 #' in returned from `data`, all labels will be ignored and the table will be printed without them.
-#' @param ignore An optional character string or vector of values to omit from the data and
-#' subsequent analysis. Default is `NULL`, which includes all present values.
+#' @param ignore An optional vector of values to omit from the data and subsequent analysis. 
+#' Default is `NULL`, which includes all present values.
 #'
 #' @returns A tibble displaying frequency counts and/or percentages for each value in a set
 #' of variables sharing the same variable stem.

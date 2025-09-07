@@ -61,8 +61,8 @@ deviation (sd), minimum value (min), maximum value (max), and non-missing respon
 labels to variable names. If any element is unnamed or if any labels do not match variables
 in returned from `data`, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional named character vector or list specifying values to exclude from
-the dataset and analysis. By default, `NULL` includes all available values. To omit values
+\item{ignore}{An optional named vector or list specifying values to exclude from the 
+dataset and analysis. By default, `NULL` includes all available values. To omit values
 from variables returned by `var_stem`, use the provided stem as the name. To exclude values
 from both `var_stem` variables and a grouping variable in `data`, supply a list.}
 }

@@ -42,8 +42,8 @@ to return. Default is `NULL`, which returns counts (count) and percentages (perc
 labels to variable names. If any element is unnamed or if any labels do not match variables
 in returned from `data`, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional character string or vector of values to omit from the data and
-subsequent analysis. Default is `NULL`, which includes all present values.}
+\item{ignore}{An optional vector of values to omit from the data and subsequent analysis. 
+Default is `NULL`, which includes all present values.}
 }
 \value{
 A tibble displaying frequency counts and/or percentages for each value in a set
