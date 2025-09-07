@@ -12,7 +12,7 @@ Authors@R: c(
 Maintainer: Ama Nyame-Mensah <ama@anyamemensah.com>
 Description: This package creates simple summary tables for continuous, ordinal, 
     and categorical data.
-License: MIT + file LICENSE
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
