@@ -1,0 +1,255 @@
+---
+title: "Introduction to summarytabl"
+output: rmarkdown::html_vignette
+description: >
+  This document introduces you to some of summarytabl's most frequently used functions, and shows you how to apply them to data frames.
+vignette: >
+  %\VignetteIndexEntry{Introduction to summarytabl}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to the `summarytabl` package. This package creates simple summary tables for continuous, ordinal, and categorical data. If you notice a bug or have trouble using a function, please contact [Ama Nyame-Mensah](mailto:ama@anyamemensah.com), the package's maintainer.
+
+To begin, load `summarytabl`
+
+```{r setup}
+library(summarytabl)
+```
+
+## Categorical variables
+
+### Summarize a single categorical variable
+
+You can generate a frequency table for a categorical variable using `cat_tbl()`
+
+```{r}
+cat_tbl(data = nlsy, var = "race")
+```
+
+You can also ignore specific values and remove missing values
+
+```{r}
+cat_tbl(data = nlsy, 
+        var = "race",
+        ignore = "Black",
+        na.rm = TRUE)
+```
+
+### Summarize a categorical variable grouped by grouped another variable
+
+A grouped frequency table for two categorical variables can be generated using `cat_group_tbl()`
+
+```{r}
+cat_group_tbl(data = nlsy,
+              row_var = "gender",
+              col_var = "bthwht")
+```        
+
+Like `cat_tbl()`, you can also specify whether to ignore specific values and remove missing values:
+
+```{r}
+cat_group_tbl(data = nlsy,
+              row_var = "race",
+              col_var = "bthwht",
+              na.rm.row_var = TRUE,
+              na.rm.col_var = FALSE,
+              ignore = c(race = "Non-Black,Non-Hispanic"),
+              pivot = "wider",
+              only = NULL)
+```    
+
+
+## Multiple response variables
+
+### Generate a table for a series of multiple response variables
+
+You can generate a summary table for binary (e.g., Unselected/Selected), multiple-response (e.g., never, sometimes, often), and ordinal-scale (e.g., strongly disagree to strongly agree) variables using `select_tbl()`:
+
+```{r}
+select_tbl(data = depressive, var_stem = "dep")
+```
+
+You can also ignore specific values and remove missing values using the `ignore` argument:
+
+```{r}
+select_tbl(data = depressive, 
+           var_stem = "dep", 
+           ignore = 3)
+```
+
+To pivot the resulting table into the wider format, set the `pivot` argument to `wider`.
+
+```{r}
+select_tbl(data = depressive, 
+           var_stem = "dep",
+           pivot = "wider")
+```
+
+### Summarize a series of multiple response variables
+
+A grouped frequency table for a series of multiple response variables with the same variable stem can be generated using `select_group_tbl()`
+
+```{r}
+
+dep_recoded <- 
+  depressive |>
+  dplyr::mutate(
+    race = dplyr::case_match(.x = race,
+                             1 ~ "Hispanic", 
+                             2 ~ "Black", 
+                             3 ~ "Non-Black/Non-Hispanic",
+                             .default = NA)
+  ) |>
+  dplyr::mutate(
+    dplyr::across(
+      .cols = dplyr::starts_with("dep"),
+      .fns = ~ dplyr::case_when(.x == 1 ~ "often", 
+                           .x == 2 ~ "sometimes", 
+                           .x == 3 ~ "hardly ever")
+    )
+  )
+
+select_group_tbl(data = dep_recoded, 
+                 var_stem = "dep",
+                 group = "race",
+                 pivot = "longer")
+```        
+
+Similar to `cat_group_tbl()`, you can indicate whether to exclude certain values and omit missing values. In this case, however, you should use the `var_stem` that you supply to the function when determining which values to exclude and whether to eliminate missing values:
+
+```{r}
+select_group_tbl(data = dep_recoded, 
+                 var_stem = "dep",
+                 group = "race",
+                 pivot = "longer",
+                 na_removal = "listwise",
+                 ignore = c(dep = "often", race = "Non-Black/Non-Hispanic"))
+```    
+
+Use a list when you want to ignore multiple values from the same `var_stem` or `group` variable:
+
+```{r}
+
+select_group_tbl(data = dep_recoded, 
+                 var_stem = "dep",
+                 group = "race",
+                 pivot = "longer",
+                 na_removal = "listwise",
+                 ignore = list(race = c("Hispanic", "Non-Black/Non-Hispanic")))
+``` 
+
+## Continuous variables
+
+### Generate a descriptive statistics summary table for a series of continuous variables
+
+A table presenting descriptive statistics (mean, sd, minimum, maximum, number of non-missing observations) for a series of continuous variables with the same variable stem can be generated using `mean_tbl()`
+
+```{r}
+mean_tbl(data = social_psy_data, 
+         var_stem = "belong",
+         na_removal = "pairwise")
+``` 
+
+Like the rest of the variables in the package, you can specify whether to ignore specific values from all variables associated with the variable stem.
+
+```{r}
+mean_tbl(data = social_psy_data, 
+         var_stem = "belong",
+         na_removal = "pairwise", 
+         ignore = 3)
+``` 
+
+Applying variable labels can help make variable names more understandable.
+
+```{r}
+mean_tbl(data = social_psy_data, 
+         var_stem = "belong",
+         na_removal = "pairwise",
+         var_labels = c(
+          belong_1 = "I feel like I belong at this institution",
+          belong_2 = "I feel like part of the community",
+          belong_3 = "feel valued by this institution")
+         )
+``` 
+
+### Generate a grouped table for a series of continuous variables
+
+A grouped summary statistics table for a series of conitnuous variables with the same variable stem can be generated using `mean_group_tbl()`.
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "urm",
+               group_type = "variable",
+               na_removal = "pairwise")
+``` 
+
+Similar to `mean_tbl()`, you can indicate whether to exclude certain values from either the variables associated with `var_stem` or the group if `group_typ` is set to `variable`.
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "urm",
+               group_type = "variable",
+               na_removal = "pairwise",
+               ignore = c(belong_belong = 3, urm = 0)
+               )
+``` 
+
+To ignore multiple values, use a list:
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "urm",
+               group_type = "variable",
+               na_removal = "pairwise",
+               ignore = list(belong_belong = c(1,2), urm = 0)
+               )
+``` 
+
+With `mean_group_tbl()`, you can also extract patterns from variables in your dataset to serve as a grouping variable. A common application is examining summary statistics for a variable measured across several time points.
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "_w\\d",
+               group_type = "pattern",
+               na_removal = "pairwise")
+```
+
+If your grouping variable's name isn't sufficiently descriptive, or if `group` isn't clear enough, use the `group_name` argument to provide a more meaningful label for the resulting table.
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "_w\\d",
+               group_type = "pattern",
+               na_removal = "pairwise",
+               group_name = "wave")
+``` 
+
+Finally, applying variable labels can help make variable names more understandable.
+
+```{r}
+mean_group_tbl(data = stem_social_psych, 
+               var_stem = "belong_belong",
+               group = "_w\\d",
+               group_type = "pattern",
+               na_removal = "pairwise",
+               group_name = "wave",
+               var_labels = c(
+                 belong_belongStem_w1 = "I feel like I belong in computing",
+                 belong_belongStem_w2 = "I feel like I belong in computing")
+               )
+``` 
+
+
