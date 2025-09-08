@@ -3,7 +3,7 @@
 __summarytabl__ is an R package that allows users to create simple summary tables for continuous, ordinal, and categorical data. Install the package from GitHub:
 
 ```r
-devtools::install_github("anyamemensah/summarytabl", build_vignettes = TRUE)
+remotes::install_github("anyamemensah/summarytabl", build_vignettes = TRUE)
 ```
 
 To learn more about the package, see the package's vignettes.
