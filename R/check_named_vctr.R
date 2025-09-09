@@ -5,52 +5,52 @@
 #' confirms that the count of valid names matches the count of provided values, and verifies
 #' that the valid names obtained from the named object align with the supplied names.
 #'
-#' @param x A named list or vector.
-#' @param cols A character vector containing column names or variable stems to match.
+#' @param x A named vector.
+#' @param names A character vector specifying the names to be matched.
 #' @param default Default value to return
 #'
 #' @return Either the original object or some default value.
 #'
 #'
 #' @export
-check_named_obj <- function(x, cols, default) {
-UseMethod("check_named_obj")
+check_named_vctr <- function(x, names, default) {
+UseMethod("check_named_vctr")
 }
 #'
 #' @export
-check_named_obj.default <- function(x, cols, default) {
+check_named_vctr.default <- function(x, names, default) {
     return(default)
   }
 #'
 #' @export
-check_named_obj.list <- function(x, cols, default) {
+check_named_vctr.list <- function(x, names, default) {
 
   if (check_invalid_list_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(cols)) {
+  if (length(x) != length(names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% cols)) {
+  if (!all(names(x) %in% names)) {
     return(default)
   }
 
   return(x)
 }
 #' @export
-check_named_obj.logical <- function(x, cols, default) {
+check_named_vctr.logical <- function(x, names, default) {
 
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(cols)) {
+  if (length(x) != length(names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% cols)) {
+  if (!all(names(x) %in% names)) {
     return(default)
   }
 
@@ -58,17 +58,17 @@ check_named_obj.logical <- function(x, cols, default) {
 }
 
 #' @export
-check_named_obj.character <- function(x, cols, default) {
+check_named_vctr.character <- function(x, names, default) {
 
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(cols)) {
+  if (length(x) != length(names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% cols)) {
+  if (!all(names(x) %in% names)) {
     return(default)
   }
 
@@ -76,17 +76,17 @@ check_named_obj.character <- function(x, cols, default) {
 }
 #'
 #' @export
-check_named_obj.numeric <- function(x, cols, default) {
+check_named_vctr.numeric <- function(x, names, default) {
 
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(cols)) {
+  if (length(x) != length(names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% cols)) {
+  if (!all(names(x) %in% names)) {
     return(default)
   }
 

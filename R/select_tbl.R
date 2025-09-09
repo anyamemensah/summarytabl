@@ -137,9 +137,9 @@ select_tbl <- function(data,
 
   # Check 'var_labels' are valid otherwise return default (NULL)
   if (!is.null(var_labels)) {
-    var_labels <- check_named_obj(x = var_labels,
-                                  cols = cols,
-                                  default = NULL)
+    var_labels <- check_named_vctr(x = var_labels,
+                                   names = cols,
+                                   default = NULL)
   }
 
   # Remove values that are set to 'ignore'
