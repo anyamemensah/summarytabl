@@ -7,9 +7,9 @@
 select_group_tbl(
   data,
   var_stem,
+  group,
   escape_stem = FALSE,
   ignore_stem_case = FALSE,
-  group,
   group_type = "variable",
   group_name = NULL,
   escape_group = FALSE,
@@ -27,14 +27,14 @@ select_group_tbl(
 
 \item{var_stem}{A character string of a variable stem or the full name of a variable in `data`.}
 
+\item{group}{A character string of a variable in `data` or a pattern to use to search for variables
+in `data`.}
+
 \item{escape_stem}{A logical value indicating whether to escape `var_stem`. Default is
 `FALSE`.}
 
 \item{ignore_stem_case}{A logical value indicating whether the search for columns matching
 the supplied `var_stem` is case-insensitive. Default is `FALSE`.}
-
-\item{group}{A character string of a variable in `data` or a pattern to use to search for variables
-in `data`.}
 
 \item{group_type}{A character string that defines the type of grouping variable. Should be one of
 `pattern` or `variable`. Default is `variable`, in which case the variable matching the `group`

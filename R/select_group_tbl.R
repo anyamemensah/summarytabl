@@ -105,9 +105,9 @@
 #' @export
 select_group_tbl <- function(data,
                              var_stem,
+                             group,
                              escape_stem = FALSE,
                              ignore_stem_case = FALSE,
-                             group,
                              group_type = "variable",
                              group_name = NULL,
                              escape_group = FALSE,
