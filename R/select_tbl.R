@@ -158,7 +158,7 @@ select_tbl <- function(data,
 
   # Create table
   select_tabl <-
-    purrr::map(.x = cols, .f = ~ .generate_select_tabl(data, .x, na_removal)) |>
+    purrr::map(.x = cols, .f = ~ generate_select_tabl(data, .x, na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, values, count, percent)
 
@@ -194,7 +194,7 @@ select_tbl <- function(data,
 }
 
 #' @keywords internal
-.generate_select_tabl <- function(data, col, na_removal) {
+generate_select_tabl <- function(data, col, na_removal) {
   data |>
     dplyr::group_by(.data[[col]]) |>
     dplyr::summarize(count = dplyr::n()) |>

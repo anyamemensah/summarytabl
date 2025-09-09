@@ -124,7 +124,7 @@ mean_tbl <- function(data,
 
   # Create table
   mean_tabl <-
-    purrr::map(.x = cols, .f = ~ .generate_mean_tabl(data, .x, na_removal)) |>
+    purrr::map(.x = cols, .f = ~ generate_mean_tabl(data, .x, na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, mean, sd, min, max, nobs)
 
@@ -150,7 +150,7 @@ mean_tbl <- function(data,
 }
 
 #' @keywords internal
-.generate_mean_tabl <- function(data, col, na_removal) {
+generate_mean_tabl <- function(data, col, na_removal) {
   data |>
     dplyr::filter(if (na_removal == "pairwise") !is.na(.data[[col]]) else TRUE) |>
     dplyr::summarize(variable = col,

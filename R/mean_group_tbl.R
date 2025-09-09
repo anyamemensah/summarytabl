@@ -285,7 +285,7 @@ mean_group_tbl <- function(data,
         )
 
       mean_group <-
-        .summarize_mean_group(temp_data, current_col, group) |>
+        summarize_mean_group(temp_data, current_col, group) |>
         dplyr::select(dplyr::all_of(c("variable", group, "mean", "sd", "min", "max", "nobs")))
 
       mean_group_tabl <- dplyr::bind_rows(mean_group_tabl, mean_group)
@@ -320,7 +320,7 @@ mean_group_tbl <- function(data,
 }
 
 #' @keywords internal
-.summarize_mean_group <- function(df, var_col, group_col) {
+summarize_mean_group <- function(df, var_col, group_col) {
   df |>
     dplyr::group_by(.data[[group_col]]) |>
     dplyr::summarize(

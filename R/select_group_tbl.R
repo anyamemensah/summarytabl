@@ -303,7 +303,7 @@ select_group_tbl <- function(data,
         )
 
       select_group <-
-        .summarize_select_group(temp_data, current_col, group) |>
+        summarize_select_group(temp_data, current_col, group) |>
         dplyr::select(dplyr::all_of(c("variable", group, "values", "count", "percent")))
 
       select_group_tabl <- dplyr::bind_rows(select_group_tabl, select_group)
@@ -351,7 +351,7 @@ select_group_tbl <- function(data,
 }
 
 #' @keywords internal
-.summarize_select_group <- function(df, var_col, group_col) {
+summarize_select_group <- function(df, var_col, group_col) {
   df |>
     dplyr::group_by(.data[[var_col]], .data[[group_col]]) |>
     dplyr::summarize(count = dplyr::n()) |>
