@@ -14,11 +14,28 @@ check_named_vctr(x, names, default)
 \item{default}{Default value to return}
 }
 \value{
-Either the original object or some default value.
+Either the original object, \code{x}, or the \code{default} value.
 }
 \description{
-This experimental function assesses whether named lists and vectors have
-invalid values (like \code{NULL} or \code{NA}), invalid names (such as missing or empty names),
-confirms that the count of valid names matches the count of provided values, and verifies
-that the valid names obtained from the named object align with the supplied names.
+This function assesses whether named lists and vectors have invalid
+values (like \code{NULL} or \code{NA}), invalid names (such as missing or empty names),
+confirms that the count of valid names matches the count of provided values, and
+verifies that the valid names obtained from the named object align with the supplied
+names. If any checks fail, the \code{default} value is returned.
+}
+\examples{
+
+# returns NULL
+check_named_vctr(x = c(one = 1, two = 2, 3), 
+                 names = c("one", "two", "three"),
+                 default = NULL)
+                 
+# returns x
+check_named_vctr(x = list(one = 1, two = 2, three = 3), 
+                 names = list("one", "two", "three"),
+                 default = NULL)               
+                 
+}
+\author{
+Ama Nyame-Mensah
 }
