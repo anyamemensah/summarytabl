@@ -67,7 +67,7 @@ mean_tbl(data = social_psy_data,
          na_removal = "pairwise",
          var_labels = c(belong_1 = "I feel like I belong at this institution",
                         belong_2 = "I feel like part of the community",
-                        belong_3 = "feel valued by this institution"))
+                        belong_3 = "I feel valued by this institution"))
 
 }
 \author{

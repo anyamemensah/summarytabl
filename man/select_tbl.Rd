@@ -55,7 +55,9 @@ for binary (e.g., Unselected/Selected), multiple-response (e.g., never, sometime
 and ordinal-scale (e.g., strongly disagree to strongly agree) variables with the same
 variable stem. A variable stem is a common prefix found in related variable names, often
 corresponding to similar survey items, that represents a shared concept before unique
-identifiers (like timepoints) are added. For example, in the ‘stem_social_psych\verb{dataset, the two variables}belong_belongStem_w1\code{and}belong_belongStem_w2\verb{share the variable stem}belong_belongStem` (e.g., "I feel like an outsider in STEM"), with suffixes (_w1, _w2)
+identifiers (like timepoints) are added. For example, in the \code{stem_social_psych} dataset,
+the two variables \code{belong_belongStem_w1} and \code{belong_belongStem_w2} share the variable stem
+\code{belong_belongStem} (e.g., "I feel like an outsider in STEM"), with suffixes (_w1, _w2)
 indicating different measurement waves. By default, missing data are excluded from the
 calculations in a listwise fashion.
 }

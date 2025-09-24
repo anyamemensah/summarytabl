@@ -5,7 +5,7 @@
 #' and ordinal-scale (e.g., strongly disagree to strongly agree) variables with the same variable
 #' stem by some grouping variable. A variable stem is a common prefix found in related variable
 #' names, often corresponding to similar survey items, that represents a shared concept before
-#' unique identifiers (like timepoints) are added. For example, in the ‘stem_social_psych`
+#' unique identifiers (like timepoints) are added. For example, in the `stem_social_psych`
 #' dataset, the two variables `belong_belongStem_w1` and `belong_belongStem_w2` share the
 #' variable stem `belong_belongStem` (e.g., "I feel like an outsider in STEM"), with suffixes
 #' (_w1, _w2) indicating different measurement waves. By default, missing data are excluded
