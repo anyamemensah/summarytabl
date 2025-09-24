@@ -9,25 +9,25 @@ cat_tbl(data, var, na.rm = FALSE, only = NULL, ignore = NULL)
 \arguments{
 \item{data}{A data frame.}
 
-\item{var}{A character string of the name of a variable in `data` containing categorical
+\item{var}{A character string of the name of a variable in \code{data} containing categorical
 data.}
 
 \item{na.rm}{A logical value indicating whether missing values should be removed
-before calculations. Default is `FALSE`.}
+before calculations. Default is \code{FALSE}.}
 
 \item{only}{A character string, or vector of character strings, of the types of
-summary data to return. Default is `NULL`, which returns both counts and
-percentages. To return only counts or percentages, use `count` or
-`percent`, respectively.}
+summary data to return. Default is \code{NULL}, which returns both counts and
+percentages. To return only counts or percentages, use \code{count} or
+\code{percent}, respectively.}
 
 \item{ignore}{An optional vector that contains values or labels you wish to exclude
-from the data and any following calculations. Default is `NULL`}
+from the data and any following calculations. Default is \code{NULL}}
 }
 \value{
-A tibble displaying the relative frequency counts and/or percentages of `var`.
+A tibble displaying the relative frequency counts and/or percentages of \code{var}.
 }
 \description{
-`cat_group_tbl()` presents frequency counts and percentages (count, percent)
+\code{cat_group_tbl()} presents frequency counts and percentages (count, percent)
 for nominal or categorical variables. Missing data can be excluded from the calculations.
 }
 \examples{

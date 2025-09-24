@@ -20,44 +20,42 @@ select_tbl(
 \item{data}{A data frame.}
 
 \item{var_stem}{A character string of a variable stem or the full name of a variable in
-`data`.}
+\code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape `var_stem`. Default is
-`FALSE`.}
+\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default is
+\code{FALSE}.}
 
 \item{ignore_stem_case}{A logical value indicating whether the search for columns matching
-the supplied `var_stem` is case-insensitive. Default is `FALSE`.}
+the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
 
 \item{na_removal}{A character string specifying how to remove missing values. Should be
-one of `pairwise` or `listwise`. Default is `listwise`.}
+one of \code{pairwise} or \code{listwise}. Default is \code{listwise}.}
 
 \item{pivot}{A character string specifying the format of the returned summary table.
-The default is `longer`, which returns the data in long format. To return the data in
-wide format, use `wider`.}
+The default is \code{longer}, which returns the data in long format. To return the data in
+wide format, use \code{wider}.}
 
 \item{only}{A character string or vector of character strings of the kinds of summary data
-to return. Default is `NULL`, which returns counts (count) and percentages (percent).}
+to return. Default is \code{NULL}, which returns counts (count) and percentages (percent).}
 
 \item{var_labels}{An optional named character vector or list where each element maps
 labels to variable names. If any element is unnamed or if any labels do not match variables
-in returned from `data`, all labels will be ignored and the table will be printed without them.}
+in returned from \code{data}, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional vector of values to omit from the data and subsequent analysis. 
-Default is `NULL`, which includes all present values.}
+\item{ignore}{An optional vector of values to omit from the data and subsequent analysis.
+Default is \code{NULL}, which includes all present values.}
 }
 \value{
 A tibble displaying frequency counts and/or percentages for each value in a set
 of variables sharing the same variable stem.
 }
 \description{
-`select_tbl()` presents frequency counts and percentages (count, percent)
+\code{select_tbl()} presents frequency counts and percentages (count, percent)
 for binary (e.g., Unselected/Selected), multiple-response (e.g., never, sometimes, often),
 and ordinal-scale (e.g., strongly disagree to strongly agree) variables with the same
 variable stem. A variable stem is a common prefix found in related variable names, often
 corresponding to similar survey items, that represents a shared concept before unique
-identifiers (like timepoints) are added. For example, in the ‘stem_social_psych` dataset,
-the two variables `belong_belongStem_w1` and `belong_belongStem_w2` share the variable stem
-`belong_belongStem` (e.g., "I feel like an outsider in STEM"), with suffixes (_w1, _w2)
+identifiers (like timepoints) are added. For example, in the ‘stem_social_psych\verb{dataset, the two variables}belong_belongStem_w1\code{and}belong_belongStem_w2\verb{share the variable stem}belong_belongStem` (e.g., "I feel like an outsider in STEM"), with suffixes (_w1, _w2)
 indicating different measurement waves. By default, missing data are excluded from the
 calculations in a listwise fashion.
 }

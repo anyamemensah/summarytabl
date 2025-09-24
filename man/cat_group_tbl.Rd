@@ -18,41 +18,41 @@ cat_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{row_var}{A character string of the name of a column in `data` containing categorical
-data. This is the primary categorical variable. When pivoted to the `wider` format, the
+\item{row_var}{A character string of the name of a column in \code{data} containing categorical
+data. This is the primary categorical variable. When pivoted to the \code{wider} format, the
 categories of this variable will appear in the rows of the table.}
 
-\item{col_var}{A character string of the name of a column in `data` containing categorical
-data. This is the primary categorical variable. When pivoted to the `wider` format, the
+\item{col_var}{A character string of the name of a column in \code{data} containing categorical
+data. This is the primary categorical variable. When pivoted to the \code{wider} format, the
 categories of this variable will appear in the rows of the table.}
 
-\item{na.rm.row_var}{A logical value indicating whether missing values for `row_var`
-should be removed before calculations. Default is `FALSE`.}
+\item{na.rm.row_var}{A logical value indicating whether missing values for \code{row_var}
+should be removed before calculations. Default is \code{FALSE}.}
 
-\item{na.rm.col_var}{A logical value indicating whether missing values for `col_var`
-should be removed before calculations. Default is `FALSE`.}
+\item{na.rm.col_var}{A logical value indicating whether missing values for \code{col_var}
+should be removed before calculations. Default is \code{FALSE}.}
 
 \item{only}{A character string or vector of strings indicating the types of summary data
-to return. The default is `NULL`, which includes both counts and percentages. To return
-only one type, specify `count` or `percent`. Percentages are calculated column-wise,
-grouped by `col_var`.}
+to return. The default is \code{NULL}, which includes both counts and percentages. To return
+only one type, specify \code{count} or \code{percent}. Percentages are calculated column-wise,
+grouped by \code{col_var}.}
 
-\item{ignore}{A named character vector or list containing values to ignore from `row_var`
-and `col_var`.}
+\item{ignore}{A named character vector or list containing values to ignore from \code{row_var}
+and \code{col_var}.}
 
 \item{pivot}{A character string specifying the format of the returned summary table.
-The default is `longer`, which returns the data in long format. To return the data in
-wide format, use `wider`.}
+The default is \code{longer}, which returns the data in long format. To return the data in
+wide format, use \code{wider}.}
 }
 \value{
-A tibble displaying the relative frequency counts and/or percentages of `row_var`,
-grouped by `col_var.`
+A tibble displaying the relative frequency counts and/or percentages of \code{row_var},
+grouped by \code{col_var.}
 }
 \description{
-`cat_group_tbl()` presents frequency counts and percentages (count, percent)
+\code{cat_group_tbl()} presents frequency counts and percentages (count, percent)
 for nominal or categorical variables by some grouping variable. Relative frequencies and
-percentages of each level of the primary categorical variable (`row_var`) within each level
-of the grouping variable (`col_var`) can be returned. Missing data can be excluded for either
+percentages of each level of the primary categorical variable (\code{row_var}) within each level
+of the grouping variable (\code{col_var}) can be returned. Missing data can be excluded for either
 variable from the calculations. By default, the table is returned in the long format.
 }
 \examples{

@@ -24,59 +24,59 @@ mean_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character string of a variable stem or the full name of a variable in `data`.}
+\item{var_stem}{A character string of a variable stem or the full name of a variable in \code{data}.}
 
-\item{group}{A character string of a variable in `data` or a pattern to use to search for variables
-in `data`.}
+\item{group}{A character string of a variable in \code{data} or a pattern to use to search for variables
+in \code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape `var_stem`. Default is
-`FALSE`.}
+\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default is
+\code{FALSE}.}
 
 \item{ignore_stem_case}{A logical value indicating whether the search for columns matching
-the supplied `var_stem` is case-insensitive. Default is `FALSE`.}
+the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
 
 \item{group_type}{A character string that defines the type of grouping variable. Should be one of
-`pattern` or `variable`. Default is `variable`, in which case the variable matching the `group`
-string will be searched for within `data`.}
+\code{pattern} or \code{variable}. Default is \code{variable}, in which case the variable matching the \code{group}
+string will be searched for within \code{data}.}
 
-\item{group_name}{A character string piped to the final table to replace the name of `group`.}
+\item{group_name}{A character string piped to the final table to replace the name of \code{group}.}
 
-\item{escape_group}{A logical value indicating whether to escape string supplied to `group`.}
+\item{escape_group}{A logical value indicating whether to escape string supplied to \code{group}.}
 
-\item{ignore_group_case}{A logical value indicating whether `group` is case-insensitive.
-Default is `FALSE`.}
+\item{ignore_group_case}{A logical value indicating whether \code{group} is case-insensitive.
+Default is \code{FALSE}.}
 
 \item{remove_group_non_alnum}{A logical value indicating whether to remove all non-alphanumeric
-characters (anything that is not a letter or number) from `group`. Default is `TRUE`.}
+characters (anything that is not a letter or number) from \code{group}. Default is \code{TRUE}.}
 
 \item{na_removal}{A character string specifying how to remove missing values. Should be
-one of `pairwise` or `listwise`. Default is `listwise`.}
+one of \code{pairwise} or \code{listwise}. Default is \code{listwise}.}
 
 \item{only}{A character string or vector of character strings of the types of
-summary data to return. Default is `NULL`, which returns mean (mean), standard
+summary data to return. Default is \code{NULL}, which returns mean (mean), standard
 deviation (sd), minimum value (min), maximum value (max), and non-missing responses
 (nobs).}
 
 \item{var_labels}{An optional named character vector or list where each element maps
 labels to variable names. If any element is unnamed or if any labels do not match variables
-in returned from `data`, all labels will be ignored and the table will be printed without them.}
+in returned from \code{data}, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional named vector or list specifying values to exclude from the 
-dataset and analysis. By default, `NULL` includes all available values. To omit values
-from variables returned by `var_stem`, use the provided stem as the name. To exclude values
-from both `var_stem` variables and a grouping variable in `data`, supply a list.}
+\item{ignore}{An optional named vector or list specifying values to exclude from the
+dataset and analysis. By default, \code{NULL} includes all available values. To omit values
+from variables returned by \code{var_stem}, use the provided stem as the name. To exclude values
+from both \code{var_stem} variables and a grouping variable in \code{data}, supply a list.}
 }
 \value{
 A table presenting summary statistics for series of continuous variables with
 the same variable stem, categorized by a grouping variable.
 }
 \description{
-`mean_group_tbl()` presents descriptive statistics (mean, sd, minimum, maximum, number
+\code{mean_group_tbl()} presents descriptive statistics (mean, sd, minimum, maximum, number
 of non-missing observations) for interval (e.g., Test scores) and ratio level (e.g., Age)
 variables with the same variable stem by some grouping variable. A variable stem is a common prefix
 found in related variable names, often corresponding to similar survey items, that represents a
 shared concept before unique identifiers (like timepoints) are added. For example, in the
-`stem_social_psych` dataset, the two variables 'belong_belongStem_w1' and 'belong_belongStem_w2'
+\code{stem_social_psych} dataset, the two variables 'belong_belongStem_w1' and 'belong_belongStem_w2'
 share the variable stem 'belong_belongStem' (e.g., "I feel like an outsider in STEM"), with suffixes
 (_w1, _w2) indicating different measurement waves. By default, missing data are excluded from the
 calculations in a listwise fashion.

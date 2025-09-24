@@ -18,7 +18,7 @@ Either the original object or some default value.
 }
 \description{
 This experimental function assesses whether named lists and vectors have
-invalid values (like `NULL` or `NA`), invalid names (such as missing or empty names),
+invalid values (like \code{NULL} or \code{NA}), invalid names (such as missing or empty names),
 confirms that the count of valid names matches the count of provided values, and verifies
 that the valid names obtained from the named object align with the supplied names.
 }
