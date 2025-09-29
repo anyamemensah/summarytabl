@@ -1,0 +1,30 @@
+#' @title Panel Study of Income Dynamics (PSID) Transition into
+#' Adulthood Supplement (TAS) Data
+#'
+#' @description These data are a subset from the Panel Study of Income Dynamics
+#' (PSID) Transition into Adulthood Supplement. The data contains 2,526 
+#' observations and 8 variables.
+#'
+#' For more information about the Panel Study of Income Dynamics, visit
+#' https://psidonline.isr.umich.edu/CDS/default.aspx.
+#'
+#' @format A tibble with 2,526 rows and 8 columns:
+#' \describe{
+#' \item{pid}{personal identification number)}
+#' \item{sex}{sex of individual (1 = female, 2 = male)}
+#' \item{involved_arts}{whether the individual participated in any organized
+#' activities related to art, music, or the theater in the last 12 months
+#' (1 = yes, 0 = no)}
+#' \item{involved_sports}{whether the individual was a member of any athletic or
+#' sports teams in the last 12 months (1 = yes, 0 = no)}
+#' \item{involved_schoolClubs}{whether the individual was involved with any high school
+#' or college clubs or student government in the last 12 months (1 = yes, 0 = no)}
+#' \item{involved_election}{whether the individual voted in the national election in
+#' November 2016 that was held to elect the President (1 = yes, 0 = no)}
+#' \item{involved_socialActionGrps}{whether the individual was involved in any political
+#' groups, solidarity or ethnic-support groups or social-action groups in the last 12
+#' months (1 = yes, 0 = no)}
+#' \item{involved_volunteer}{whether the individual was involved in any unpaid volunteer or
+#' community service work in the last 12 months (1 = yes, 0 = no)}
+#' }
+"tas"

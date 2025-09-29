@@ -1,0 +1,28 @@
+template:
+  bootstrap: 5
+  bootswatch: litera
+
+navbar:
+  structure:
+    left:
+    - home
+    - reference
+    - articles
+    - news
+    right: github
+  components:
+    home:
+      text: Home
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: Introduction to summarytabl
+        href: articles/summarytabl-intro.html
+    github:
+      text: GitHub
+      href: https://github.com/anyamemensah/summarytabl
+      
