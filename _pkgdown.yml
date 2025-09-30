@@ -2,14 +2,17 @@ template:
   bootstrap: 5
   bootswatch: litera
 
+url: https://anyamemensah.github.io/summarytabl/
+
 navbar:
   structure:
     left:
-    - home
-    - reference
-    - articles
-    - news
-    right: github
+      - home
+      - reference
+      - articles
+      - news
+    right:
+      - github
   components:
     home:
       text: Home
@@ -20,9 +23,35 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Introduction to summarytabl
-        href: articles/summarytabl-intro.html
+        - text: Introduction to summarytabl
+          href: articles/summarytabl-intro.html
     github:
       text: GitHub
       href: https://github.com/anyamemensah/summarytabl
-      
+
+reference:
+  - title: Categorical data
+    desc: Functions that summarize categorical data.
+    contents:
+      - cat_tbl
+      - cat_group_tbl
+  - title: Ordinal data
+    desc: Functions that summarize multiple-response and ordinal data.
+    contents:
+      - select_tbl
+      - select_group_tbl
+  - title: Continuous data
+    desc: Functions that summarize continuous data.
+    contents:
+      - mean_tbl
+      - mean_group_tbl
+  - title: Other functions
+    contents:
+      - check_named_vctr
+  - title: Datasets
+    contents:
+      - depressive
+      - nlsy
+      - social_psy_data
+      - stem_social_psych
+      - tas

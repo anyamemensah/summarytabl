@@ -6,10 +6,9 @@ summarytabl is an R package that provides functions for tabulating and summarizi
 remotes::install_github("anyamemensah/summarytabl", build_vignettes = TRUE)
 ```
 
-summarytabl is designed to streamline descriptive analysis of categorical, ordinal, and continuous data. Whether you’re working on a report or presentation, summarytabl simplifies the process of summarizing your data for insightful interpretation and effective communication. For more information on how to use the package, please refer to the articles below: 
+summarytabl is designed to streamline descriptive analysis of categorical, ordinal, and continuous data. Whether you’re working on a report or presentation, summarytabl simplifies the process of summarizing your data for insightful interpretation and effective communication. For more information on how to use the package, please refer to the [Introduction to summarytabl](articles/summarytabl-intro.html) article.
 
-* [Introduction to summarytabl](articles/summarytabl-intro.html)
-
+<br>
 
 If this package has been helpful in your work and you’d like to see it continue to grow, consider supporting its development by:
 
