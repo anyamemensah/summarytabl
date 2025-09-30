@@ -7,4 +7,5 @@
 ^\.github$
 ^doc$
 ^Meta$
-^vignettes/articles$
+^build$
+^inst/ignore/
