@@ -11,6 +11,7 @@ Provides functions for tabulating and summarizing continuous, ordinal, and categ
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://github.com/anyamemensah/summarytabl}
   \item \url{https://anyamemensah.github.io/summarytabl/}
 }
 
