@@ -1,6 +1,6 @@
 ---
 title: "Introduction to summarytabl"
-output: html_document
+output: rmarkdown::html_vignette
 description: >
   This document introduces you to some of summarytabl's most frequently used functions, and demonstrates how you can use them with data frames.
 vignette: >
