@@ -8,7 +8,8 @@
 #' value is returned.
 #'
 #' @param x A named vector.
-#' @param names A character vector specifying the names to be matched.
+#' @param names A character vector or list of character vectors of length one 
+#' specifying the names to be matched.
 #' @param default Default value to return
 #'
 #' @return Either the original object, `x`, or the `default` value.
@@ -25,7 +26,12 @@
 #' # returns x
 #' check_named_vctr(x = list(one = 1, two = 2, three = 3), 
 #'                  names = list("one", "two", "three"),
-#'                  default = NULL)               
+#'                  default = NULL)  
+#' 
+#' # also returns x
+#' check_named_vctr(x = c(baako = 1, mmienu = 2, mmiensa = 3), 
+#'                  names = list("baako", "mmienu", "mmiensa"),
+#'                  default = NULL)              
 #'                  
 #' @export
 check_named_vctr <- function(x, names, default) {
@@ -39,15 +45,21 @@ check_named_vctr.default <- function(x, names, default) {
 #'
 #' @export
 check_named_vctr.list <- function(x, names, default) {
+  validated_names <- check_name_arg(names) 
+  
+  if (is.null(validated_names)) {
+    return(default)
+  }
+  
   if (check_invalid_list_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(names)) {
+  if (length(x) != length(validated_names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% names)) {
+  if (!all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -55,15 +67,21 @@ check_named_vctr.list <- function(x, names, default) {
 }
 #' @export
 check_named_vctr.logical <- function(x, names, default) {
+  validated_names <- check_name_arg(names) 
+  
+  if (is.null(validated_names)) {
+    return(default)
+  }
+  
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(names)) {
+  if (length(x) != length(validated_names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% names)) {
+  if (!all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -72,15 +90,21 @@ check_named_vctr.logical <- function(x, names, default) {
 
 #' @export
 check_named_vctr.character <- function(x, names, default) {
+  validated_names <- check_name_arg(names) 
+  
+  if (is.null(validated_names)) {
+    return(default)
+  }
+  
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(names)) {
+  if (length(x) != length(validated_names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% names)) {
+  if (!all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -89,15 +113,21 @@ check_named_vctr.character <- function(x, names, default) {
 #'
 #' @export
 check_named_vctr.numeric <- function(x, names, default) {
+  validated_names <- check_name_arg(names) 
+  
+  if (is.null(validated_names)) {
+    return(default)
+  }
+  
   if (check_invalid_values(x)) {
     return(default)
   }
 
-  if (length(x) != length(names)) {
+  if (length(x) != length(validated_names)) {
     return(default)
   }
 
-  if (!all(names(x) %in% names)) {
+  if (!all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -120,5 +150,14 @@ check_invalid_list_values <- function(x) {
   has_invalid_values <- is.null(unname(x)) || any(trimws(unname(x)) == "") || any(is.na(unname(x)))
 
   return(has_invalid_names || has_invalid_values)
+}
+#' 
+#' @keywords internal
+check_name_arg <- function(names) { 
+  if (!is.character(names) && (!is.list(names) || !all(vapply(names, function(n) is.character(n) && length(n) == 1, logical(1))))) { 
+    return(NULL) 
+  } 
+  
+  if (is.list(names)) unlist(names) else names 
 }
 

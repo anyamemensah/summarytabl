@@ -9,7 +9,8 @@ check_named_vctr(x, names, default)
 \arguments{
 \item{x}{A named vector.}
 
-\item{names}{A character vector specifying the names to be matched.}
+\item{names}{A character vector or list of character vectors of length one
+specifying the names to be matched.}
 
 \item{default}{Default value to return}
 }
@@ -34,7 +35,12 @@ check_named_vctr(x = c(one = 1, two = 2, 3),
 # returns x
 check_named_vctr(x = list(one = 1, two = 2, three = 3), 
                  names = list("one", "two", "three"),
-                 default = NULL)               
+                 default = NULL)  
+
+# also returns x
+check_named_vctr(x = c(baako = 1, mmienu = 2, mmiensa = 3), 
+                 names = list("baako", "mmienu", "mmiensa"),
+                 default = NULL)              
                  
 }
 \author{
