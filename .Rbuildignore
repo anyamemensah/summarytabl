@@ -7,4 +7,5 @@
 ^\.github$
 ^doc$
 ^inst/ignore/
-
+^index.md$
+^README.md$
