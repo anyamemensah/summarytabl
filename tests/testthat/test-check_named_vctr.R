@@ -92,3 +92,45 @@ test_that("Expected output: named vector, list", {
   
   expect_equal(observed, expected)
 })
+
+
+test_that("Expected null: list with a logical element", {
+  observed <-
+    check_named_vctr(x = list(un = 1, deux = 2, trois = 3, quatre = 4),
+                     names = list("un", "trois", TRUE, "quatre"),
+                     default = NULL)
+  
+  expected <- NULL
+  expect_equal(observed, expected)
+})
+
+test_that("Expected null: list with a numeric element", {
+  observed <-
+    check_named_vctr(x = list(un = 1, deux = 2, trois = 3, quatre = 4),
+                     names = list("un", 1, "deux", "quatre"),
+                     default = NULL)
+  
+  expected <- NULL
+  expect_equal(observed, expected)
+})
+
+test_that("Expected null: list with an integer element", {
+  observed <-
+    check_named_vctr(x = list(un = 1, deux = 2, trois = 3, quatre = 4),
+                     names = list("un", 1L, "deux", "quatre"),
+                     default = NULL)
+  
+  expected <- NULL
+  expect_equal(observed, expected)
+})
+
+
+test_that("Expected null: list of character vectors where one vector contains more than one element", {
+  observed <-
+    check_named_vctr(x = list(un = 1, deux = 2, trois = 3, quatre = 4),
+                     names = list("un", c("three", "trois"), "deux", "quatre"),
+                     default = NULL)
+  
+  expected <- NULL
+  expect_equal(observed, expected)
+})
