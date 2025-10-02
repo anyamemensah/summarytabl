@@ -28,7 +28,7 @@ A tibble displaying the relative frequency counts and/or percentages
 of \code{row_var}.
 }
 \description{
-\code{cat_group_tbl()} presents frequency counts and percentages
+\code{cat_tbl()} presents frequency counts and percentages
 (count, percent) for nominal or categorical variables. Missing data can
 be excluded from the calculations.
 }
