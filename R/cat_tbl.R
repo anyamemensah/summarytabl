@@ -1,6 +1,6 @@
 #' @title Summarize a categorical variable
 #'
-#' @description `cat_group_tbl()` presents frequency counts and percentages 
+#' @description `cat_tbl()` presents frequency counts and percentages 
 #' (count, percent) for nominal or categorical variables. Missing data can 
 #' be excluded from the calculations.
 #'
