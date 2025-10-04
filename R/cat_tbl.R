@@ -17,7 +17,7 @@
 #' Default is `NULL`, which includes all present values.
 #'
 #' @returns A tibble displaying the relative frequency counts and/or percentages 
-#' of `row_var`.
+#' of `var`.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -34,69 +34,58 @@
 #'
 #' @export
 cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
-
-  # Check 'data' is a data frame with at least one row/column
-  if (!is.data.frame(data)) {
-    stop("The 'data' argument is not a data frame.")
+  args <- list(
+    data = data,
+    table_type = "cat",
+    group_func = FALSE,
+    var_name = var,
+    var_label = "var",
+    variable_type = "valid_var_types",
+    na.rm = na.rm,
+    label_na.rm = "na.rm",
+    only = only,
+    ignore = ignore
+  )
+  
+  checks <- check_cat_args(args)
+  var_name <- checks$var$var
+  df <- checks$data$df
+  
+  data_sub <- df[var_name]
+  
+  if (checks$dtype$dtype == "haven_labelled") {
+    data_sub[[var_name]] <- convert_labelled_to_chr(data_sub[[var_name]])
   }
-
-  if (prod(dim(data)) == 0) {
-    stop("The 'data' argument is empty.")
+  
+  ignore_map <- extract_ignore_map(
+    vars = var_name,
+    ignore = checks$ignore$ignore,
+    var_stem_map = NULL
+  )$ignore_map
+  
+  if (!is.null(ignore_map)) {
+    data_sub[[var_name]] <- ifelse(
+      data_sub[[var_name]] %in% ignore_map[[var_name]],
+      NA,
+      data_sub[[var_name]]
+    )
   }
-
-  # Check 'var' is a character vector of length one and exists in 'data'
-  if (!is.character(var) || length(var) != 1) {
-    stop("Invalid 'var' argument. 'var' must be a character vector of length one.")
+  
+  if (checks$na.rm$na.rm) {
+    data_sub <- stats::na.omit(data_sub)
   }
-
-  if (!(var %in% colnames(data))) {
-    stop("The 'var' argument is not a column in 'data'.")
-  }
-
-  # Check 'na.rm' is logical and length one
-  if (!is.logical(na.rm) || length(na.rm) != 1) {
-    stop("Invalid 'na.rm' argument. 'na.rm' must be a logical vector of length one.")
-  }
-
-  # Check 'only'
-  if (is.null(only)) {
-    only <- only_type("cat")
-  } else {
-    only <- tolower(trimws(only))
-  }
-
-  if (!(all(only %in% only_type("cat"))) || length(only) == 0){
-    stop("Invalid 'only' argument. 'only' must be a character vector of length at least one.")
-  }
-
-  # Remove values that are set to 'ignore'
-  if (!is.null(ignore) && is.vector(ignore) && length(ignore) > 0) {
-    
-    data <-
-      data |>
-      dplyr::mutate(dplyr::across(.cols = dplyr::all_of(var) , 
-                                  .fns = ~ ifelse(. %in% ignore, NA, .)))
-  }
-
-  # Remove rows with NAs if requested
-  if (na.rm) {
-    data <- stats::na.omit(data[var])
-  }
-
-  # Create table
-  cat_tabl <-
-    data |>
-    dplyr::group_by(.data[[var]]) |>
+  
+  cat_tabl <- data_sub |>
+    dplyr::group_by(.data[[var_name]]) |>
     dplyr::summarize(count = dplyr::n()) |>
     dplyr::ungroup() |>
-    dplyr::mutate(percent = .data[["count"]] / sum(.data[["count"]]))
-
-  # Remove unrequested 'only' columns
-  cat_tabl <- drop_only_cols(data = cat_tabl,
-                             only = only,
-                             only_type = only_type("cat"))
-
-  cat_tabl
+    dplyr::mutate(percent = count / sum(count))
+  
+  cat_tabl <- drop_only_cols(
+    data = cat_tabl,
+    only = checks$only$only,
+    only_type = only_type(checks$table_type)
+  )
+  
+  return(cat_tabl)
 }
-
-

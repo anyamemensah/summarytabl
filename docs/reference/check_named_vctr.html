@@ -68,7 +68,8 @@ value is returned.</p>
 
 
 <dt id="arg-names">names<a class="anchor" aria-label="anchor" href="#arg-names"></a></dt>
-<dd><p>A character vector specifying the names to be matched.</p></dd>
+<dd><p>A character vector or list of character vectors of length one
+specifying the names to be matched.</p></dd>
 
 
 <dt id="arg-default">default<a class="anchor" aria-label="anchor" href="#arg-default"></a></dt>
@@ -96,7 +97,7 @@ value is returned.</p>
 <span class="r-in"><span><span class="co"># returns x</span></span></span>
 <span class="r-in"><span><span class="fu">check_named_vctr</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>one <span class="op">=</span> <span class="fl">1</span>, two <span class="op">=</span> <span class="fl">2</span>, three <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>                 names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"one"</span>, <span class="st">"two"</span>, <span class="st">"three"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>               </span></span>
+<span class="r-in"><span>                 default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $one</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -106,6 +107,13 @@ value is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $three</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># also returns x</span></span></span>
+<span class="r-in"><span><span class="fu">check_named_vctr</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>baako <span class="op">=</span> <span class="fl">1</span>, mmienu <span class="op">=</span> <span class="fl">2</span>, mmiensa <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>                 names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"baako"</span>, <span class="st">"mmienu"</span>, <span class="st">"mmiensa"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>              </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   baako  mmienu mmiensa </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       1       2       3 </span>
 <span class="r-in"><span>                 </span></span>
 </code></pre></div>
     </div>

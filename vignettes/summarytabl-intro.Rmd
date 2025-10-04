@@ -104,6 +104,21 @@ cat_group_tbl(data = nlsy,
               pivot = "wider")
 ```  
 
+
+If you want to ignore more than one value per row or column, provide them in a named list:
+
+```{r}
+cat_group_tbl(data = nlsy,
+              row_var = "race",
+              col_var = "bthwht",
+              na.rm.row_var = TRUE,
+              pivot = "wider",
+              margins = "rows")
+
+
+```  
+
+
 Finally, you can choose what information to return using the `only` argument.
 
 ```{r}

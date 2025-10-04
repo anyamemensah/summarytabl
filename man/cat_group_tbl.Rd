@@ -8,11 +8,12 @@ cat_group_tbl(
   data,
   row_var,
   col_var,
+  margins = "all",
   na.rm.row_var = FALSE,
   na.rm.col_var = FALSE,
+  pivot = "longer",
   only = NULL,
-  ignore = NULL,
-  pivot = "longer"
+  ignore = NULL
 )
 }
 \arguments{
@@ -24,14 +25,23 @@ categorical data. This is the primary categorical variable. When pivoted to the
 table.}
 
 \item{col_var}{A character string of the name of a column in \code{data} containing
-categorical data. This is the primary categorical variable. When pivoted to the \code{wider}
-format, the categories of this variable will appear in the rows of the table.}
+categorical data. This is the primary categorical variable. When pivoted to the
+\code{wider} format, the categories of this variable will appear in the columns of
+the table.}
+
+\item{margins}{A character string that determines how percentage values are
+calculated; whether they sum to one across rows, columns, or the entire table.
+Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
 
 \item{na.rm.row_var}{A logical value indicating whether missing values for \code{row_var}
 should be removed before calculations. Default is \code{FALSE}.}
 
 \item{na.rm.col_var}{A logical value indicating whether missing values for \code{col_var}
 should be removed before calculations. Default is \code{FALSE}.}
+
+\item{pivot}{A character string specifying the format of the returned summary table.
+The default is \code{longer}, which returns the data in long format. To return the data
+in wide format, use \code{wider}.}
 
 \item{only}{A character string or vector of strings indicating the types of summary
 data to return. The default is \code{NULL}, which includes both counts and percentages. To
@@ -40,16 +50,10 @@ wise, grouped by \code{col_var}.}
 
 \item{ignore}{A named character vector or list containing values to ignore from
 \code{row_var} and \code{col_var}.}
-
-\item{pivot}{A character string specifying the format of the returned summary table.
-The default is \code{longer}, which returns the data in long format. To return the data
-in wide format, use \code{wider}.}
 }
 \value{
 A tibble displaying relative frequency counts and/or percentages of \code{row_var},
-grouped by \code{col_var.} When the output is in wider format, \code{columns} prefixed with \code{count_}
-and \code{percent_} contain the frequency and proportion, respectively, for each distinct
-response value of \code{row_var} within each level of \code{col_var.}
+grouped by \code{col_var}.
 }
 \description{
 \code{cat_group_tbl()} presents frequency counts and percentages

@@ -79,6 +79,7 @@ excluded from the calculations in a listwise fashion.</p>
 <span>  ignore_stem_case <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  group_type <span class="op">=</span> <span class="st">"variable"</span>,</span>
 <span>  group_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  margins <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  escape_group <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  ignore_group_case <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  remove_group_non_alnum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -127,6 +128,13 @@ variable matching the <code>group</code> string will be searched for within <cod
 <dt id="arg-group-name">group_name<a class="anchor" aria-label="anchor" href="#arg-group-name"></a></dt>
 <dd><p>A character string piped to the final table to replace the name
 of <code>group</code>.</p></dd>
+
+
+<dt id="arg-margins">margins<a class="anchor" aria-label="anchor" href="#arg-margins"></a></dt>
+<dd><p>A character string that determines how percentage values are calculated;
+whether they sum to one across rows, columns, or the entire variable. Defaults to <code>all</code>,
+but can also be set to <code>rows</code> or <code>columns</code>. Note: This argument only affects the final
+table when group_type is <code>variable</code>.</p></dd>
 
 
 <dt id="arg-escape-group">escape_group<a class="anchor" aria-label="anchor" href="#arg-escape-group"></a></dt>
@@ -229,22 +237,21 @@ value of the variable within each group.</p>
 <span class="r-in"><span>                 na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span></span>
 <span class="r-in"><span>                 pivot <span class="op">=</span> <span class="st">"wider"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    variable                  sex    count_value_selected count_value_unselected</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> involved_arts             female                  212                    998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> involved_arts             male                    187                   <span style="text-decoration: underline;">1</span>129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> involved_sports           female                  270                    940</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> involved_sports           male                    142                   <span style="text-decoration: underline;">1</span>174</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> involved_schoolClubs      female                  167                   <span style="text-decoration: underline;">1</span>021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> involved_schoolClubs      male                    185                   <span style="text-decoration: underline;">1</span>106</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> involved_election         female                  531                    538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> involved_election         male                    717                    490</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> involved_socialActionGrps female                   52                   <span style="text-decoration: underline;">1</span>158</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> involved_socialActionGrps male                     55                   <span style="text-decoration: underline;">1</span>261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> involved_volunteer        female                  370                    840</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> involved_volunteer        male                    424                    892</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: percent_value_selected &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   percent_value_unselected &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    variable            values count_sex_female count_sex_male percent_sex_female</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> involved_arts       selec…              212            187             0.083<span style="text-decoration: underline;">9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> involved_arts       unsel…              998           <span style="text-decoration: underline;">1</span>129             0.395 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> involved_sports     selec…              270            142             0.107 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> involved_sports     unsel…              940           <span style="text-decoration: underline;">1</span>174             0.372 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> involved_schoolClu… selec…              167            185             0.067<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> involved_schoolClu… unsel…             <span style="text-decoration: underline;">1</span>021           <span style="text-decoration: underline;">1</span>106             0.412 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> involved_election   selec…              531            717             0.233 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> involved_election   unsel…              538            490             0.236 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> involved_socialAct… selec…               52             55             0.020<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> involved_socialAct… unsel…             <span style="text-decoration: underline;">1</span>158           <span style="text-decoration: underline;">1</span>261             0.458 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> involved_volunteer  selec…              370            424             0.146 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> involved_volunteer  unsel…              840            892             0.333 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: percent_sex_male &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">depressive_recoded</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="va">depressive</span> <span class="op">|&gt;</span></span></span>
@@ -278,26 +285,20 @@ value of the variable within each group.</p>
 <span class="r-in"><span>                     <span class="st">"dep_6"</span> <span class="op">=</span> <span class="st">"how often child feels tired or worn out"</span>,</span></span>
 <span class="r-in"><span>                     <span class="st">"dep_7"</span> <span class="op">=</span> <span class="st">"how often child feels excited about something"</span>,</span></span>
 <span class="r-in"><span>                     <span class="st">"dep_8"</span> <span class="op">=</span> <span class="st">"how often child feels too busy to get everything"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    variable variable_label        sex   percent_value_hardly percent_value_often</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> dep_1    how often child feel… fema…                0.456               0.495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> dep_1    how often child feel… male                 0.544               0.505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> dep_2    how often child feel… fema…                0.487               0.431</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> dep_2    how often child feel… male                 0.513               0.569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> dep_3    how often child feel… fema…                0.472               0.509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> dep_3    how often child feel… male                 0.528               0.491</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> dep_4    how often child feel… fema…                0.447               0.506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> dep_4    how often child feel… male                 0.553               0.494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> dep_5    how often child feel… fema…                0.497               0.495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> dep_5    how often child feel… male                 0.503               0.505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> dep_6    how often child feel… fema…                0.511               0.494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> dep_6    how often child feel… male                 0.489               0.506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> dep_7    how often child feel… fema…                0.438               0.509</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> dep_7    how often child feel… male                 0.562               0.491</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> dep_8    how often child feel… fema…                0.478               0.495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> dep_8    how often child feel… male                 0.522               0.505</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: percent_value_sometimes &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    variable variable_label            values percent_sex_female percent_sex_male</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> dep_1    how often child feels sa… hardly             0.230            0.274 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> dep_1    how often child feels sa… often              0.033<span style="text-decoration: underline;">6</span>           0.034<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> dep_1    how often child feels sa… somet…             0.227            0.202 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> dep_2    how often child feels ne… hardly             0.217            0.229 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> dep_2    how often child feels ne… often              0.038<span style="text-decoration: underline;">6</span>           0.051<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> dep_2    how often child feels ne… somet…             0.234            0.230 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> dep_3    how often child feels ha… hardly             0.015<span style="text-decoration: underline;">6</span>           0.017<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> dep_3    how often child feels ha… often              0.368            0.355 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> dep_3    how often child feels ha… somet…             0.106            0.138 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> dep_4    how often child feels bo… hardly             0.047<span style="text-decoration: underline;">3</span>           0.058<span style="text-decoration: underline;">5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

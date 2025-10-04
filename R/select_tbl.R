@@ -24,7 +24,8 @@
 #' The default is `longer`, which returns the data in long format. To return the data in
 #' wide format, use `wider`.
 #' @param only A character string or vector of character strings of the kinds of summary 
-#' data to return. Default is `NULL`, which returns counts (count) and percentages (percent).
+#' data to return. Default is `NULL`, which returns counts (count) and percentages 
+#' (percent).
 #' @param var_labels An optional named character vector or list where each element maps
 #' labels to variable names. If any element is unnamed or if any labels do not match 
 #' variables in returned from `data`, all labels will be ignored and the table will be 
@@ -82,118 +83,100 @@ select_tbl <- function(data,
                        pivot = "longer",
                        only = NULL,
                        var_labels = NULL,
-                       ignore = NULL){
-
-  # Check 'data' is a data frame with at least one row/column
-  if (!is.data.frame(data)) {
-    stop("The 'data' argument is not a data frame.")
-  }
-
-  if (prod(dim(data)) == 0) {
-    stop("The 'data' argument is empty.")
-  }
-
-  # Check 'var_stem' is a character vector of length one
-  if (!is.character(var_stem) || length(var_stem) != 1) {
-    stop("Invalid 'var_stem' argument. 'var_stem' must be a character vector of length one.")
-  }
-
-  # Find columns using 'var_stem'
-  cols <- find_columns(data = data,
-                       var_stem = var_stem,
-                       escape = escape_stem,
-                       ignore.case = ignore_stem_case)
-
-  # Check 'cols' is a character vector of length at least one
-  if (!is.character(cols) || length(cols) == 0) {
-    stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
-  }
-
-  # Check 'na_removal' is a character vector of length one, and is one of 'listwise', 'pairwise'
-  if (!is.character(na_removal) || length(na_removal) != 1) {
-    stop("Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one.")
-  }
-
-  if (!(na_removal %in% c("listwise", "pairwise"))) {
-    stop("Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'.")
-  }
-
-  # Check 'pivot' is a character vector of length one, and is one of 'wider', 'longer'
-  if (!is.character(pivot) || length(pivot) != 1) {
-    stop("Invalid 'pivot' argument. 'pivot' must be a character vector of length one.")
-  }
-
-  if (!(pivot %in% c("wider", "longer"))) {
-    stop("Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'.")
-  }
-
-  # Check 'only'
-  if (is.null(only)) {
-    only <- only_type("select")
-  } else {
-    only <- tolower(trimws(only))
-  }
-
-  if (!(all(only %in% only_type("select"))) || length(only) == 0){
-    stop("Invalid 'only' argument. 'only' must be a character vector of length at least one.")
-  }
-
-  # Check 'var_labels' are valid otherwise return default (NULL)
-  if (!is.null(var_labels)) {
-    var_labels <- check_named_vctr(x = var_labels,
-                                   names = cols,
-                                   default = NULL)
-  }
-
-  # Remove values that are set to 'ignore'
-  if (!is.null(ignore) && is.vector(ignore) && length(ignore) > 0) {
-    data <-
-      data |>
-      dplyr::mutate(dplyr::mutate(dplyr::across(.cols = dplyr::all_of(cols) , 
-                                                .fns = ~ ifelse(. %in% ignore, NA, .)))
+                       ignore = NULL) {
+  args <- list(
+    data = data,
+    table_type = "select",
+    group_func = FALSE,
+    var_stem = var_stem,
+    var_label = "var_stem",
+    var_labels = var_labels,
+    escape_stem = escape_stem,
+    ignore_stem_case = ignore_stem_case,
+    na_removal = na_removal,
+    pivot = pivot,
+    only = only,
+    var_labels = var_labels,
+    ignore = ignore
+  )
+  
+  checks <- check_select_args(args)
+  cols <- checks$var_stem$cols
+  df <- checks$data$df
+  
+  data_sub <- df[cols]
+  
+  dtypes <- setNames(
+    lapply(cols, function(x) {
+      check_data_type(
+        data_type = get_data_type(data_sub[[x]]),
+        table_type = checks$table_type,
+        variable_type = "valid_var_types",
+        arg_name = "cols"
       )
+    }),
+    cols
+  )
+  
+  for (col in names(dtypes)) {
+    if (dtypes[[col]]$dtype == "haven_labelled") {
+      data_sub[[col]] <- convert_labelled_to_chr(data_sub[[col]])
+    }
   }
-
-  # Remove rows with NAs if requested listwise
-  if (na_removal == "listwise") {
-    data <- stats::na.omit(data[cols])
+  
+  ignore_map <- extract_ignore_map(
+    vars = c(checks$var_stem$var_stem),
+    ignore = checks$ignore$ignore,
+    var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+  )$ignore_map
+  
+  if (!is.null(ignore_map)) {
+    data_sub <- data_sub |>
+      dplyr::mutate(dplyr::across(
+        .cols = dplyr::all_of(names(ignore_map)),
+        .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
+      ))
   }
-
-  # Create table
-  select_tabl <-
-    purrr::map(.x = cols, .f = ~ generate_select_tabl(data, .x, na_removal)) |>
+  
+  if (checks$na_rm$na_removal == "listwise") {
+    data_sub <- stats::na.omit(data_sub)
+  }
+  
+  select_tabl <- purrr::map(cols, ~ generate_select_tabl(data_sub, .x, checks$na_rm$na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, values, count, percent)
-
-  # Set data format: Wider / Longer
-  if (pivot == "wider") {
-    select_tabl <-
-      select_tabl |>
-        tidyr::pivot_wider(id_cols = variable,
-                           names_from = values,
-                           names_glue = "{.value}_value_{values}",
-                           values_from = c(count, percent))
+  
+  if (checks$pivot$pivot == "wider") {
+    select_tabl <- select_tabl |>
+      tidyr::pivot_wider(
+        id_cols = variable,
+        names_from = values,
+        names_glue = "{.value}_value_{values}",
+        values_from = c("count", "percent")
+      )
   }
-
-  # Add 'var_labels' if supplied
+  
+  var_labels <- checks$var_stem$var_labels
+  
   if (!is.null(var_labels)) {
-    select_tabl <-
-      select_tabl |>
+    select_tabl <- select_tabl |>
       dplyr::mutate(
-        variable_label = dplyr::case_match(variable,
-                                           !!! tbl_key(values_from = names(var_labels),
-                                                       values_to = unname(var_labels)),
-                                           .default = variable)
+        variable_label = dplyr::case_match(
+          variable,
+          !!!tbl_key(values_from = names(var_labels), values_to = unname(var_labels)),
+          .default = variable
+        )
       ) |>
       dplyr::relocate(variable_label, .after = variable)
   }
-
-  # Remove unrequested 'only' columns
-  select_tabl <- drop_only_cols(data = select_tabl,
-                                only = only,
-                                only_type = only_type("select"))
-
-  select_tabl
+  
+  select_tabl <- drop_only_cols(
+    data = select_tabl,
+    only = checks$only$only,
+    only_type = only_type(checks$table_type)
+  )
+  
+  return(select_tabl)
 }
 
 #' @keywords internal
@@ -201,9 +184,11 @@ generate_select_tabl <- function(data, col, na_removal) {
   data |>
     dplyr::group_by(.data[[col]]) |>
     dplyr::summarize(count = dplyr::n()) |>
-    dplyr::filter(if (na_removal == "pairwise") !is.na(.data[[col]]) else TRUE) |>
-    dplyr::mutate(variable = col,
-                  percent = count / sum(count)) |>
     dplyr::ungroup() |>
+    dplyr::filter(if (na_removal == "pairwise") !is.na(.data[[col]]) else TRUE) |>
+    dplyr::mutate(
+      variable = col,
+      percent = count / sum(count)
+    ) |>
     dplyr::rename(values = 1)
 }

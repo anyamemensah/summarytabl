@@ -116,12 +116,12 @@ the supplied <code>var_stem</code> is case-insensitive. Default is <code>FALSE</
 
 <dt id="arg-group-type">group_type<a class="anchor" aria-label="anchor" href="#arg-group-type"></a></dt>
 <dd><p>A character string that defines the type of grouping variable. Should be
-one of <code>pattern</code> or <code>variable</code>. Default is <code>variable</code>, in which case the variable matching the
-<code>group</code> string will be searched for within <code>data</code>.</p></dd>
+one of <code>pattern</code> or <code>variable</code>. Default is <code>variable</code>, in which case the variable matching
+the <code>group</code> string will be searched for within <code>data</code>.</p></dd>
 
 
 <dt id="arg-group-name">group_name<a class="anchor" aria-label="anchor" href="#arg-group-name"></a></dt>
-<dd><p>A character string piped to the final table to replace the name of <code>group</code>.</p></dd>
+<dd><p>A character string passed to the final table to rename the <code>group</code> column.</p></dd>
 
 
 <dt id="arg-escape-group">escape_group<a class="anchor" aria-label="anchor" href="#arg-escape-group"></a></dt>
@@ -168,9 +168,9 @@ values from both <code>var_stem</code> variables and a grouping variable in <cod
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble presenting summary statistics (e.g., mean, standard deviation, minimum
-value, maximum, number of non-missing observations) for a set of variables sharing the same
-variable stem. The results are grouped by either a grouping variable in the data or by a
-pattern matched with variable names.</p>
+value, maximum, number of non-missing observations) for a set of variables sharing the
+same variable stem. The results are grouped by either a grouping variable in the data or
+by a pattern matched with variable names.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -240,8 +240,8 @@ pattern matched with variable names.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable    group  mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> symptoms.t1 t1     3.17  1.58     1     5    29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> symptoms.t2 t2     3     1.51     1     5    29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> symptoms.t1 t1     3     1.54     1     5    27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> symptoms.t2 t2     3.11  1.50     1     5    27</span>
 <span class="r-in"><span>               </span></span>
 </code></pre></div>
     </div>

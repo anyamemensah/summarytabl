@@ -1,0 +1,50 @@
+#' @title General Social Survey (GSS) 2022 Data
+#'
+#' @description These data are a subset from the General Social Survey 2022 Individual
+#' Year Data Sets.For more information, visit: https://gss.norc.org/us/en/gss/get-the-data/spss.html.
+#'
+#' @format A tibble with 4,149 rows and 40 columns:
+#' \describe{
+#' \item{id}{Respondent identification number}
+#' \item{year}{Year of interview}
+#' \item{dateintv}{Date of interview}
+#' \item{age}{Respondent's age in years}
+#' \item{sexnow1}{Respondent's current sex}
+#' \item{hispanic}{Respondent's Hispanic, Latino, or Spanish origins}
+#' \item{race}{Respondent's race}
+#' \item{marital}{Respondent's marital status}
+#' \item{agekdbrn}{Age at birth of first child: AGEKDBRN}
+#' \item{educ}{Highest year of school completed}
+#' \item{relig}{Religious affiliation}
+#' \item{wrkstat}{Labor force status }
+#' \item{nataid}{Attitudes towards: Foreign aid}
+#' \item{nataidy}{Attitudes towards: Assistance to other countries:Ver Y}
+#' \item{natarms}{Attitudes towards: Military, armaments, and defense}
+#' \item{natarmsy}{Attitudes towards: National defense:Version Y}
+#' \item{natchld}{Attitudes towards: Assistance for childcare}
+#' \item{natcity}{Attitudes towards: Solving problems of big cities}
+#' \item{natcityy}{Attitudes towards: Assistance to big cities:Version Y}
+#' \item{natcrime}{Attitudes towards: Halting rising crime rate}
+#' \item{natcrimy}{Attitudes towards: Law enforcement:Version Y}
+#' \item{natdrug}{Attitudes towards: Dealing with drug addiction}
+#' \item{natdrugy}{Attitudes towards: Drug rehabilitation:Version Y}
+#' \item{nateduc}{Attitudes towards: Improving nations education system}
+#' \item{nateducy}{Attitudes towards: Education:Version Y}
+#' \item{natenrgy}{Attitudes towards: Developing alternative energy sources}
+#' \item{natenvir}{Attitudes towards: Improving & protecting environment}
+#' \item{natenviy}{Attitudes towards: The environment:Version Y}
+#' \item{natfare}{Attitudes towards: Welfare}
+#' \item{natfarey}{Attitudes towards: Assistance to the poor:Version Y}
+#' \item{natheal}{Attitudes towards: Improving & protecting nations health}
+#' \item{nathealy}{Attitudes towards: Health:Version Y}
+#' \item{natmass}{Attitudes towards: Mass transportation}
+#' \item{natpark}{Attitudes towards: Parks and recreation}
+#' \item{natrace}{Attitudes towards: Improving the conditions of Black people}
+#' \item{natracey}{Attitudes towards: Assistance to Black people: version y}
+#' \item{natroad}{Attitudes towards: Highways and bridges}
+#' \item{natsci}{Attitudes towards: Supporting scientific research}
+#' \item{natsoc}{Attitudes towards: Social security}
+#' \item{natspac}{Attitudes towards: Space exploration program}
+#' \item{natspacy}{Attitudes towards: Space exploration:Version Y}
+#' }
+"gss"

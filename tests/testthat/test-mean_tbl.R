@@ -42,9 +42,18 @@ test_that("Invalid 'only' argument", {
     mean_tbl(
       data = stem_social_psych,
       var_stem = "belong_belong",
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: mean, sd, min, max, nobs."
   )
 })
 

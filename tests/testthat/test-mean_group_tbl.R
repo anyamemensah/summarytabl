@@ -52,9 +52,20 @@ test_that("Invalid 'only' argument", {
       var_stem = "belong_outsiderStem",
       group = "_w\\d",
       group_type = "pattern",
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_outsiderStem",
+      group = "_w\\d",
+      group_type = "pattern",
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: mean, sd, min, max, nobs."
   )
 })
 
@@ -252,7 +263,6 @@ test_that("Expected output for group pattern and remove_group_non_alnum (TRUE/FA
 })
 
 
-
 test_that("Error and expected output with ignore_stem_case", {
   expect_error(
     mean_group_tbl(
@@ -339,7 +349,6 @@ test_that("Error and expected output with ignore_group_case", {
 
 
 test_that("Expected output with different 'only' types", {
-  
   observed1 <-
     mean_group_tbl(
       data = stem_social_psych,

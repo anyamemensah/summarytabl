@@ -25,7 +25,7 @@ Default is \code{NULL}, which includes all present values.}
 }
 \value{
 A tibble displaying the relative frequency counts and/or percentages
-of \code{row_var}.
+of \code{var}.
 }
 \description{
 \code{cat_tbl()} presents frequency counts and percentages

@@ -42,9 +42,18 @@ test_that("Invalid 'only' argument", {
     select_tbl(
       data = depressive,
       var_stem = "dep",
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    select_tbl(
+      data = depressive,
+      var_stem = "dep",
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
   )
 })
 
@@ -94,9 +103,18 @@ test_that("Invalid 'only' argument", {
     select_tbl(
       data = depressive,
       var_stem = "dep",
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    select_tbl(
+      data = depressive,
+      var_stem = "dep",
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
   )
 })
 
@@ -173,7 +191,6 @@ test_that("Expected output with 'ignore' values", {
 
 
 test_that("Expected output with ignore_stem_case and 'ignore' values", {
-  
   expect_error(
     select_tbl(
       data = depressive,

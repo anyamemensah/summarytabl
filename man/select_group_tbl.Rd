@@ -12,6 +12,7 @@ select_group_tbl(
   ignore_stem_case = FALSE,
   group_type = "variable",
   group_name = NULL,
+  margins = "all",
   escape_group = FALSE,
   ignore_group_case = FALSE,
   remove_group_non_alnum = TRUE,
@@ -43,6 +44,11 @@ variable matching the \code{group} string will be searched for within \code{data
 
 \item{group_name}{A character string piped to the final table to replace the name
 of \code{group}.}
+
+\item{margins}{A character string that determines how percentage values are calculated;
+whether they sum to one across rows, columns, or the entire variable. Defaults to \code{all},
+but can also be set to \code{rows} or \code{columns}. Note: This argument only affects the final
+table when group_type is \code{variable}.}
 
 \item{escape_group}{A logical value indicating whether to escape string supplied
 to \code{group}.}

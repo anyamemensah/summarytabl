@@ -37,10 +37,10 @@ variables in \code{data}.}
 the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
 
 \item{group_type}{A character string that defines the type of grouping variable. Should be
-one of \code{pattern} or \code{variable}. Default is \code{variable}, in which case the variable matching the
-\code{group} string will be searched for within \code{data}.}
+one of \code{pattern} or \code{variable}. Default is \code{variable}, in which case the variable matching
+the \code{group} string will be searched for within \code{data}.}
 
-\item{group_name}{A character string piped to the final table to replace the name of \code{group}.}
+\item{group_name}{A character string passed to the final table to rename the \code{group} column.}
 
 \item{escape_group}{A logical value indicating whether to escape string supplied to \code{group}.}
 
@@ -71,9 +71,9 @@ values from both \code{var_stem} variables and a grouping variable in \code{data
 }
 \value{
 A tibble presenting summary statistics (e.g., mean, standard deviation, minimum
-value, maximum, number of non-missing observations) for a set of variables sharing the same
-variable stem. The results are grouped by either a grouping variable in the data or by a
-pattern matched with variable names.
+value, maximum, number of non-missing observations) for a set of variables sharing the
+same variable stem. The results are grouped by either a grouping variable in the data or
+by a pattern matched with variable names.
 }
 \description{
 \code{mean_group_tbl()} presents descriptive statistics (mean, sd, minimum,

@@ -21,9 +21,9 @@
 #' @param group A character string of a variable in `data` or a pattern to use to search for 
 #' variables in `data`.
 #' @param group_type A character string that defines the type of grouping variable. Should be 
-#' one of `pattern` or `variable`. Default is `variable`, in which case the variable matching the 
-#' `group` string will be searched for within `data`.
-#' @param group_name A character string piped to the final table to replace the name of `group`.
+#' one of `pattern` or `variable`. Default is `variable`, in which case the variable matching 
+#' the `group` string will be searched for within `data`.
+#' @param group_name A character string passed to the final table to rename the `group` column.
 #' @param escape_group A logical value indicating whether to escape string supplied to `group`.
 #' @param ignore_group_case A logical value indicating whether `group` is case-insensitive.
 #' Default is `FALSE`.
@@ -46,9 +46,9 @@
 #' values from both `var_stem` variables and a grouping variable in `data`, supply a list.
 #'
 #' @returns A tibble presenting summary statistics (e.g., mean, standard deviation, minimum 
-#' value, maximum, number of non-missing observations) for a set of variables sharing the same 
-#' variable stem. The results are grouped by either a grouping variable in the data or by a 
-#' pattern matched with variable names.
+#' value, maximum, number of non-missing observations) for a set of variables sharing the 
+#' same variable stem. The results are grouped by either a grouping variable in the data or 
+#' by a pattern matched with variable names.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -100,164 +100,105 @@ mean_group_tbl <- function(data,
                            na_removal = "listwise",
                            only = NULL,
                            var_labels = NULL,
-                           ignore = NULL){
-
-  # Check 'data' is a data frame with at least one row/column
-  if (!is.data.frame(data)) {
-    stop("The 'data' argument is not a data frame.")
-  }
-
-  if (prod(dim(data)) == 0) {
-    stop("The 'data' argument is empty.")
-  }
-
-  # Check 'var_stem' is a character vector of length one
-  if (!is.character(var_stem) || length(var_stem) != 1) {
-    stop("Invalid 'var_stem' argument. 'var_stem' must be a character vector of length one.")
-  }
-
-  # Find columns using 'var_stem'
-  cols <- find_columns(data = data,
-                       var_stem = var_stem,
-                       escape = escape_stem,
-                       ignore.case = ignore_stem_case)
-
-  # Check 'cols' is a character vector of at least length one
-  if (!is.character(cols) || length(cols) == 0) {
-    stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
-  }
-
-  # Check 'group' is a character vector of length one
-  if (!is.character(group) || length(group) != 1) {
-    stop("Invalid 'group' argument. 'group' must be a character vector of length one.")
-  }
-
-  # Check 'group_type' is of length one, and is one of 'pattern' or 'variable'
-  if (!is.character(group_type) || length(group_type) != 1) {
-    stop("Invalid 'group_type' argument. 'group_type' must be a character vector of length one.")
-  }
-
-  if (!(group_type %in% c("pattern", "variable"))) {
-    stop("Invalid 'group_type' argument. 'group_type' must be one of 'pattern', 'variable'.")
-  }
-
-  # If 'group_type' is 'pattern', verify 'cols_no_group' is a character 
-  # vector of length one; Otherwise, check 'group' exists in 'data'
-  if (group_type == "pattern") {
-    cols_no_group <- unique(gsub(pattern = group, replacement = "", x = cols))
+                           ignore = NULL) {
+  args <- list(
+    data = data,
+    table_type = "mean",
+    group_func = TRUE,
+    var_stem = var_stem,
+    var_label = "var_stem",
+    var_labels = var_labels,
+    escape_stem = escape_stem,
+    ignore_stem_case = ignore_stem_case,
+    group = group,
+    group_type = group_type,
+    group_name = group_name,
+    escape_group = escape_group,
+    ignore_group_case = ignore_group_case,
+    remove_group_non_alnum = remove_group_non_alnum,
+    na_removal = na_removal,
+    only = only,
+    var_labels = var_labels,
+    ignore = ignore
+  )
+  
+  checks <- check_mean_group_args(args)
+  cols <- checks$var_stem$cols
+  df <- checks$data$df
+  group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
+  data_sub <- df[c(cols, group_var)]
+  
+  dtypes <- setNames(
+    lapply(cols, function(x) {
+      check_data_type(
+        data_type = get_data_type(data_sub[[x]]),
+        table_type = checks$table_type,
+        variable_type = "valid_var_types",
+        arg_name = "cols"
+      )
+    }),
+    cols
+  )
+  
+  if (!is.null(group_var)) {
+    group_dtype <- check_data_type(
+      data_type = get_data_type(data_sub[[group_var]]),
+      table_type = checks$table_type,
+      variable_type = "valid_grp_type",
+      arg_name = "group"
+    )
     
-    if (all(cols_no_group %in% cols) || !is.character(cols_no_group) || length(cols_no_group) != 1) {
-      stop(paste0(
-        "Invalid 'group_type' argument. Try changing the argument to: ",
-        ifelse(group_type == "pattern", "variable", "pattern"),
-        "."))
+    if (group_dtype$dtype == "haven_labelled") {
+      data_sub[[group_var]] <- convert_labelled_to_chr(data_sub[[group_var]])
     }
-  } else {
-    group_col <- grep(pattern = group, 
-                      ignore.case = ignore_group_case, 
-                      x = colnames(data), 
-                      value = TRUE)
-    
-    if (!is.character(group_col) || length(group_col) != 1) {
-      stop("The 'group' argument is not a column in 'data'.")
-    }
-    
-    group <- group_col
-  }
-
-  # Check 'na_removal' is a character vector of length one, and is one of 'listwise', 'pairwise'
-  if (!is.character(na_removal) || length(na_removal) != 1) {
-    stop("Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one.")
   }
   
-  if (!(na_removal %in% c("listwise", "pairwise"))) {
-    stop("Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'.")
-  }
-
-  # Check 'only'
-  if (is.null(only)) {
-    only <- only_type("mean")
-  } else {
-    only <- tolower(trimws(only))
-  }
-
-  if (!(all(only %in% only_type("mean"))) || length(only) == 0){
-    stop("Invalid 'only' argument. 'only' must be a character vector of length at least one.")
-  }
-
-  # Check 'var_labels' are valid otherwise return default (NULL)
-  if (!is.null(var_labels)) {
-    var_labels <- check_named_vctr(x = var_labels,
-                                   names = cols,
-                                   default = NULL)
-  }
-
-  # Remove values that are set to 'ignore'
-  if (!is.null(ignore) && is.vector(ignore) && length(ignore) > 0 && !is.null(names(ignore))) {
-
-    if (group %in% names(ignore) && group_type == "variable") {
-      group_ignore <- ignore[group]
-    } else {
-      group_ignore <- NULL
-    }
-    
-    if (var_stem %in% names(ignore)) {
-      cols_ignore <- purrr::map(cols, ~ ignore[[var_stem]]) |> stats::setNames(cols)
-    } else {
-      cols_ignore <- NULL
-    }
-
-    all_ignore <- c(cols_ignore, group_ignore)
-
-    data <-
-      data |>
+  ignore_map <- extract_ignore_map(
+    vars = c(checks$var_stem$var_stem),
+    ignore = checks$ignore,
+    var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+  )$ignore_map
+  
+  if (!is.null(ignore_map)) {
+    data_sub <- data_sub |>
       dplyr::mutate(dplyr::across(
-        .cols = dplyr::all_of(unique(names(all_ignore))),
-        .fns = ~ ifelse(. %in% all_ignore[[dplyr::cur_column()]], NA, .)
+        .cols = dplyr::all_of(names(ignore_map)),
+        .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
       ))
   }
-
-  # Choose columns for table creation
-  if (group_type == "variable") {
-    all_cols <- c(cols,group)
-  } else {
-    all_cols <- cols
+  
+  if (checks$na_rm$na_removal == "listwise") {
+    data_sub <- stats::na.omit(data_sub)
   }
-
-  # Subset data
-  data <- data[all_cols]
-
-  # Remove NAs if requested 'listwise'
-  if (na_removal == "listwise") {
-    data <- stats::na.omit(data[all_cols])
-  }
-
-  # Create table
+  
   mean_group_tabl <- tibble::tibble()
-
-  if (group_type == "pattern") {
-    for (current_cols in unique(cols_no_group)) {
-
-      current_cols_set <- grep(pattern = paste0(current_cols, group), x = cols, value = TRUE)
-
-      mean_group <-
-        data |>
+  
+  if (checks$group_type == "pattern") {
+    for (current_cols in unique(checks$var_stem$cols_no_group)) {
+      current_cols_set <- grep(
+        pattern = paste0(current_cols, checks$var_stem$group),
+        x = checks$var_stem$cols,
+        value = TRUE
+      )
+      
+      mean_group <- data_sub |>
         dplyr::select(dplyr::all_of(current_cols_set)) |>
         tidyr::pivot_longer(
           cols = dplyr::all_of(current_cols_set),
-          names_to = "variable", values_to = "values"
+          names_to = "variable",
+          values_to = "values"
         ) |>
         dplyr::mutate(
           group = extract_group_flags(
             cols = variable,
-            group_flag = group,
-            escape_pattern = escape_group,
-            ignore.case = ignore_group_case,
-            remove_non_alum = remove_group_non_alnum
+            group_flag = checks$var_stem$group,
+            escape_pattern = checks$escape_group,
+            ignore.case = checks$ignore_group_case,
+            remove_non_alum = checks$remove_group_non_alnum
           )
         ) |>
         dplyr::filter(
-          if (na_removal == "pairwise")
+          if (checks$na_rm$na_removal == "pairwise")
             !is.na(.data[["group"]]) & !is.na(.data[["values"]])
           else TRUE
         ) |>
@@ -269,57 +210,61 @@ mean_group_tbl <- function(data,
           max = max(values, na.rm = TRUE),
           nobs = sum(!is.na(values))
         ) |>
-        dplyr::ungroup() |>
-        dplyr::select(dplyr::all_of(c("variable", "group", "mean", "sd", "min", "max", "nobs")))
-
+        dplyr::ungroup()
+      
       mean_group_tabl <- dplyr::bind_rows(mean_group_tabl, mean_group)
     }
-
+    
   } else {
     for (current_col in unique(cols)) {
-
-      temp_data <-
-        data |>
-        dplyr::select(dplyr::all_of(c(current_col, group))) |>
+      temp_data <- data_sub |>
+        dplyr::select(dplyr::all_of(c(current_col, group_var))) |>
         dplyr::filter(
           if (na_removal == "pairwise")
-            !is.na(.data[[group]]) & !is.na(.data[[current_col]])
+            !is.na(.data[[group_var]]) & !is.na(.data[[current_col]])
           else TRUE
         )
-
-      mean_group <-
-        summarize_mean_group(temp_data, current_col, group) |>
-        dplyr::select(dplyr::all_of(c("variable", group, "mean", "sd", "min", "max", "nobs")))
-
+      
+      mean_group <- summarize_mean_group(
+        df = temp_data,
+        var_col = current_col,
+        group_col = group_var
+      )
+      
       mean_group_tabl <- dplyr::bind_rows(mean_group_tabl, mean_group)
     }
   }
-
-  # Add 'group_name' if supplied
-  if (length(group_name) > 0) {
-    mean_group_tabl <-
-      dplyr::rename(mean_group_tabl, !!rlang::sym(group_name) := dplyr::all_of(ifelse(group_type == "pattern", "group", group)))
+  
+  if (length(checks$group_name) > 0) {
+    mean_group_tabl <- dplyr::rename(
+      mean_group_tabl,
+      !!rlang::sym(checks$group_name) := dplyr::all_of(
+        ifelse(checks$group_type == "pattern", "group", group_var)
+      )
+    )
   }
-
-  # Add 'var_labels' if supplied
+  
+  var_labels <- checks$var_stem$var_labels
+  
   if (!is.null(var_labels)) {
-    mean_group_tabl <-
-      mean_group_tabl |>
+    mean_group_tabl <- mean_group_tabl |>
       dplyr::mutate(
-        variable_label = dplyr::case_match(variable,
-                                           !!! tbl_key(values_from = names(var_labels),
-                                                       values_to = unname(var_labels)),
-                                           .default = variable)
+        variable_label = dplyr::case_match(
+          variable,
+          !!!tbl_key(values_from = names(var_labels), values_to = unname(var_labels)),
+          .default = variable
+        )
       ) |>
       dplyr::relocate(variable_label, .after = variable)
   }
-
-  # Remove unrequested 'only' columns
-  mean_group_tabl <- drop_only_cols(data = mean_group_tabl,
-                                    only = only,
-                                    only_type = only_type("mean"))
-
-  mean_group_tabl
+  
+  mean_group_tabl <- drop_only_cols(
+    data = mean_group_tabl,
+    only = checks$only$only,
+    only_type = only_type(checks$table_type)
+  )
+  
+  return(mean_group_tabl)
 }
 
 #' @keywords internal
@@ -332,9 +277,9 @@ summarize_mean_group <- function(df, var_col, group_col) {
       sd = stats::sd(.data[[var_col]], na.rm = TRUE),
       min = min(.data[[var_col]], na.rm = TRUE),
       max = max(.data[[var_col]], na.rm = TRUE),
-      nobs = sum(!is.na(.data[[var_col]])),
+      nobs = sum(!is.na(.data[[var_col]]))
     ) |>
     dplyr::ungroup() |>
-    dplyr::arrange(variable, .data[[group_col]])
+    dplyr::mutate(!!group_col := .data[[group_col]]) |>
+    dplyr::relocate(!!group_col, .after = variable)
 }
-

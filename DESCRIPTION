@@ -27,6 +27,7 @@ Imports:
     tidyr
 RoxygenNote: 7.3.3
 Suggests: 
+    haven,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

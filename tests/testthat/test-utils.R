@@ -139,3 +139,89 @@ test_that("extract_group_flags", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
 })
+
+
+
+test_that("get data type: expected types", {
+  set.seed(0721)
+  observed1 <- get_data_type(1:4)
+  expected1 <- "numeric"
+  
+  observed2 <- get_data_type(seq.Date(from = as.Date("2023-01-01"), 
+                                      to = as.Date("2023-01-10"), 
+                                      by = "day"))
+  expected2 <- "datetime"
+  
+  observed3 <- get_data_type(seq(from = as.POSIXlt("2024-01-01 00:00:00"), 
+                                by = "15 min", length.out = 5))
+  expected3 <- "datetime"
+  
+  observed4 <- get_data_type(factor(sample(1:4, size = 10, replace = TRUE)))
+  expected4 <- "factor"
+  
+  observed5 <- get_data_type(ordered(sample(1:4, size = 10, replace = TRUE)))
+  expected5 <- "factor"
+  
+  observed6 <- get_data_type(ordered(sample(1:4, size = 10, replace = TRUE)))
+  expected6 <- "factor"
+  
+  observed7 <- get_data_type(sample(c(TRUE, FALSE), size = 10, replace = TRUE))
+  expected7 <- "logical"
+  
+  observed8 <- get_data_type(sample(letters, size = 10, replace = TRUE))
+  expected8 <- "character"
+  
+  observed9 <- get_data_type(as.raw(sample(1:4, size = 10, replace = TRUE)))
+  expected9 <- "other"
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+  expect_equal(observed4, expected4)
+  expect_equal(observed5, expected5)
+  expect_equal(observed6, expected6)
+  expect_equal(observed7, expected7)
+  expect_equal(observed8, expected8)
+  expect_equal(observed9, expected9)
+})
+
+test_that("valid data types by table type", {
+  observed1 <- return_data_types(table_type = "cat")$valid_var_types
+  expected1 <- c("haven_labelled", "factor", "character", "logical", "datetime", "numeric")
+  
+  observed2 <- return_data_types(table_type = "mean")$valid_var_types
+  expected2 <- c("numeric", "datetime")
+  
+  observed3 <- return_data_types(table_type = "select")$valid_var_types
+  expected3 <-  c("haven_labelled", "factor", "character", "logical", "numeric")
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+})
+
+test_that("convert labelled vector to character vector", {
+  set.seed(0721)
+  data <- data.frame(
+    gender = haven::labelled(sample(c("M", "F", "X", "N/A"), size = 50, replace = TRUE), 
+                             labels = c(Male = "M", Female = "F", Refused = "X", 
+                                        "Not applicable" = "N/A")),
+    race = haven::labelled(sample(1:4, size = 50, replace = TRUE), 
+                           labels = c(black = 1, white = 2, asian = 3, other = 4))
+  )
+  
+  observed1 <- head(convert_labelled_to_chr(x = data[["gender"]]))
+  observed2 <- head(convert_labelled_to_chr(x = data[["race"]]))
+  
+  expected1 <- c("M", "X", "N/A", "M", "X", "N/A")
+  expected2 <- c("2", "1", "2", "3", "1", "3")
+  
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
+
+
+
+
+

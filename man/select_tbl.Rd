@@ -36,7 +36,8 @@ The default is \code{longer}, which returns the data in long format. To return t
 wide format, use \code{wider}.}
 
 \item{only}{A character string or vector of character strings of the kinds of summary
-data to return. Default is \code{NULL}, which returns counts (count) and percentages (percent).}
+data to return. Default is \code{NULL}, which returns counts (count) and percentages
+(percent).}
 
 \item{var_labels}{An optional named character vector or list where each element maps
 labels to variable names. If any element is unnamed or if any labels do not match

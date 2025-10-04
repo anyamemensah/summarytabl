@@ -4,7 +4,8 @@ test_that("Invalid 'data' argument", {
   expect_error(
     select_group_tbl(
       data = NULL,
-      var_stem = "dep"
+      var_stem = "dep",
+      group = "_\\d"
     ),
     "The 'data' argument is not a data frame."
   )
@@ -100,9 +101,20 @@ test_that("Invalid 'only' argument", {
       var_stem = "dep",
       group = "sex",
       group_type = "variable",
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    select_group_tbl(
+      data = depressive,
+      var_stem = "dep",
+      group = "sex",
+      group_type = "variable",
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
   )
 })
 
@@ -113,7 +125,8 @@ test_that("Expected output longer format", {
       data = depressive,
       var_stem = "dep",
       group = "sex",
-      group_type = "variable"
+      group_type = "variable",
+      margins = "rows"
     ) |>
     head() |>
     dplyr::mutate(
@@ -146,17 +159,17 @@ test_that("Expected output wider format", {
       group_type = "variable",
       pivot = "wider",
       only = "count"
-    )[1:2,]
+    )
+  observed <- observed[1:3,]
   
   expected <-
     tibble::tibble(
-      variable = rep("dep_1", times = 2),
-      sex = 1:2,
-      count_value_1 = c(55, 54),
-      count_value_2 = c(325,364),
-      count_value_3 = c(440,369)
+      variable = rep("dep_1", times = 3),
+      values = 1:3L,
+      count_sex_1 = c(55, 325, 440),
+      count_sex_2 = c(54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "count_value_1", "count_value_2", "count_value_3")),
+    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
                                 .fns = as.integer))
   
   expect_equal(observed, expected)
@@ -182,18 +195,17 @@ test_that("Expected output wider format with variable labels", {
         dep_7="how often child feels excited about something",
         dep_8="how often child feels too busy to get everything"
       )
-    )[1:2,]
+    )[1:3,]
   
   expected <-
     tibble::tibble(
-      variable = rep("dep_1", times = 2),
+      variable = rep("dep_1", times = 3),
       variable_label = "how often child feels sad and blue",
-      sex = 1:2,
-      count_value_1 = c(55, 54),
-      count_value_2 = c(325,364),
-      count_value_3 = c(440,369)
+      values = 1:3L,
+      count_sex_1 = c(55, 325, 440),
+      count_sex_2 = c(54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "count_value_1", "count_value_2", "count_value_3")),
+    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
                                 .fns = as.integer))
   
   expect_equal(observed, expected)
@@ -220,26 +232,18 @@ test_that("Expected output wider for with 'ignore' values", {
         dep_7="how often child feels excited about something",
         dep_8="how often child feels too busy to get everything"
       )
-    )
+    ) |> head()
   
   expected <-
     tibble::tibble(
-      variable = paste0("dep_", 1:8),
-      variable_label = c(
-        "how often child feels sad and blue",
-        "how often child feels nervous, tense, or on edge",
-        "how often child feels happy",
-        "how often child feels bored",
-        "how often child feels lonely",
-        "how often child feels tired or worn out",
-        "how often child feels excited about something",
-        "how often child feels too busy to get everything"
-      ),
-      sex = 1,
-      count_value_2 = c(41, 42, 59, 63, 37, 50, 59, 43),
-      count_value_3 = c(26, 25, 8, 4, 30, 17, 8, 24)
+      variable = rep(paste0("dep_", 1:3), each = 2),
+      variable_label = rep(c("how often child feels sad and blue",
+                             "how often child feels nervous, tense, or on edge",
+                             "how often child feels happy"), each  = 2),
+      values = rep(2:3L, times = 3),
+      count_sex_1 = c(41, 26, 42, 25, 59, 8),
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "count_value_2", "count_value_3")),
+    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1")),
                                 .fns = as.integer))
   
   expect_equal(observed, expected)
@@ -261,16 +265,16 @@ test_that("Expected output with remove_group_non_alnum", {
         .cols = "percent",
         .fns = ~ round(., digits = 3)
       )
-    )
+    ) |> head()
     
   expected1 <-
     tibble::tibble(
-      variable = rep(c("belong_belongStem_w1", "belong_belongStem_w2"), each = 5),
-      group = rep(c("_w1", "_w2"), each = 5),
-      values = rep(1:5, times = 2),
-      count = c(5, 20, 59, 107, 79, 11, 11, 44, 113, 91),
-      percent = c(0.019, 0.074, 0.219, 0.396, 0.293, 0.041,
-                  0.041, 0.163, 0.419, 0.337)
+      variable = c(rep("belong_belongStem_w1", times = 5), 
+                   "belong_belongStem_w2"),
+      group = c(rep("_w1", times = 5), "_w2"),
+      values = c(1:5L, 1L),
+      count = c(5, 20, 59, 107, 79, 11),
+      percent = c(0.019, 0.074, 0.219, 0.396, 0.293, 0.041)
     )
   
   observed2 <-
@@ -286,16 +290,16 @@ test_that("Expected output with remove_group_non_alnum", {
         .cols = "percent",
         .fns = ~ round(., digits = 3)
       )
-    )
+    ) |> head()
   
   expected2 <-
     tibble::tibble(
-      variable = rep(c("belong_belongStem_w1", "belong_belongStem_w2"), each = 5),
-      group = rep(c("w1", "w2"), each = 5),
-      values = rep(1:5, times = 2),
-      count = c(5, 20, 59, 107, 79, 11, 11, 44, 113, 91),
-      percent = c(0.019, 0.074, 0.219, 0.396, 0.293, 0.041,
-                  0.041, 0.163, 0.419, 0.337)
+      variable = c(rep("belong_belongStem_w1", times = 5), 
+                   "belong_belongStem_w2"),
+      group = c(rep("w1", times = 5), "w2"),
+      values = c(1:5L, 1L),
+      count = c(5, 20, 59, 107, 79, 11),
+      percent = c(0.019, 0.074, 0.219, 0.396, 0.293, 0.041)
     )
   
   expect_equal(observed1, expected1)
@@ -332,12 +336,11 @@ test_that("Error and expected output with ignore_stem_case", {
   expected <-
     tibble::tibble(
       variable = rep("dep_1", times = 2),
-      sex = 1:2,
-      count_value_1 = c(55, 54),
-      count_value_2 = c(325,364),
-      count_value_3 = c(440,369)
+      values = 1:2,
+      count_sex_1 = c(55, 325),
+      count_sex_2 = c(54,364)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "count_value_1", "count_value_2", "count_value_3")),
+    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1","count_sex_2")),
                                 .fns = as.integer))
   
   expect_equal(observed, expected)
@@ -375,12 +378,11 @@ test_that("Error and expected output with ignore_group_case", {
   expected <-
     tibble::tibble(
       variable = rep("dep_1", times = 2),
-      sex = 1:2,
-      count_value_1 = c(55, 54),
-      count_value_2 = c(325,364),
-      count_value_3 = c(440,369)
+      values = 1:2,
+      count_sex_1 = c(55, 325),
+      count_sex_2 = c(54,364)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "count_value_1", "count_value_2", "count_value_3")),
+    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values","count_sex_1", "count_sex_2")),
                                 .fns = as.integer))
   
   expect_equal(observed, expected)
@@ -400,9 +402,9 @@ test_that("Expected output with different 'only' types", {
   expected1 <-
     tibble::tibble(
       variable = "dep_1",
-      sex = rep(1:2, times = 3),
-      values = rep(1:3, each = 2),
-      count = c(55, 54, 325, 364, 440, 369)
+      sex = rep(1:2, each = 3),
+      values = rep(1:3, times = 2),
+      count = c(55, 325, 440, 54, 364, 369)
     ) |>
     dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "values")),.fns = as.integer))
   
@@ -411,7 +413,8 @@ test_that("Expected output with different 'only' types", {
       data = depressive,
       var_stem = "dep",
       group = "sex",
-      only = "percent"
+      only = "percent",
+      margins = "rows"
     ) |>
     head() |>
     dplyr::mutate(
@@ -449,9 +452,9 @@ test_that("Expected output with specified group name", {
   expected1 <-
     tibble::tibble(
       variable = "dep_1",
-      gender_identity = rep(1:2, times = 3),
-      values = rep(1:3, each = 2),
-      count = c(55, 54, 325, 364, 440, 369)
+      gender_identity = rep(1:2, each = 3),
+      values = rep(1:3, times = 2),
+      count = c(55, 325, 440, 54, 364, 369)
     ) |>
     dplyr::mutate(dplyr::across(.cols = "values",.fns = as.integer))
   

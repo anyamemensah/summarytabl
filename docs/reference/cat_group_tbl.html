@@ -60,11 +60,12 @@ By default, the table is returned in the long format.</p>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">row_var</span>,</span>
 <span>  <span class="va">col_var</span>,</span>
+<span>  margins <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  na.rm.row_var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  na.rm.col_var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pivot <span class="op">=</span> <span class="st">"longer"</span>,</span>
 <span>  only <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ignore <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pivot <span class="op">=</span> <span class="st">"longer"</span></span>
+<span>  ignore <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -85,8 +86,15 @@ table.</p></dd>
 
 <dt id="arg-col-var">col_var<a class="anchor" aria-label="anchor" href="#arg-col-var"></a></dt>
 <dd><p>A character string of the name of a column in <code>data</code> containing
-categorical data. This is the primary categorical variable. When pivoted to the <code>wider</code>
-format, the categories of this variable will appear in the rows of the table.</p></dd>
+categorical data. This is the primary categorical variable. When pivoted to the
+<code>wider</code> format, the categories of this variable will appear in the columns of
+the table.</p></dd>
+
+
+<dt id="arg-margins">margins<a class="anchor" aria-label="anchor" href="#arg-margins"></a></dt>
+<dd><p>A character string that determines how percentage values are
+calculated; whether they sum to one across rows, columns, or the entire table.
+Defaults to <code>all</code>, but can also be set to <code>rows</code> or <code>columns</code>.</p></dd>
 
 
 <dt id="arg-na-rm-row-var">na.rm.row_var<a class="anchor" aria-label="anchor" href="#arg-na-rm-row-var"></a></dt>
@@ -97,6 +105,12 @@ should be removed before calculations. Default is <code>FALSE</code>.</p></dd>
 <dt id="arg-na-rm-col-var">na.rm.col_var<a class="anchor" aria-label="anchor" href="#arg-na-rm-col-var"></a></dt>
 <dd><p>A logical value indicating whether missing values for <code>col_var</code>
 should be removed before calculations. Default is <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-pivot">pivot<a class="anchor" aria-label="anchor" href="#arg-pivot"></a></dt>
+<dd><p>A character string specifying the format of the returned summary table.
+The default is <code>longer</code>, which returns the data in long format. To return the data
+in wide format, use <code>wider</code>.</p></dd>
 
 
 <dt id="arg-only">only<a class="anchor" aria-label="anchor" href="#arg-only"></a></dt>
@@ -110,19 +124,11 @@ wise, grouped by <code>col_var</code>.</p></dd>
 <dd><p>A named character vector or list containing values to ignore from
 <code>row_var</code> and <code>col_var</code>.</p></dd>
 
-
-<dt id="arg-pivot">pivot<a class="anchor" aria-label="anchor" href="#arg-pivot"></a></dt>
-<dd><p>A character string specifying the format of the returned summary table.
-The default is <code>longer</code>, which returns the data in long format. To return the data
-in wide format, use <code>wider</code>.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble displaying relative frequency counts and/or percentages of <code>row_var</code>,
-grouped by <code>col_var.</code> When the output is in wider format, <code>columns</code> prefixed with <code>count_</code>
-and <code>percent_</code> contain the frequency and proportion, respectively, for each distinct
-response value of <code>row_var</code> within each level of <code>col_var.</code></p>
+grouped by <code>col_var</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -149,22 +155,22 @@ response value of <code>row_var</code> within each level of <code>col_var.</code
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    birthord breastfed count  percent</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>        1         0   431 0.286   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>        2         0   573 0.380   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>        3         0   319 0.212   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>        4         0   115 0.076<span style="text-decoration: underline;">3</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>        5         0    49 0.032<span style="text-decoration: underline;">5</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>        6         0    13 0.008<span style="text-decoration: underline;">62</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>        7         0     7 0.004<span style="text-decoration: underline;">64</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>        8         0     1 0.000<span style="text-decoration: underline;">663</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>        1         1   614 0.418   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>        2         1   499 0.340   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>        3         1   242 0.165   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>        4         1    77 0.052<span style="text-decoration: underline;">5</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>        5         1    23 0.015<span style="text-decoration: underline;">7</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>        6         1    11 0.007<span style="text-decoration: underline;">49</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>        7         1     1 0.000<span style="text-decoration: underline;">681</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>        8         1     1 0.000<span style="text-decoration: underline;">681</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>        1         0   431 0.145   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>        1         1   614 0.206   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>        2         0   573 0.193   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>        2         1   499 0.168   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>        3         0   319 0.107   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>        3         1   242 0.081<span style="text-decoration: underline;">3</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>        4         0   115 0.038<span style="text-decoration: underline;">6</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>        4         1    77 0.025<span style="text-decoration: underline;">9</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>        5         0    49 0.016<span style="text-decoration: underline;">5</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>        5         1    23 0.007<span style="text-decoration: underline;">73</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>        6         0    13 0.004<span style="text-decoration: underline;">37</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>        6         1    11 0.003<span style="text-decoration: underline;">70</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>        7         0     7 0.002<span style="text-decoration: underline;">35</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>        7         1     1 0.000<span style="text-decoration: underline;">336</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>        8         0     1 0.000<span style="text-decoration: underline;">336</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span>        8         1     1 0.000<span style="text-decoration: underline;">336</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

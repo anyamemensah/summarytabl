@@ -75,9 +75,21 @@ test_that("Invalid 'only' argument", {
       col_var = "gender",
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    cat_group_tbl(
+      data = nlsy,
+      row_var = "bthwht",
+      col_var = "gender",
+      na.rm.row_var = TRUE,
+      na.rm.col_var = TRUE,
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
   )
 })
 
@@ -118,7 +130,8 @@ test_that("Expected output", {
       row_var = "bthwht",
       col_var = "gender",
       na.rm.row_var = TRUE,
-      na.rm.col_var = TRUE
+      na.rm.col_var = TRUE,
+      margins = "columns"
     ) |>
     dplyr::mutate(
       dplyr::across(
@@ -147,7 +160,8 @@ test_that("Expected output with ignore values", {
       col_var = "gender",
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
-      ignore = c(race = "Non-Black,Non-Hispanic", gender = 1)
+      ignore = c(race = "Non-Black,Non-Hispanic", gender = 1),
+      margins = "columns"
     ) |>
     dplyr::mutate(
       dplyr::across(
@@ -176,7 +190,8 @@ test_that("Expected output with different 'only' types", {
       col_var = "gender",
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
-      only = "percent"
+      only = "percent",
+      margins = "columns"
     ) |>
     dplyr::mutate(
       dplyr::across(
@@ -199,7 +214,8 @@ test_that("Expected output with different 'only' types", {
       col_var = "gender",
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
-      only = "count"
+      only = "count", 
+      margins = "columns"
     )
   
   expected2 <-
@@ -212,4 +228,82 @@ test_that("Expected output with different 'only' types", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
 })
+
+
+
+test_that("Expected output with different 'margin' types", {
+  observed1 <-
+    cat_group_tbl(
+      data = nlsy,
+      row_var = "race",
+      col_var = "gender",
+      only = "percent",
+      margins = "columns"
+    ) |>
+    dplyr::mutate(
+      dplyr::across(
+        .cols = "percent",
+        .fns = ~ round(., digits = 3)
+      )
+    )
+  
+  expected1 <-
+    tibble::tibble(
+      race = rep(c("Black", "Hispanic", "Non-Black,Non-Hispanic"), times = 2),
+      gender = rep(0:1, each = 3),
+      percent = c(0.297, 0.208, 0.495, 0.287, 0.215, 0.498)
+    )
+  
+  observed2 <-
+    cat_group_tbl(
+      data = nlsy,
+      row_var = "race",
+      col_var = "gender",
+      only = "percent",
+      margins = "rows"
+    ) |>
+    dplyr::mutate(
+      dplyr::across(
+        .cols = "percent",
+        .fns = ~ round(., digits = 3)
+      )
+    )
+  
+  expected2 <-
+    tibble::tibble(
+      race = rep(c("Black", "Hispanic", "Non-Black,Non-Hispanic"), each = 2),
+      gender = as.numeric(rep(0:1, times = 3)),
+      percent = c(0.500, 0.500, 0.483, 
+                0.517, 0.490, 0.510)
+    )
+  
+  observed3 <-
+    cat_group_tbl(
+      data = nlsy,
+      row_var = "race",
+      col_var = "gender",
+      only = "percent",
+      margins = "all"
+    ) |>
+    dplyr::mutate(
+      dplyr::across(
+        .cols = "percent",
+        .fns = ~ round(., digits = 3)
+      )
+    )
+  
+  expected3 <-
+    tibble::tibble(
+      race = rep(c("Black", "Hispanic", "Non-Black,Non-Hispanic"), each = 2),
+      gender = as.numeric(rep(0:1, times = 3)),
+      percent = c(0.146, 0.146, 0.102, 
+                  0.110, 0.243, 0.253)
+    )
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+})
+
+
 

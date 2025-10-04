@@ -56,9 +56,19 @@ test_that("Invalid 'only' argument", {
       data = nlsy,
       var = "race",
       na.rm = TRUE,
-      only = NA
+      only = character(0)
     ),
     "Invalid 'only' argument. 'only' must be a character vector of length at least one."
+  )
+  
+  expect_error(
+    cat_tbl(
+      data = nlsy,
+      var = "race",
+      na.rm = TRUE,
+      only = NA
+    ),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
   )
 })
 
