@@ -151,10 +151,9 @@ select_group_tbl <- function(data,
     group_func = TRUE,
     var_stem = var_stem,
     var_label = "var_stem",
-    var_labels = var_labels,
     escape_stem = escape_stem,
     ignore_stem_case = ignore_stem_case,
-    group = group,
+    group_var = group,
     group_type = group_type,
     group_name = group_name,
     margins = margins,
@@ -358,7 +357,6 @@ summarize_select_group <- function(df, var_col, group_col, margins) {
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[group_col]], .data[[var_col]])
   }
-  
   
   grouped_df |>
     dplyr::mutate(variable = var_col) |>

@@ -5,14 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Introduction to summarytabl • summarytabl</title>
+<title> • summarytabl</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to summarytabl">
-<meta name="description" content="This document introduces you to some of summarytabl's most frequently used functions, and demonstrates how you can use them with data frames.">
-<meta property="og:description" content="This document introduces you to some of summarytabl's most frequently used functions, and demonstrates how you can use them with data frames.">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -55,7 +53,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Introduction to summarytabl</h1>
+      <h1></h1>
             
       
 
@@ -124,20 +122,16 @@ respectively.</p>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <pre><code><span><span class="co"># Default: counts and percentages</span></span>
-<span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
-<span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
-<span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span>,</span>
-<span>              na.rm.row_var <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/cat_tbl.html">cat_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>, </span>
+<span>        var <span class="op">=</span> <span class="st">"race"</span>,</span>
+<span>        ignore <span class="op">=</span> <span class="st">"Black"</span>,</span>
+<span>        na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## # A tibble: 6 × 4</span></span>
-<span><span class="co">##   race                   bthwht count percent</span></span>
-<span><span class="co">##   &lt;chr&gt;                   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black                       0   766   0.279</span></span>
-<span><span class="co">## 2 Hispanic                    0   589   0.214</span></span>
-<span><span class="co">## 3 Non-Black,Non-Hispanic      0  1394   0.507</span></span>
-<span><span class="co">## 4 Black                       1   102   0.449</span></span>
-<span><span class="co">## 5 Hispanic                    1    42   0.185</span></span>
-<span><span class="co">## 6 Non-Black,Non-Hispanic      1    83   0.366</span></span>
+<span><span class="co">## # A tibble: 2 × 3</span></span>
+<span><span class="co">##   race                   count percent</span></span>
+<span><span class="co">##   &lt;chr&gt;                  &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 Hispanic                 631   0.299</span></span>
+<span><span class="co">## 2 Non-Black,Non-Hispanic  1477   0.701</span></span>
 <span></span>
 <span><span class="co"># Counts only</span></span>
 <span><span class="fu"><a href="../reference/cat_tbl.html">cat_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>, </span>
@@ -153,21 +147,17 @@ respectively.</p>
 <span><span class="co">## 2 Non-Black,Non-Hispanic  1477</span></span>
 <span></span>
 <span><span class="co"># Percents only</span></span>
-<span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
-<span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
-<span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span>,</span>
-<span>              na.rm.row_var <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>              only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/cat_tbl.html">cat_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>, </span>
+<span>        var <span class="op">=</span> <span class="st">"race"</span>,</span>
+<span>        ignore <span class="op">=</span> <span class="st">"Black"</span>,</span>
+<span>        na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## # A tibble: 6 × 3</span></span>
-<span><span class="co">##   race                   bthwht percent</span></span>
-<span><span class="co">##   &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black                       0   0.279</span></span>
-<span><span class="co">## 2 Hispanic                    0   0.214</span></span>
-<span><span class="co">## 3 Non-Black,Non-Hispanic      0   0.507</span></span>
-<span><span class="co">## 4 Black                       1   0.449</span></span>
-<span><span class="co">## 5 Hispanic                    1   0.185</span></span>
-<span><span class="co">## 6 Non-Black,Non-Hispanic      1   0.366</span></span></code></pre>
+<span><span class="co">## # A tibble: 2 × 2</span></span>
+<span><span class="co">##   race                   percent</span></span>
+<span><span class="co">##   &lt;chr&gt;                    &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 Hispanic                 0.299</span></span>
+<span><span class="co">## 2 Non-Black,Non-Hispanic   0.701</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="summarize-a-categorical-variable-grouped-by-another-variable">Summarize a categorical variable grouped by another variable<a class="anchor" aria-label="anchor" href="#summarize-a-categorical-variable-grouped-by-another-variable"></a>
@@ -181,10 +171,10 @@ use the <code><a href="../reference/cat_group_tbl.html">cat_group_tbl()</a></cod
 <span><span class="co">## # A tibble: 4 × 4</span></span>
 <span><span class="co">##   gender bthwht count percent</span></span>
 <span><span class="co">##    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1      0      0  1340   0.487</span></span>
-<span><span class="co">## 2      1      0  1409   0.513</span></span>
-<span><span class="co">## 3      0      1   123   0.542</span></span>
-<span><span class="co">## 4      1      1   104   0.458</span></span></code></pre>
+<span><span class="co">## 1      0      0  1340  0.450 </span></span>
+<span><span class="co">## 2      0      1   123  0.0413</span></span>
+<span><span class="co">## 3      1      0  1409  0.473 </span></span>
+<span><span class="co">## 4      1      1   104  0.0349</span></span></code></pre>
 <p>Like <code><a href="../reference/cat_tbl.html">cat_tbl()</a></code>, you have the option to exclude certain
 values and omit missing values (by row and/or column).</p>
 <pre><code><span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
@@ -197,8 +187,8 @@ values and omit missing values (by row and/or column).</p>
 <span><span class="co">## # A tibble: 2 × 5</span></span>
 <span><span class="co">##   race     count_bthwht_0 count_bthwht_1 percent_bthwht_0 percent_bthwht_1</span></span>
 <span><span class="co">##   &lt;chr&gt;             &lt;int&gt;          &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black               766            102            0.565            0.708</span></span>
-<span><span class="co">## 2 Hispanic            589             42            0.435            0.292</span></span></code></pre>
+<span><span class="co">## 1 Black               766            102            0.511           0.0680</span></span>
+<span><span class="co">## 2 Hispanic            589             42            0.393           0.0280</span></span></code></pre>
 <p>If you want to ignore more than one value per row or column, provide
 them in a named list:</p>
 <pre><code><span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
@@ -211,7 +201,7 @@ them in a named list:</p>
 <span><span class="co">## # A tibble: 1 × 5</span></span>
 <span><span class="co">##   race  count_bthwht_0 count_bthwht_1 percent_bthwht_0 percent_bthwht_1</span></span>
 <span><span class="co">##   &lt;chr&gt;          &lt;int&gt;          &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black            766            102                1                1</span></span></code></pre>
+<span><span class="co">## 1 Black            766            102            0.882            0.118</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <pre><code><span><span class="co"># Default: counts and percentages</span></span>
@@ -223,12 +213,12 @@ them in a named list:</p>
 <span><span class="co">## # A tibble: 6 × 4</span></span>
 <span><span class="co">##   race                   bthwht count percent</span></span>
 <span><span class="co">##   &lt;chr&gt;                   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black                       0   766   0.279</span></span>
-<span><span class="co">## 2 Hispanic                    0   589   0.214</span></span>
-<span><span class="co">## 3 Non-Black,Non-Hispanic      0  1394   0.507</span></span>
-<span><span class="co">## 4 Black                       1   102   0.449</span></span>
-<span><span class="co">## 5 Hispanic                    1    42   0.185</span></span>
-<span><span class="co">## 6 Non-Black,Non-Hispanic      1    83   0.366</span></span>
+<span><span class="co">## 1 Black                       0   766  0.257 </span></span>
+<span><span class="co">## 2 Black                       1   102  0.0343</span></span>
+<span><span class="co">## 3 Hispanic                    0   589  0.198 </span></span>
+<span><span class="co">## 4 Hispanic                    1    42  0.0141</span></span>
+<span><span class="co">## 5 Non-Black,Non-Hispanic      0  1394  0.468 </span></span>
+<span><span class="co">## 6 Non-Black,Non-Hispanic      1    83  0.0279</span></span>
 <span></span>
 <span><span class="co"># Counts only</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
@@ -241,10 +231,10 @@ them in a named list:</p>
 <span><span class="co">##   race                   bthwht count</span></span>
 <span><span class="co">##   &lt;chr&gt;                   &lt;dbl&gt; &lt;int&gt;</span></span>
 <span><span class="co">## 1 Black                       0   766</span></span>
-<span><span class="co">## 2 Hispanic                    0   589</span></span>
-<span><span class="co">## 3 Non-Black,Non-Hispanic      0  1394</span></span>
-<span><span class="co">## 4 Black                       1   102</span></span>
-<span><span class="co">## 5 Hispanic                    1    42</span></span>
+<span><span class="co">## 2 Black                       1   102</span></span>
+<span><span class="co">## 3 Hispanic                    0   589</span></span>
+<span><span class="co">## 4 Hispanic                    1    42</span></span>
+<span><span class="co">## 5 Non-Black,Non-Hispanic      0  1394</span></span>
 <span><span class="co">## 6 Non-Black,Non-Hispanic      1    83</span></span>
 <span></span>
 <span><span class="co"># Percents only</span></span>
@@ -257,12 +247,12 @@ them in a named list:</p>
 <span><span class="co">## # A tibble: 6 × 3</span></span>
 <span><span class="co">##   race                   bthwht percent</span></span>
 <span><span class="co">##   &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 Black                       0   0.279</span></span>
-<span><span class="co">## 2 Hispanic                    0   0.214</span></span>
-<span><span class="co">## 3 Non-Black,Non-Hispanic      0   0.507</span></span>
-<span><span class="co">## 4 Black                       1   0.449</span></span>
-<span><span class="co">## 5 Hispanic                    1   0.185</span></span>
-<span><span class="co">## 6 Non-Black,Non-Hispanic      1   0.366</span></span></code></pre>
+<span><span class="co">## 1 Black                       0  0.257 </span></span>
+<span><span class="co">## 2 Black                       1  0.0343</span></span>
+<span><span class="co">## 3 Hispanic                    0  0.198 </span></span>
+<span><span class="co">## 4 Hispanic                    1  0.0141</span></span>
+<span><span class="co">## 5 Non-Black,Non-Hispanic      0  0.468 </span></span>
+<span><span class="co">## 6 Non-Black,Non-Hispanic      1  0.0279</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -277,9 +267,9 @@ is a common prefix found in related variable names, often corresponding
 to similar survey items, that represents a shared concept before unique
 identifiers.</p>
 <p>For example, the <code>depressive</code> dataset contains eight
-variables that share the same stem, with each one representing a
-different item (such as a statement, question, or indicator) used to
-measure depression:</p>
+variables that share the same stem (i.e., <code>dep</code>), with each
+one representing a different item (such as a statement, question, or
+indicator) used to measure depression:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">depressive</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##  [1] "cid"   "race"  "sex"   "yob"   "dep_1" "dep_2" "dep_3" "dep_4" "dep_5"</span></span>
@@ -305,9 +295,9 @@ for every variable:</p>
 <span><span class="co">## # ℹ 14 more rows</span></span></code></pre>
 <p>You can also use the <code>ignore</code> and <code>na_removal</code>
 arguments to exclude values from the data and specify how missing values
-should be handled. By default, missing values are removed listwise, but
-you can set <code>na_removal</code> to <code>pairwise</code> for
-pairwise removal instead:</p>
+should be handled. By default, missing values are removed
+<code>listwise</code>, but you can set <code>na_removal</code> to
+<code>pairwise</code> for pairwise removal instead:</p>
 <pre><code><span><span class="co"># Default listwise removal, value '3' removed from data</span></span>
 <span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
 <span>           var_stem <span class="op">=</span> <span class="st">"dep"</span>, </span>
@@ -416,16 +406,16 @@ interpret:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 8 × 8</span></span>
-<span><span class="co">##   variable variable_label           count_value_1 count_value_2 count_value_3</span></span>
-<span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;                            &lt;int&gt;         &lt;int&gt;         &lt;int&gt;</span></span>
-<span><span class="co">## 1 dep_1    how often child feels s…           109           689           809</span></span>
-<span><span class="co">## 2 dep_2    how often child feels n…           144           746           717</span></span>
-<span><span class="co">## 3 dep_3    how often child feels h…          1162           392            53</span></span>
-<span><span class="co">## 4 dep_4    how often child feels b…           601           836           170</span></span>
-<span><span class="co">## 5 dep_5    how often child feels l…           194           556           857</span></span>
-<span><span class="co">## 6 dep_6    how often child feels t…           387           860           360</span></span>
-<span><span class="co">## 7 dep_7    how often child feels e…          1028           490            89</span></span>
-<span><span class="co">## 8 dep_8    how often child feels t…           317           784           506</span></span>
+<span><span class="co">##   variable variable_label              count_value_1 count_value_2 count_value_3</span></span>
+<span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;                               &lt;int&gt;         &lt;int&gt;         &lt;int&gt;</span></span>
+<span><span class="co">## 1 dep_1    how often child feels sad …           109           689           809</span></span>
+<span><span class="co">## 2 dep_2    how often child feels nerv…           144           746           717</span></span>
+<span><span class="co">## 3 dep_3    how often child feels happy          1162           392            53</span></span>
+<span><span class="co">## 4 dep_4    how often child feels bored           601           836           170</span></span>
+<span><span class="co">## 5 dep_5    how often child feels lone…           194           556           857</span></span>
+<span><span class="co">## 6 dep_6    how often child feels tire…           387           860           360</span></span>
+<span><span class="co">## 7 dep_7    how often child feels exci…          1028           490            89</span></span>
+<span><span class="co">## 8 dep_8    how often child feels too …           317           784           506</span></span>
 <span><span class="co">## # ℹ 3 more variables: percent_value_1 &lt;dbl&gt;, percent_value_2 &lt;dbl&gt;,</span></span>
 <span><span class="co">## #   percent_value_3 &lt;dbl&gt;</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
@@ -521,16 +511,16 @@ demographic variables like gender, age, or race:</p>
 <span><span class="co">## # A tibble: 72 × 5</span></span>
 <span><span class="co">##    variable race                   values      count percent</span></span>
 <span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;                  &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 dep_1    Black                  hardly ever   248   0.307</span></span>
-<span><span class="co">##  2 dep_1    Hispanic               hardly ever   187   0.231</span></span>
-<span><span class="co">##  3 dep_1    Non-Black/Non-Hispanic hardly ever   374   0.462</span></span>
-<span><span class="co">##  4 dep_1    Black                  often          45   0.413</span></span>
-<span><span class="co">##  5 dep_1    Hispanic               often          28   0.257</span></span>
-<span><span class="co">##  6 dep_1    Non-Black/Non-Hispanic often          36   0.330</span></span>
-<span><span class="co">##  7 dep_1    Black                  sometimes     194   0.282</span></span>
-<span><span class="co">##  8 dep_1    Hispanic               sometimes     155   0.225</span></span>
-<span><span class="co">##  9 dep_1    Non-Black/Non-Hispanic sometimes     340   0.493</span></span>
-<span><span class="co">## 10 dep_2    Black                  hardly ever   234   0.326</span></span>
+<span><span class="co">##  1 dep_1    Black                  hardly ever   248  0.154 </span></span>
+<span><span class="co">##  2 dep_1    Black                  often          45  0.0280</span></span>
+<span><span class="co">##  3 dep_1    Black                  sometimes     194  0.121 </span></span>
+<span><span class="co">##  4 dep_1    Hispanic               hardly ever   187  0.116 </span></span>
+<span><span class="co">##  5 dep_1    Hispanic               often          28  0.0174</span></span>
+<span><span class="co">##  6 dep_1    Hispanic               sometimes     155  0.0965</span></span>
+<span><span class="co">##  7 dep_1    Non-Black/Non-Hispanic hardly ever   374  0.233 </span></span>
+<span><span class="co">##  8 dep_1    Non-Black/Non-Hispanic often          36  0.0224</span></span>
+<span><span class="co">##  9 dep_1    Non-Black/Non-Hispanic sometimes     340  0.212 </span></span>
+<span><span class="co">## 10 dep_2    Black                  hardly ever   234  0.146 </span></span>
 <span><span class="co">## # ℹ 62 more rows</span></span>
 <span></span>
 <span><span class="co"># wider format</span></span>
@@ -540,23 +530,22 @@ demographic variables like gender, age, or race:</p>
 <span>                 pivot <span class="op">=</span> <span class="st">"wider"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 24 × 8</span></span>
-<span><span class="co">##    variable race                   count_value_hardly eve…¹ count_value_often</span></span>
-<span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;                                     &lt;int&gt;             &lt;int&gt;</span></span>
-<span><span class="co">##  1 dep_1    Black                                       248                45</span></span>
-<span><span class="co">##  2 dep_1    Hispanic                                    187                28</span></span>
-<span><span class="co">##  3 dep_1    Non-Black/Non-Hispanic                      374                36</span></span>
-<span><span class="co">##  4 dep_2    Black                                       234                49</span></span>
-<span><span class="co">##  5 dep_2    Hispanic                                    171                36</span></span>
-<span><span class="co">##  6 dep_2    Non-Black/Non-Hispanic                      312                59</span></span>
-<span><span class="co">##  7 dep_3    Black                                        19               330</span></span>
-<span><span class="co">##  8 dep_3    Hispanic                                     20               246</span></span>
-<span><span class="co">##  9 dep_3    Non-Black/Non-Hispanic                       14               586</span></span>
-<span><span class="co">## 10 dep_4    Black                                        45               183</span></span>
+<span><span class="co">##    variable values   count_race_Black count_race_Hispanic count_race_Non-Black…¹</span></span>
+<span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;               &lt;int&gt;               &lt;int&gt;                  &lt;int&gt;</span></span>
+<span><span class="co">##  1 dep_1    hardly …              248                 187                    374</span></span>
+<span><span class="co">##  2 dep_1    often                  45                  28                     36</span></span>
+<span><span class="co">##  3 dep_1    sometim…              194                 155                    340</span></span>
+<span><span class="co">##  4 dep_2    hardly …              234                 171                    312</span></span>
+<span><span class="co">##  5 dep_2    often                  49                  36                     59</span></span>
+<span><span class="co">##  6 dep_2    sometim…              204                 163                    379</span></span>
+<span><span class="co">##  7 dep_3    hardly …               19                  20                     14</span></span>
+<span><span class="co">##  8 dep_3    often                 330                 246                    586</span></span>
+<span><span class="co">##  9 dep_3    sometim…              138                 104                    150</span></span>
+<span><span class="co">## 10 dep_4    hardly …               45                  38                     87</span></span>
 <span><span class="co">## # ℹ 14 more rows</span></span>
-<span><span class="co">## # ℹ abbreviated name: ¹​`count_value_hardly ever`</span></span>
-<span><span class="co">## # ℹ 4 more variables: count_value_sometimes &lt;int&gt;,</span></span>
-<span><span class="co">## #   `percent_value_hardly ever` &lt;dbl&gt;, percent_value_often &lt;dbl&gt;,</span></span>
-<span><span class="co">## #   percent_value_sometimes &lt;dbl&gt;</span></span></code></pre>
+<span><span class="co">## # ℹ abbreviated name: ¹​`count_race_Non-Black/Non-Hispanic`</span></span>
+<span><span class="co">## # ℹ 3 more variables: percent_race_Black &lt;dbl&gt;, percent_race_Hispanic &lt;dbl&gt;,</span></span>
+<span><span class="co">## #   `percent_race_Non-Black/Non-Hispanic` &lt;dbl&gt;</span></span></code></pre>
 <p>As with <code><a href="../reference/cat_group_tbl.html">cat_group_tbl()</a></code>, you can specify which values to
 exclude and how remove missing values. However, when specifying values
 to exclude, use the <code>var_stem</code> argument you provide to
@@ -574,16 +563,16 @@ stem.</p>
 <span><span class="co">## # A tibble: 31 × 5</span></span>
 <span><span class="co">##    variable race     values      count percent</span></span>
 <span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 dep_1    Black    hardly ever    18   0.667</span></span>
-<span><span class="co">##  2 dep_1    Hispanic hardly ever     9   0.333</span></span>
-<span><span class="co">##  3 dep_1    Black    sometimes      16   0.444</span></span>
-<span><span class="co">##  4 dep_1    Hispanic sometimes      20   0.556</span></span>
-<span><span class="co">##  5 dep_2    Black    hardly ever    18   0.581</span></span>
-<span><span class="co">##  6 dep_2    Hispanic hardly ever    13   0.419</span></span>
-<span><span class="co">##  7 dep_2    Black    sometimes      16   0.5  </span></span>
-<span><span class="co">##  8 dep_2    Hispanic sometimes      16   0.5  </span></span>
-<span><span class="co">##  9 dep_3    Hispanic hardly ever     8   1    </span></span>
-<span><span class="co">## 10 dep_3    Black    sometimes      34   0.618</span></span>
+<span><span class="co">##  1 dep_1    Black    hardly ever    18   0.286</span></span>
+<span><span class="co">##  2 dep_1    Black    sometimes      16   0.254</span></span>
+<span><span class="co">##  3 dep_1    Hispanic hardly ever     9   0.143</span></span>
+<span><span class="co">##  4 dep_1    Hispanic sometimes      20   0.317</span></span>
+<span><span class="co">##  5 dep_2    Black    hardly ever    18   0.286</span></span>
+<span><span class="co">##  6 dep_2    Black    sometimes      16   0.254</span></span>
+<span><span class="co">##  7 dep_2    Hispanic hardly ever    13   0.206</span></span>
+<span><span class="co">##  8 dep_2    Hispanic sometimes      16   0.254</span></span>
+<span><span class="co">##  9 dep_3    Black    sometimes      34   0.540</span></span>
+<span><span class="co">## 10 dep_3    Hispanic hardly ever     8   0.127</span></span>
 <span><span class="co">## # ℹ 21 more rows</span></span>
 <span></span>
 <span><span class="co"># Pairwise removal: 'often' value removed from all</span></span>
@@ -599,16 +588,16 @@ stem.</p>
 <span><span class="co">## # A tibble: 32 × 5</span></span>
 <span><span class="co">##    variable race     values      count percent</span></span>
 <span><span class="co">##    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 dep_1    Black    hardly ever   256   0.574</span></span>
-<span><span class="co">##  2 dep_1    Hispanic hardly ever   190   0.426</span></span>
-<span><span class="co">##  3 dep_1    Black    sometimes     203   0.561</span></span>
-<span><span class="co">##  4 dep_1    Hispanic sometimes     159   0.439</span></span>
-<span><span class="co">##  5 dep_2    Black    hardly ever   241   0.584</span></span>
-<span><span class="co">##  6 dep_2    Hispanic hardly ever   172   0.416</span></span>
-<span><span class="co">##  7 dep_2    Black    sometimes     213   0.563</span></span>
-<span><span class="co">##  8 dep_2    Hispanic sometimes     165   0.437</span></span>
-<span><span class="co">##  9 dep_3    Black    hardly ever    20   0.5  </span></span>
-<span><span class="co">## 10 dep_3    Hispanic hardly ever    20   0.5  </span></span>
+<span><span class="co">##  1 dep_1    Black    hardly ever   256  0.317 </span></span>
+<span><span class="co">##  2 dep_1    Black    sometimes     203  0.251 </span></span>
+<span><span class="co">##  3 dep_1    Hispanic hardly ever   190  0.235 </span></span>
+<span><span class="co">##  4 dep_1    Hispanic sometimes     159  0.197 </span></span>
+<span><span class="co">##  5 dep_2    Black    hardly ever   241  0.305 </span></span>
+<span><span class="co">##  6 dep_2    Black    sometimes     213  0.269 </span></span>
+<span><span class="co">##  7 dep_2    Hispanic hardly ever   172  0.217 </span></span>
+<span><span class="co">##  8 dep_2    Hispanic sometimes     165  0.209 </span></span>
+<span><span class="co">##  9 dep_3    Black    hardly ever    20  0.0680</span></span>
+<span><span class="co">## 10 dep_3    Black    sometimes     149  0.507 </span></span>
 <span><span class="co">## # ℹ 22 more rows</span></span></code></pre>
 <p>Use a list if you want to exclude several values from the same
 <code>var_stem</code> or <code>group</code> variable:</p>
@@ -621,16 +610,16 @@ stem.</p>
 <span><span class="co">## # A tibble: 24 × 5</span></span>
 <span><span class="co">##    variable race  values      count percent</span></span>
 <span><span class="co">##    &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 dep_1    Black hardly ever   248       1</span></span>
-<span><span class="co">##  2 dep_1    Black often          45       1</span></span>
-<span><span class="co">##  3 dep_1    Black sometimes     194       1</span></span>
-<span><span class="co">##  4 dep_2    Black hardly ever   234       1</span></span>
-<span><span class="co">##  5 dep_2    Black often          49       1</span></span>
-<span><span class="co">##  6 dep_2    Black sometimes     204       1</span></span>
-<span><span class="co">##  7 dep_3    Black hardly ever    19       1</span></span>
-<span><span class="co">##  8 dep_3    Black often         330       1</span></span>
-<span><span class="co">##  9 dep_3    Black sometimes     138       1</span></span>
-<span><span class="co">## 10 dep_4    Black hardly ever    45       1</span></span>
+<span><span class="co">##  1 dep_1    Black hardly ever   248  0.509 </span></span>
+<span><span class="co">##  2 dep_1    Black often          45  0.0924</span></span>
+<span><span class="co">##  3 dep_1    Black sometimes     194  0.398 </span></span>
+<span><span class="co">##  4 dep_2    Black hardly ever   234  0.480 </span></span>
+<span><span class="co">##  5 dep_2    Black often          49  0.101 </span></span>
+<span><span class="co">##  6 dep_2    Black sometimes     204  0.419 </span></span>
+<span><span class="co">##  7 dep_3    Black hardly ever    19  0.0390</span></span>
+<span><span class="co">##  8 dep_3    Black often         330  0.678 </span></span>
+<span><span class="co">##  9 dep_3    Black sometimes     138  0.283 </span></span>
+<span><span class="co">## 10 dep_4    Black hardly ever    45  0.0924</span></span>
 <span><span class="co">## # ℹ 14 more rows</span></span></code></pre>
 <p>Another application of <code>select_group_tbl</code> is summarizing
 responses based on a matching pattern, such as survey time points (e.g.,
@@ -697,18 +686,18 @@ interpret:</p>
 <span>                 <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 10 × 6</span></span>
-<span><span class="co">##    variable             variable_label             wave  values count percent</span></span>
-<span><span class="co">##    &lt;chr&gt;                &lt;chr&gt;                      &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">##  1 belong_belongStem_w1 I feel like I belong in S… w1         1     5  0.0185</span></span>
-<span><span class="co">##  2 belong_belongStem_w1 I feel like I belong in S… w1         2    20  0.0741</span></span>
-<span><span class="co">##  3 belong_belongStem_w1 I feel like I belong in S… w1         3    59  0.219 </span></span>
-<span><span class="co">##  4 belong_belongStem_w1 I feel like I belong in S… w1         4   107  0.396 </span></span>
-<span><span class="co">##  5 belong_belongStem_w1 I feel like I belong in S… w1         5    79  0.293 </span></span>
-<span><span class="co">##  6 belong_belongStem_w2 I feel like I belong in S… w2         1    11  0.0407</span></span>
-<span><span class="co">##  7 belong_belongStem_w2 I feel like I belong in S… w2         2    11  0.0407</span></span>
-<span><span class="co">##  8 belong_belongStem_w2 I feel like I belong in S… w2         3    44  0.163 </span></span>
-<span><span class="co">##  9 belong_belongStem_w2 I feel like I belong in S… w2         4   113  0.419 </span></span>
-<span><span class="co">## 10 belong_belongStem_w2 I feel like I belong in S… w2         5    91  0.337</span></span></code></pre>
+<span><span class="co">##    variable             variable_label                wave  values count percent</span></span>
+<span><span class="co">##    &lt;chr&gt;                &lt;chr&gt;                         &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">##  1 belong_belongStem_w1 I feel like I belong in STEM… w1         1     5  0.0185</span></span>
+<span><span class="co">##  2 belong_belongStem_w1 I feel like I belong in STEM… w1         2    20  0.0741</span></span>
+<span><span class="co">##  3 belong_belongStem_w1 I feel like I belong in STEM… w1         3    59  0.219 </span></span>
+<span><span class="co">##  4 belong_belongStem_w1 I feel like I belong in STEM… w1         4   107  0.396 </span></span>
+<span><span class="co">##  5 belong_belongStem_w1 I feel like I belong in STEM… w1         5    79  0.293 </span></span>
+<span><span class="co">##  6 belong_belongStem_w2 I feel like I belong in STEM… w2         1    11  0.0407</span></span>
+<span><span class="co">##  7 belong_belongStem_w2 I feel like I belong in STEM… w2         2    11  0.0407</span></span>
+<span><span class="co">##  8 belong_belongStem_w2 I feel like I belong in STEM… w2         3    44  0.163 </span></span>
+<span><span class="co">##  9 belong_belongStem_w2 I feel like I belong in STEM… w2         4   113  0.419 </span></span>
+<span><span class="co">## 10 belong_belongStem_w2 I feel like I belong in STEM… w2         5    91  0.337</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <pre><code><span><span class="co"># Default: counts and percentages</span></span>
@@ -851,11 +840,11 @@ variable names easier to interpret.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 3 × 7</span></span>
-<span><span class="co">##   variable variable_label                        mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;                                &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
-<span><span class="co">## 1 belong_1 I feel like I belong at this instit…  3.83 1.10      1     5 10138</span></span>
-<span><span class="co">## 2 belong_2 I feel like part of the community     2.52 1.22      1     5 10145</span></span>
-<span><span class="co">## 3 belong_3 I feel valued by this institution     3.77 0.995     1     5 10142</span></span></code></pre>
+<span><span class="co">##   variable variable_label                           mean    sd   min   max  nobs</span></span>
+<span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;                                   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co">## 1 belong_1 I feel like I belong at this instituti…  3.83 1.10      1     5 10138</span></span>
+<span><span class="co">## 2 belong_2 I feel like part of the community        2.52 1.22      1     5 10145</span></span>
+<span><span class="co">## 3 belong_3 I feel valued by this institution        3.77 0.995     1     5 10142</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <pre><code><span><span class="co"># Default: all summary statistics returned</span></span>
@@ -992,10 +981,10 @@ summary table.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 2 × 8</span></span>
-<span><span class="co">##   variable             variable_label     wave   mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   &lt;chr&gt;                &lt;chr&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
-<span><span class="co">## 1 belong_belongStem_w1 I feel like I bel… w1     3.87 0.980     1     5   270</span></span>
-<span><span class="co">## 2 belong_belongStem_w2 I feel like I bel… w2     3.97 1.02      1     5   270</span></span></code></pre>
+<span><span class="co">##   variable             variable_label        wave   mean    sd   min   max  nobs</span></span>
+<span><span class="co">##   &lt;chr&gt;                &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co">## 1 belong_belongStem_w1 I feel like I belong… w1     3.87 0.980     1     5   270</span></span>
+<span><span class="co">## 2 belong_belongStem_w2 I feel like I belong… w2     3.97 1.02      1     5   270</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <pre><code><span><span class="co"># Default: all summary statistics returned</span></span>
@@ -1011,10 +1000,10 @@ summary table.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## # A tibble: 2 × 8</span></span>
-<span><span class="co">##   variable             variable_label     wave   mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   &lt;chr&gt;                &lt;chr&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
-<span><span class="co">## 1 belong_belongStem_w1 I feel like I bel… w1     3.87 0.980     1     5   270</span></span>
-<span><span class="co">## 2 belong_belongStem_w2 I feel like I bel… w2     3.97 1.02      1     5   270</span></span>
+<span><span class="co">##   variable             variable_label        wave   mean    sd   min   max  nobs</span></span>
+<span><span class="co">##   &lt;chr&gt;                &lt;chr&gt;                 &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co">## 1 belong_belongStem_w1 I feel like I belong… w1     3.87 0.980     1     5   270</span></span>
+<span><span class="co">## 2 belong_belongStem_w2 I feel like I belong… w2     3.97 1.02      1     5   270</span></span>
 <span></span>
 <span><span class="co"># Means and non-missing observations only</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>

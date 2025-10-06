@@ -52,10 +52,10 @@ Finally, you can choose what information to return using the `only` argument.
 
 ```{r}
 # Default: counts and percentages
-cat_group_tbl(data = nlsy,
-              row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE)
+cat_tbl(data = nlsy, 
+        var = "race",
+        ignore = "Black",
+        na.rm = TRUE)
 
 # Counts only
 cat_tbl(data = nlsy, 
@@ -65,11 +65,11 @@ cat_tbl(data = nlsy,
         only = "count")
 
 # Percents only
-cat_group_tbl(data = nlsy,
-              row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE,
-              only = "percent")
+cat_tbl(data = nlsy, 
+        var = "race",
+        ignore = "Black",
+        na.rm = TRUE,
+        only = "percent")
 ```  
 
 ### Summarize a categorical variable grouped by another variable
@@ -104,21 +104,6 @@ cat_group_tbl(data = nlsy,
               pivot = "wider")
 ```  
 
-
-If you want to ignore more than one value per row or column, provide them in a named list:
-
-```{r}
-cat_group_tbl(data = nlsy,
-              row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE,
-              pivot = "wider",
-              margins = "rows")
-
-
-```  
-
-
 Finally, you can choose what information to return using the `only` argument.
 
 ```{r}
@@ -149,7 +134,7 @@ cat_group_tbl(data = nlsy,
 
 With `select_tbl()`, you can produce a summary table for multiple response variables with the same variable stem. A variable stem is a common prefix found in related variable names, often corresponding to similar survey items, that represents a shared concept before unique identifiers.
 
-For example, the `depressive` dataset contains eight variables that share the same stem, with each one representing a different item (such as a statement, question, or indicator) used to measure depression:
+For example, the `depressive` dataset contains eight variables that share the same stem (i.e., `dep`), with each one representing a different item (such as a statement, question, or indicator) used to measure depression:
 
 ```{r}
 names(depressive)
@@ -161,7 +146,7 @@ With the `select_tbl()` function, you can summarize these responses to see how m
 select_tbl(data = depressive, var_stem = "dep")
 ```
 
-You can also use the `ignore` and `na_removal` arguments to exclude values from the data and specify how missing values should be handled. By default, missing values are removed listwise, but you can set `na_removal` to `pairwise` for pairwise removal instead:
+You can also use the `ignore` and `na_removal` arguments to exclude values from the data and specify how missing values should be handled. By default, missing values are removed `listwise`, but you can set `na_removal` to `pairwise` for pairwise removal instead:
 
 ```{r}
 # Default listwise removal, value '3' removed from data
@@ -237,7 +222,6 @@ With `select_group_tbl()`, you can create a summary table for multiple response 
 For example, we often want to summarize survey responses by demographic variables like gender, age, or race:
 
 ```{r}
-
 dep_recoded <- 
   depressive |>
   dplyr::mutate(

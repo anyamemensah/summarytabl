@@ -42,7 +42,7 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
     var_label = "var",
     variable_type = "valid_var_types",
     na.rm = na.rm,
-    label_na.rm = "na.rm",
+    label_na_rm = "na.rm",
     only = only,
     ignore = ignore
   )

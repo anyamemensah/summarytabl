@@ -103,7 +103,7 @@ extract_group_flags <- function(cols,
   group_flag
 }
 
-# Function to extract 'data type'
+# Function that extracts variable 'data type'
 get_data_type <- function(x) {
   class_x <- class(x)
   
@@ -458,7 +458,7 @@ check_cat_args <- function(args) {
         arg_name = args$var_label
       ),
     na.rm = function(args)
-      check_na.rm(na.rm = args$na.rm, var_label = args$label_na.rm),
+      check_na.rm(na.rm = args$na.rm, var_label = args$label_na_rm),
     only = function(args)
       check_only(only = args$only, table_type = args$table_type),
     ignore = function(args)
@@ -505,9 +505,9 @@ check_cat_group_args <- function(args) {
         arg_name = args$var_label_col
       ),
     na_row = function(args)
-      check_na.rm(na.rm = args$na.rm.row_var, var_label = args$label_na_rm_row),
+      check_na.rm(na.rm = args$na_rm_row_var, var_label = args$label_na_rm_row),
     na_col = function(args)
-      check_na.rm(na.rm = args$na.rm.col_var, var_label = args$label_na_rm_col),
+      check_na.rm(na.rm = args$na_rm_col_var, var_label = args$label_na_rm_col),
     pivot = function(args)
       check_pivot(pivot = args$pivot),
     only = function(args)
@@ -566,7 +566,7 @@ check_select_group_args <- function(args) {
         var_label = args$var_label,
         escape_stem = args$escape_stem,
         ignore_stem_case = args$ignore_stem_case,
-        group = args$group, 
+        group = args$group_var, 
         group_type = args$group_type, 
         escape_group = args$escape_group, 
         ignore_group_case = args$ignore_group_case, 
@@ -642,7 +642,7 @@ check_mean_group_args <- function(args) {
         var_label = args$var_label,
         escape_stem = args$escape_stem,
         ignore_stem_case = args$ignore_stem_case,
-        group = args$group, 
+        group = args$group_var, 
         group_type = args$group_type, 
         escape_group = args$escape_group, 
         ignore_group_case = args$ignore_group_case, 

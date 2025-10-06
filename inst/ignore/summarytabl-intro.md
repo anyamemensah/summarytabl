@@ -1,10 +1,3 @@
----
-title: "Introduction to summarytabl"
-output: html_document
-description: >
-  This document introduces you to some of summarytabl's most frequently used functions, and demonstrates how you can use them with data frames.
----
-
 Welcome to the `summarytabl` package! This package makes it easy to
 create simple tables for summarizing continuous, ordinal, and
 categorical data. This document introduces you to some of
@@ -70,20 +63,16 @@ Finally, you can choose what information to return using the `only`
 argument.
 
     # Default: counts and percentages
-    cat_group_tbl(data = nlsy,
-                  row_var = "race",
-                  col_var = "bthwht",
-                  na.rm.row_var = TRUE)
+    cat_tbl(data = nlsy, 
+            var = "race",
+            ignore = "Black",
+            na.rm = TRUE)
 
-    ## # A tibble: 6 × 4
-    ##   race                   bthwht count percent
-    ##   <chr>                   <dbl> <int>   <dbl>
-    ## 1 Black                       0   766   0.279
-    ## 2 Hispanic                    0   589   0.214
-    ## 3 Non-Black,Non-Hispanic      0  1394   0.507
-    ## 4 Black                       1   102   0.449
-    ## 5 Hispanic                    1    42   0.185
-    ## 6 Non-Black,Non-Hispanic      1    83   0.366
+    ## # A tibble: 2 × 3
+    ##   race                   count percent
+    ##   <chr>                  <int>   <dbl>
+    ## 1 Hispanic                 631   0.299
+    ## 2 Non-Black,Non-Hispanic  1477   0.701
 
     # Counts only
     cat_tbl(data = nlsy, 
@@ -99,21 +88,17 @@ argument.
     ## 2 Non-Black,Non-Hispanic  1477
 
     # Percents only
-    cat_group_tbl(data = nlsy,
-                  row_var = "race",
-                  col_var = "bthwht",
-                  na.rm.row_var = TRUE,
-                  only = "percent")
+    cat_tbl(data = nlsy, 
+            var = "race",
+            ignore = "Black",
+            na.rm = TRUE,
+            only = "percent")
 
-    ## # A tibble: 6 × 3
-    ##   race                   bthwht percent
-    ##   <chr>                   <dbl>   <dbl>
-    ## 1 Black                       0   0.279
-    ## 2 Hispanic                    0   0.214
-    ## 3 Non-Black,Non-Hispanic      0   0.507
-    ## 4 Black                       1   0.449
-    ## 5 Hispanic                    1   0.185
-    ## 6 Non-Black,Non-Hispanic      1   0.366
+    ## # A tibble: 2 × 2
+    ##   race                   percent
+    ##   <chr>                    <dbl>
+    ## 1 Hispanic                 0.299
+    ## 2 Non-Black,Non-Hispanic   0.701
 
 ### Summarize a categorical variable grouped by another variable
 
@@ -127,10 +112,10 @@ the `cat_group_tbl()` function.
     ## # A tibble: 4 × 4
     ##   gender bthwht count percent
     ##    <dbl>  <dbl> <int>   <dbl>
-    ## 1      0      0  1340   0.487
-    ## 2      1      0  1409   0.513
-    ## 3      0      1   123   0.542
-    ## 4      1      1   104   0.458
+    ## 1      0      0  1340  0.450 
+    ## 2      0      1   123  0.0413
+    ## 3      1      0  1409  0.473 
+    ## 4      1      1   104  0.0349
 
 Like `cat_tbl()`, you have the option to exclude certain values and omit
 missing values (by row and/or column).
@@ -145,8 +130,8 @@ missing values (by row and/or column).
     ## # A tibble: 2 × 5
     ##   race     count_bthwht_0 count_bthwht_1 percent_bthwht_0 percent_bthwht_1
     ##   <chr>             <int>          <int>            <dbl>            <dbl>
-    ## 1 Black               766            102            0.565            0.708
-    ## 2 Hispanic            589             42            0.435            0.292
+    ## 1 Black               766            102            0.511           0.0680
+    ## 2 Hispanic            589             42            0.393           0.0280
 
 If you want to ignore more than one value per row or column, provide
 them in a named list:
@@ -161,7 +146,7 @@ them in a named list:
     ## # A tibble: 1 × 5
     ##   race  count_bthwht_0 count_bthwht_1 percent_bthwht_0 percent_bthwht_1
     ##   <chr>          <int>          <int>            <dbl>            <dbl>
-    ## 1 Black            766            102                1                1
+    ## 1 Black            766            102            0.882            0.118
 
 Finally, you can choose what information to return using the `only`
 argument.
@@ -175,12 +160,12 @@ argument.
     ## # A tibble: 6 × 4
     ##   race                   bthwht count percent
     ##   <chr>                   <dbl> <int>   <dbl>
-    ## 1 Black                       0   766   0.279
-    ## 2 Hispanic                    0   589   0.214
-    ## 3 Non-Black,Non-Hispanic      0  1394   0.507
-    ## 4 Black                       1   102   0.449
-    ## 5 Hispanic                    1    42   0.185
-    ## 6 Non-Black,Non-Hispanic      1    83   0.366
+    ## 1 Black                       0   766  0.257 
+    ## 2 Black                       1   102  0.0343
+    ## 3 Hispanic                    0   589  0.198 
+    ## 4 Hispanic                    1    42  0.0141
+    ## 5 Non-Black,Non-Hispanic      0  1394  0.468 
+    ## 6 Non-Black,Non-Hispanic      1    83  0.0279
 
     # Counts only
     cat_group_tbl(data = nlsy,
@@ -193,10 +178,10 @@ argument.
     ##   race                   bthwht count
     ##   <chr>                   <dbl> <int>
     ## 1 Black                       0   766
-    ## 2 Hispanic                    0   589
-    ## 3 Non-Black,Non-Hispanic      0  1394
-    ## 4 Black                       1   102
-    ## 5 Hispanic                    1    42
+    ## 2 Black                       1   102
+    ## 3 Hispanic                    0   589
+    ## 4 Hispanic                    1    42
+    ## 5 Non-Black,Non-Hispanic      0  1394
     ## 6 Non-Black,Non-Hispanic      1    83
 
     # Percents only
@@ -209,12 +194,12 @@ argument.
     ## # A tibble: 6 × 3
     ##   race                   bthwht percent
     ##   <chr>                   <dbl>   <dbl>
-    ## 1 Black                       0   0.279
-    ## 2 Hispanic                    0   0.214
-    ## 3 Non-Black,Non-Hispanic      0   0.507
-    ## 4 Black                       1   0.449
-    ## 5 Hispanic                    1   0.185
-    ## 6 Non-Black,Non-Hispanic      1   0.366
+    ## 1 Black                       0  0.257 
+    ## 2 Black                       1  0.0343
+    ## 3 Hispanic                    0  0.198 
+    ## 4 Hispanic                    1  0.0141
+    ## 5 Non-Black,Non-Hispanic      0  0.468 
+    ## 6 Non-Black,Non-Hispanic      1  0.0279
 
 ## Multiple response variables
 
@@ -227,8 +212,9 @@ similar survey items, that represents a shared concept before unique
 identifiers.
 
 For example, the `depressive` dataset contains eight variables that
-share the same stem, with each one representing a different item (such
-as a statement, question, or indicator) used to measure depression:
+share the same stem (i.e., `dep`), with each one representing a
+different item (such as a statement, question, or indicator) used to
+measure depression:
 
     names(depressive)
 
@@ -258,7 +244,7 @@ variable:
 
 You can also use the `ignore` and `na_removal` arguments to exclude
 values from the data and specify how missing values should be handled.
-By default, missing values are removed listwise, but you can set
+By default, missing values are removed `listwise`, but you can set
 `na_removal` to `pairwise` for pairwise removal instead:
 
     # Default listwise removal, value '3' removed from data
@@ -372,16 +358,16 @@ summary table to make the variable names easier to interpret:
     )
 
     ## # A tibble: 8 × 8
-    ##   variable variable_label           count_value_1 count_value_2 count_value_3
-    ##   <chr>    <chr>                            <int>         <int>         <int>
-    ## 1 dep_1    how often child feels s…           109           689           809
-    ## 2 dep_2    how often child feels n…           144           746           717
-    ## 3 dep_3    how often child feels h…          1162           392            53
-    ## 4 dep_4    how often child feels b…           601           836           170
-    ## 5 dep_5    how often child feels l…           194           556           857
-    ## 6 dep_6    how often child feels t…           387           860           360
-    ## 7 dep_7    how often child feels e…          1028           490            89
-    ## 8 dep_8    how often child feels t…           317           784           506
+    ##   variable variable_label              count_value_1 count_value_2 count_value_3
+    ##   <chr>    <chr>                               <int>         <int>         <int>
+    ## 1 dep_1    how often child feels sad …           109           689           809
+    ## 2 dep_2    how often child feels nerv…           144           746           717
+    ## 3 dep_3    how often child feels happy          1162           392            53
+    ## 4 dep_4    how often child feels bored           601           836           170
+    ## 5 dep_5    how often child feels lone…           194           556           857
+    ## 6 dep_6    how often child feels tire…           387           860           360
+    ## 7 dep_7    how often child feels exci…          1028           490            89
+    ## 8 dep_8    how often child feels too …           317           784           506
     ## # ℹ 3 more variables: percent_value_1 <dbl>, percent_value_2 <dbl>,
     ## #   percent_value_3 <dbl>
 
@@ -479,16 +465,16 @@ variables like gender, age, or race:
     ## # A tibble: 72 × 5
     ##    variable race                   values      count percent
     ##    <chr>    <chr>                  <chr>       <int>   <dbl>
-    ##  1 dep_1    Black                  hardly ever   248   0.307
-    ##  2 dep_1    Hispanic               hardly ever   187   0.231
-    ##  3 dep_1    Non-Black/Non-Hispanic hardly ever   374   0.462
-    ##  4 dep_1    Black                  often          45   0.413
-    ##  5 dep_1    Hispanic               often          28   0.257
-    ##  6 dep_1    Non-Black/Non-Hispanic often          36   0.330
-    ##  7 dep_1    Black                  sometimes     194   0.282
-    ##  8 dep_1    Hispanic               sometimes     155   0.225
-    ##  9 dep_1    Non-Black/Non-Hispanic sometimes     340   0.493
-    ## 10 dep_2    Black                  hardly ever   234   0.326
+    ##  1 dep_1    Black                  hardly ever   248  0.154 
+    ##  2 dep_1    Black                  often          45  0.0280
+    ##  3 dep_1    Black                  sometimes     194  0.121 
+    ##  4 dep_1    Hispanic               hardly ever   187  0.116 
+    ##  5 dep_1    Hispanic               often          28  0.0174
+    ##  6 dep_1    Hispanic               sometimes     155  0.0965
+    ##  7 dep_1    Non-Black/Non-Hispanic hardly ever   374  0.233 
+    ##  8 dep_1    Non-Black/Non-Hispanic often          36  0.0224
+    ##  9 dep_1    Non-Black/Non-Hispanic sometimes     340  0.212 
+    ## 10 dep_2    Black                  hardly ever   234  0.146 
     ## # ℹ 62 more rows
 
     # wider format
@@ -498,23 +484,22 @@ variables like gender, age, or race:
                      pivot = "wider")
 
     ## # A tibble: 24 × 8
-    ##    variable race                   count_value_hardly eve…¹ count_value_often
-    ##    <chr>    <chr>                                     <int>             <int>
-    ##  1 dep_1    Black                                       248                45
-    ##  2 dep_1    Hispanic                                    187                28
-    ##  3 dep_1    Non-Black/Non-Hispanic                      374                36
-    ##  4 dep_2    Black                                       234                49
-    ##  5 dep_2    Hispanic                                    171                36
-    ##  6 dep_2    Non-Black/Non-Hispanic                      312                59
-    ##  7 dep_3    Black                                        19               330
-    ##  8 dep_3    Hispanic                                     20               246
-    ##  9 dep_3    Non-Black/Non-Hispanic                       14               586
-    ## 10 dep_4    Black                                        45               183
+    ##    variable values   count_race_Black count_race_Hispanic count_race_Non-Black…¹
+    ##    <chr>    <chr>               <int>               <int>                  <int>
+    ##  1 dep_1    hardly …              248                 187                    374
+    ##  2 dep_1    often                  45                  28                     36
+    ##  3 dep_1    sometim…              194                 155                    340
+    ##  4 dep_2    hardly …              234                 171                    312
+    ##  5 dep_2    often                  49                  36                     59
+    ##  6 dep_2    sometim…              204                 163                    379
+    ##  7 dep_3    hardly …               19                  20                     14
+    ##  8 dep_3    often                 330                 246                    586
+    ##  9 dep_3    sometim…              138                 104                    150
+    ## 10 dep_4    hardly …               45                  38                     87
     ## # ℹ 14 more rows
-    ## # ℹ abbreviated name: ¹​`count_value_hardly ever`
-    ## # ℹ 4 more variables: count_value_sometimes <int>,
-    ## #   `percent_value_hardly ever` <dbl>, percent_value_often <dbl>,
-    ## #   percent_value_sometimes <dbl>
+    ## # ℹ abbreviated name: ¹​`count_race_Non-Black/Non-Hispanic`
+    ## # ℹ 3 more variables: percent_race_Black <dbl>, percent_race_Hispanic <dbl>,
+    ## #   `percent_race_Non-Black/Non-Hispanic` <dbl>
 
 As with `cat_group_tbl()`, you can specify which values to exclude and
 how remove missing values. However, when specifying values to exclude,
@@ -533,16 +518,16 @@ exclude for variables sharing the same stem.
     ## # A tibble: 31 × 5
     ##    variable race     values      count percent
     ##    <chr>    <chr>    <chr>       <int>   <dbl>
-    ##  1 dep_1    Black    hardly ever    18   0.667
-    ##  2 dep_1    Hispanic hardly ever     9   0.333
-    ##  3 dep_1    Black    sometimes      16   0.444
-    ##  4 dep_1    Hispanic sometimes      20   0.556
-    ##  5 dep_2    Black    hardly ever    18   0.581
-    ##  6 dep_2    Hispanic hardly ever    13   0.419
-    ##  7 dep_2    Black    sometimes      16   0.5  
-    ##  8 dep_2    Hispanic sometimes      16   0.5  
-    ##  9 dep_3    Hispanic hardly ever     8   1    
-    ## 10 dep_3    Black    sometimes      34   0.618
+    ##  1 dep_1    Black    hardly ever    18   0.286
+    ##  2 dep_1    Black    sometimes      16   0.254
+    ##  3 dep_1    Hispanic hardly ever     9   0.143
+    ##  4 dep_1    Hispanic sometimes      20   0.317
+    ##  5 dep_2    Black    hardly ever    18   0.286
+    ##  6 dep_2    Black    sometimes      16   0.254
+    ##  7 dep_2    Hispanic hardly ever    13   0.206
+    ##  8 dep_2    Hispanic sometimes      16   0.254
+    ##  9 dep_3    Black    sometimes      34   0.540
+    ## 10 dep_3    Hispanic hardly ever     8   0.127
     ## # ℹ 21 more rows
 
     # Pairwise removal: 'often' value removed from all
@@ -558,16 +543,16 @@ exclude for variables sharing the same stem.
     ## # A tibble: 32 × 5
     ##    variable race     values      count percent
     ##    <chr>    <chr>    <chr>       <int>   <dbl>
-    ##  1 dep_1    Black    hardly ever   256   0.574
-    ##  2 dep_1    Hispanic hardly ever   190   0.426
-    ##  3 dep_1    Black    sometimes     203   0.561
-    ##  4 dep_1    Hispanic sometimes     159   0.439
-    ##  5 dep_2    Black    hardly ever   241   0.584
-    ##  6 dep_2    Hispanic hardly ever   172   0.416
-    ##  7 dep_2    Black    sometimes     213   0.563
-    ##  8 dep_2    Hispanic sometimes     165   0.437
-    ##  9 dep_3    Black    hardly ever    20   0.5  
-    ## 10 dep_3    Hispanic hardly ever    20   0.5  
+    ##  1 dep_1    Black    hardly ever   256  0.317 
+    ##  2 dep_1    Black    sometimes     203  0.251 
+    ##  3 dep_1    Hispanic hardly ever   190  0.235 
+    ##  4 dep_1    Hispanic sometimes     159  0.197 
+    ##  5 dep_2    Black    hardly ever   241  0.305 
+    ##  6 dep_2    Black    sometimes     213  0.269 
+    ##  7 dep_2    Hispanic hardly ever   172  0.217 
+    ##  8 dep_2    Hispanic sometimes     165  0.209 
+    ##  9 dep_3    Black    hardly ever    20  0.0680
+    ## 10 dep_3    Black    sometimes     149  0.507 
     ## # ℹ 22 more rows
 
 Use a list if you want to exclude several values from the same
@@ -582,16 +567,16 @@ Use a list if you want to exclude several values from the same
     ## # A tibble: 24 × 5
     ##    variable race  values      count percent
     ##    <chr>    <chr> <chr>       <int>   <dbl>
-    ##  1 dep_1    Black hardly ever   248       1
-    ##  2 dep_1    Black often          45       1
-    ##  3 dep_1    Black sometimes     194       1
-    ##  4 dep_2    Black hardly ever   234       1
-    ##  5 dep_2    Black often          49       1
-    ##  6 dep_2    Black sometimes     204       1
-    ##  7 dep_3    Black hardly ever    19       1
-    ##  8 dep_3    Black often         330       1
-    ##  9 dep_3    Black sometimes     138       1
-    ## 10 dep_4    Black hardly ever    45       1
+    ##  1 dep_1    Black hardly ever   248  0.509 
+    ##  2 dep_1    Black often          45  0.0924
+    ##  3 dep_1    Black sometimes     194  0.398 
+    ##  4 dep_2    Black hardly ever   234  0.480 
+    ##  5 dep_2    Black often          49  0.101 
+    ##  6 dep_2    Black sometimes     204  0.419 
+    ##  7 dep_3    Black hardly ever    19  0.0390
+    ##  8 dep_3    Black often         330  0.678 
+    ##  9 dep_3    Black sometimes     138  0.283 
+    ## 10 dep_4    Black hardly ever    45  0.0924
     ## # ℹ 14 more rows
 
 Another application of `select_group_tbl` is summarizing responses based
@@ -663,18 +648,18 @@ summary table to make the variable names easier to interpret:
                      ))
 
     ## # A tibble: 10 × 6
-    ##    variable             variable_label             wave  values count percent
-    ##    <chr>                <chr>                      <chr>  <dbl> <int>   <dbl>
-    ##  1 belong_belongStem_w1 I feel like I belong in S… w1         1     5  0.0185
-    ##  2 belong_belongStem_w1 I feel like I belong in S… w1         2    20  0.0741
-    ##  3 belong_belongStem_w1 I feel like I belong in S… w1         3    59  0.219 
-    ##  4 belong_belongStem_w1 I feel like I belong in S… w1         4   107  0.396 
-    ##  5 belong_belongStem_w1 I feel like I belong in S… w1         5    79  0.293 
-    ##  6 belong_belongStem_w2 I feel like I belong in S… w2         1    11  0.0407
-    ##  7 belong_belongStem_w2 I feel like I belong in S… w2         2    11  0.0407
-    ##  8 belong_belongStem_w2 I feel like I belong in S… w2         3    44  0.163 
-    ##  9 belong_belongStem_w2 I feel like I belong in S… w2         4   113  0.419 
-    ## 10 belong_belongStem_w2 I feel like I belong in S… w2         5    91  0.337
+    ##    variable             variable_label                wave  values count percent
+    ##    <chr>                <chr>                         <chr>  <dbl> <int>   <dbl>
+    ##  1 belong_belongStem_w1 I feel like I belong in STEM… w1         1     5  0.0185
+    ##  2 belong_belongStem_w1 I feel like I belong in STEM… w1         2    20  0.0741
+    ##  3 belong_belongStem_w1 I feel like I belong in STEM… w1         3    59  0.219 
+    ##  4 belong_belongStem_w1 I feel like I belong in STEM… w1         4   107  0.396 
+    ##  5 belong_belongStem_w1 I feel like I belong in STEM… w1         5    79  0.293 
+    ##  6 belong_belongStem_w2 I feel like I belong in STEM… w2         1    11  0.0407
+    ##  7 belong_belongStem_w2 I feel like I belong in STEM… w2         2    11  0.0407
+    ##  8 belong_belongStem_w2 I feel like I belong in STEM… w2         3    44  0.163 
+    ##  9 belong_belongStem_w2 I feel like I belong in STEM… w2         4   113  0.419 
+    ## 10 belong_belongStem_w2 I feel like I belong in STEM… w2         5    91  0.337
 
 Finally, you can choose what information to return using the `only`
 argument.
@@ -823,11 +808,11 @@ variable names easier to interpret.
     )
 
     ## # A tibble: 3 × 7
-    ##   variable variable_label                        mean    sd   min   max  nobs
-    ##   <chr>    <chr>                                <dbl> <dbl> <dbl> <dbl> <int>
-    ## 1 belong_1 I feel like I belong at this instit…  3.83 1.10      1     5 10138
-    ## 2 belong_2 I feel like part of the community     2.52 1.22      1     5 10145
-    ## 3 belong_3 I feel valued by this institution     3.77 0.995     1     5 10142
+    ##   variable variable_label                           mean    sd   min   max  nobs
+    ##   <chr>    <chr>                                   <dbl> <dbl> <dbl> <dbl> <int>
+    ## 1 belong_1 I feel like I belong at this instituti…  3.83 1.10      1     5 10138
+    ## 2 belong_2 I feel like part of the community        2.52 1.22      1     5 10145
+    ## 3 belong_3 I feel valued by this institution        3.77 0.995     1     5 10142
 
 Finally, you can choose what information to return using the `only`
 argument.
@@ -972,10 +957,10 @@ argument to add labels to the variables in the summary table.
     )
 
     ## # A tibble: 2 × 8
-    ##   variable             variable_label     wave   mean    sd   min   max  nobs
-    ##   <chr>                <chr>              <chr> <dbl> <dbl> <dbl> <dbl> <int>
-    ## 1 belong_belongStem_w1 I feel like I bel… w1     3.87 0.980     1     5   270
-    ## 2 belong_belongStem_w2 I feel like I bel… w2     3.97 1.02      1     5   270
+    ##   variable             variable_label        wave   mean    sd   min   max  nobs
+    ##   <chr>                <chr>                 <chr> <dbl> <dbl> <dbl> <dbl> <int>
+    ## 1 belong_belongStem_w1 I feel like I belong… w1     3.87 0.980     1     5   270
+    ## 2 belong_belongStem_w2 I feel like I belong… w2     3.97 1.02      1     5   270
 
 Finally, you can choose what information to return using the `only`
 argument.
@@ -993,10 +978,10 @@ argument.
     )
 
     ## # A tibble: 2 × 8
-    ##   variable             variable_label     wave   mean    sd   min   max  nobs
-    ##   <chr>                <chr>              <chr> <dbl> <dbl> <dbl> <dbl> <int>
-    ## 1 belong_belongStem_w1 I feel like I bel… w1     3.87 0.980     1     5   270
-    ## 2 belong_belongStem_w2 I feel like I bel… w2     3.97 1.02      1     5   270
+    ##   variable             variable_label        wave   mean    sd   min   max  nobs
+    ##   <chr>                <chr>                 <chr> <dbl> <dbl> <dbl> <dbl> <int>
+    ## 1 belong_belongStem_w1 I feel like I belong… w1     3.87 0.980     1     5   270
+    ## 2 belong_belongStem_w2 I feel like I belong… w2     3.97 1.02      1     5   270
 
     # Means and non-missing observations only
     mean_group_tbl(data = stem_social_psych, 
