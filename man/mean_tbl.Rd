@@ -27,49 +27,46 @@ mean_tbl(
 \item{ignore_stem_case}{A logical value indicating whether the search for columns
 matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
 
-\item{na_removal}{A character string specifying how to remove missing values. Should be
-one of \code{pairwise} or \code{listwise}. Default is \code{listwise}.}
+\item{na_removal}{A character string that specifies the method for handling missing
+values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 
-\item{only}{A character string or vector of character strings of the kinds of summary
-statistics to return. Default is \code{NULL}, which returns mean (mean), standard
-deviation (sd), minimum value (min), maximum value (max), and non-missing responses
-(nobs).}
+\item{only}{A character string or vector of character strings specifying which summary
+statistics to return. Defaults to NULL, which includes mean (mean), standard deviation
+(sd), minimum (min), maximum (max), and count of non-missing values (nobs).}
 
-\item{var_labels}{An optional named character vector or list where each element maps
-labels to variable names. If any element is unnamed or if any labels do not match
-variables in returned from \code{data}, all labels will be ignored and the table will be
-printed without them.}
+\item{var_labels}{An optional named character vector or list used to assign custom
+labels to variable names. Each element should be named and correspond to a variable in
+the returned table. If any element is unnamed or references a variable not returned in
+the table, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional vector that contains values to exclude from the data. Default
-is \code{NULL}, which includes all present values.}
+\item{ignore}{An optional vector of values to exclude from variables matching the
+specified variable stem. Defaults to \code{NULL}, which retains all values.}
 }
 \value{
-A tibble presenting summary statistics for series of continuous variables with
-the same variable stem.
+A tibble showing summary statistics for continuous variables sharing a common
+variable stem.
 }
 \description{
-\code{mean_tbl()} presents descriptive statistics (mean, sd, minimum, maximum,
-number of non-missing observations) for interval (e.g., Test scores) and ratio level
-(e.g., Age) variables with the same variable stem. A variable stem is a common prefix
-found in related variable names, often corresponding to similar survey items, that
-represents a shared concept before unique identifiers (like timep oints) are added. For
-example, in the \code{stem_social_psych} dataset, the two variables 'belong_belongStem_w1'
-and 'belong_belongStem_w2' share the variable stem 'belong_belongStem' (e.g., "I feel
-like an outsider in STEM"), with suffixes (_w1, _w2) indicating different measurement
-waves. By default, missing data are excluded from the calculations in a listwise
-fashion.
+\code{mean_tbl()} calculates summary statistics (i.e., mean, standard
+deviation, minimum, maximum, and count of non-missing values) for interval and
+ratio-level variables that share a common prefix (i.e., variable stem). A variable
+'stem' is a shared naming pattern across related variables, often representing
+repeated measures of the same concept or a series of items measuring a single
+construct. Missing data are excluded using \code{listwise} deletion by default.
 }
 \examples{
 
-mean_tbl(data = social_psy_data,
-         var_stem = "belong")
+sdoh_child_ages <- dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+                                            ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+mean_tbl(data = sdoh_child_ages,var_stem = "ACS_PCT_AGE")
 
-mean_tbl(data = social_psy_data,
-         var_stem = "belong",
+mean_tbl(data = sdoh_child_ages,
+         var_stem = "ACS_PCT_AGE",
          na_removal = "pairwise",
-         var_labels = c(belong_1 = "I feel like I belong at this institution",
-                        belong_2 = "I feel like part of the community",
-                        belong_3 = "I feel valued by this institution"))
+         var_labels = c(ACS_PCT_AGE_0_4 = "Percentage of population between ages 0-4",
+                        ACS_PCT_AGE_5_9 = "Percentage of population between ages 5-9",
+                        ACS_PCT_AGE_10_14 = "Percentage of population between ages 10-14",
+                        ACS_PCT_AGE_15_17 = "Percentage of population between ages 15-17"))
 
 }
 \author{

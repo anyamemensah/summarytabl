@@ -1,66 +1,64 @@
 #' @title Summarize multiple response variables by group
 #'
-#' @description `select_group_tbl()` presents frequency counts and percentages 
-#' (count, percent) for binary (e.g., Unselected/Selected) and ordinal (e.g., 
-#' strongly disagree to strongly agree) variables with the same variable stem
-#' by some grouping variable. A variable stem is a common prefix found in related 
-#' variable names, often corresponding to similar survey items, that represents a 
-#' shared concept before unique identifiers (like timep oints) are added. For 
-#' example, in the `stem_social_psych` dataset, the two variables 
-#' `belong_belongStem_w1` and `belong_belongStem_w2` share the variable stem 
-#' `belong_belongStem` (e.g., "I feel like an outsider in STEM"), with suffixes 
-#' (_w1, _w2) indicating different measurement waves. By default, missing data are 
-#' excluded from the calculations in a listwise fashion.
+#' @description `select_group_tbl()` displays frequency counts and percentages (i.e., 
+#' count and percent) for multiple response variables, including binary variables 
+#' (such as Unselected/Selected) and ordinal variables (such as responses ranging 
+#' from strongly disagree to strongly agree), that share a common variable stem, 
+#' grouped either by another variable in your dataset or by a matched pattern in the 
+#' variable names. A variable 'stem' is a shared naming pattern across related variables, 
+#' often representing repeated measures of the same concept or a series of items measuring 
+#' a single construct. Missing data are excluded using `listwise` deletion by default
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a 
-#' variable in `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. 
-#' Default is `FALSE`.
+#' @param var_stem A character string of a variable stem or the full name of a variable in 
+#' `data`.
+#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default is
+#' `FALSE`.
 #' @param ignore_stem_case A logical value indicating whether the search for columns 
 #' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param group A character string of a variable in `data` or a pattern to use to 
+#' @param group A character string representing a variable name or a pattern used to 
 #' search for variables in `data`.
-#' @param group_type A character string that defines the type of grouping variable. 
-#' Should be one of `pattern` or `variable`. Default is `variable`, in which case the 
-#' variable matching the `group` string will be searched for within `data`.
-#' @param group_name A character string piped to the final table to replace the name 
-#' of `group`.
+#' @param group_type A character string that defines how the `group` argument should be
+#' interpreted. Should be one of `pattern` or `variable`. Defaults to `variable`, which 
+#' searches for a matching variable name in `data`.
+#' @param group_name An optional character string used to rename the `group` column in the 
+#' final table When `group_type` is set to `variable`, the column name defaults to the 
+#' matched variable name from `data.` When set to `pattern`, the default column name is 
+#' `group`.
 #' @param margins A character string that determines how percentage values are calculated; 
-#' whether they sum to one across rows, columns, or the entire variable. Defaults to `all`, 
-#' but can also be set to `rows` or `columns`. Note: This argument only affects the final 
-#' table when group_type is `variable`.
-#' @param escape_group A logical value indicating whether to escape string supplied 
-#' to `group`.
-#' @param ignore_group_case A logical value indicating whether `group` is case-
-#' insensitive. Default is `FALSE`.
-#' @param remove_group_non_alnum A logical value indicating whether to remove all 
-#' non-alphanumeric characters (anything that is not a letter or number) from `group`. 
+#' whether they sum to one across rows, columns, or the entire variable (i.e., all). 
+#' Defaults to `all`, but can also be set to `rows` or `columns`. Note: This argument only 
+#' affects the final table when `group_type` is `variable`.
+#' @param escape_group A logical value indicating whether to escape string supplied to 
+#' `group`.
+#' @param ignore_group_case A logical value specifying whether the search for a grouping 
+#' variable (if `group_type` is `variable`) or for variables matching a pattern (if 
+#' `group_type` is `pattern`) should be case-insensitive. Default is `FALSE`. Set to `TRUE` 
+#' to ignore case. 
+#' @param remove_group_non_alnum A logical value indicating whether to remove all non-
+#' alphanumeric characters (i.e., anything that is not a letter or number) from `group`. 
 #' Default is `TRUE`.
-#' @param na_removal A character string specifying how to remove missing values. 
-#' Should be one of `pairwise` or `listwise`. Default is `listwise`.
-#' @param pivot A character string specifying the format of the returned summary table.
-#' The default is `longer`, which returns the data in long format. To return the data in
-#' wide format, use `wider`.
-#' @param only A character string or vector of character strings of the kinds of summary 
-#' data to return. Default is `NULL`, which returns counts (count) and percentages 
-#' (percent).
-#' @param var_labels An optional named character vector or list where each element 
-#' maps labels to variable names. If any element is unnamed or if any labels do not 
-#' match variables in returned from `data`, all labels will be ignored and the table 
-#' will be printed without them.
-#' @param ignore An optional named vector or list specifying values to exclude from 
-#' the dataset and analysis. By default, `NULL` includes all available values. To omit 
-#' values from variables returned by `var_stem`, use the provided stem as the name. To 
-#' exclude values from both `var_stem` variables and a grouping variable in `data`, 
-#' supply a list.
+#' @param na_removal A character string that specifies the method for handling missing 
+#' values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param pivot A character string that determines the format of the table. By default, 
+#' `longer` returns the data in the long format. To receive the data in the `wide` 
+#' format, specify `wider`.
+#' @param only A character string or vector of character strings of the types of summary 
+#' data to return. Default is `NULL`, which returns both counts and percentages. To return 
+#' only counts or percentages, use `count` or `percent`, respectively.
+#' @param var_labels An optional named character vector or list used to assign custom 
+#' labels to variable names. Each element should be named and correspond to a variable in 
+#' the returned table. If any element is unnamed or references a variable not returned in 
+#' the table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional named vector or list that defines values to exclude from 
+#' variables matching the specified variable stem and, if applicable, a grouping variable 
+#' in `data.` If set to `NULL` (default), all values are retained. To exclude values from 
+#' variables identified by `var_stem`, use the stem name as the key. To exclude multiple 
+#' values from both `var_stem` variables and a grouping variable, supply a named list.
 #'
-#' @returns A tibble displaying frequency counts and/or percentages for each value of a 
-#' set of variables sharing the same variable stem. The results are grouped by either a 
-#' grouping variable in the data or by a pattern matched with variable names. When the 
-#' output is in the wider format, columns beginning with `count_value` and `percent_value` 
-#' prefixes report the count and percentage, respectively, for each distinct response 
-#' value of the variable within each group.
+#' @returns A tibble showing the relative frequencies and/or percentages of multiple response 
+#' variables sharing a common variable stem. The statistics are grouped either by a specified 
+#' grouping variable within the dataset or by a matched pattern in the variable names.
 #'
 #' @author Ama Nyame-Mensah
 #'

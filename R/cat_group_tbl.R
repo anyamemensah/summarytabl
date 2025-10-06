@@ -1,40 +1,34 @@
 #' @title Summarize a categorical variable by a grouping variable
 #'
-#' @description `cat_group_tbl()` presents frequency counts and percentages 
-#' (count, percent) for nominal or categorical variables by some grouping variable. 
-#' Relative frequencies and percentages of each level of the primary categorical 
-#' variable (`row_var`) within each level of the grouping variable (`col_var`) can 
-#' be returned. Missing data can be excluded for either variable from the calculations. 
-#' By default, the table is returned in the long format.
+#' @description `cat_group_tbl()` summarizes nominal or categorical variables by a 
+#' grouping variable, returning frequency counts and percentages. It supports long or 
+#' wide output formats, handles missing data, and allows percentage calculations across 
+#' rows, columns, or the full table.
 #'
 #' @param data A data frame.
-#' @param row_var  A character string of the name of a column in `data` containing 
-#' categorical data. This is the primary categorical variable. When pivoted to the 
-#' `wider` format, the categories of this variable will appear in the rows of the 
-#' table. 
-#' @param col_var A character string of the name of a column in `data` containing 
-#' categorical data. This is the primary categorical variable. When pivoted to the 
-#' `wider` format, the categories of this variable will appear in the columns of 
-#' the table.
+#' @param row_var A character string of the name of a variable in `data` containing 
+#' categorical data. This is the primary categorical variable.
+#' @param col_var A character string of the name of a variable in `data` containing 
+#' categorical data.
 #' @param margins A character string that determines how percentage values are 
-#' calculated; whether they sum to one across rows, columns, or the entire table. 
-#' Defaults to `all`, but can also be set to `rows` or `columns`.
+#' calculated; whether they sum to one across rows, columns, or the entire table (i.e.,
+#' all). Defaults to `all`, but can also be set to `rows` or `columns`.
 #' @param na.rm.row_var A logical value indicating whether missing values for `row_var`
 #' should be removed before calculations. Default is `FALSE`.
 #' @param na.rm.col_var A logical value indicating whether missing values for `col_var`
 #' should be removed before calculations. Default is `FALSE`.
-#' @param ignore A named character vector or list containing values to ignore from 
-#' `row_var` and `col_var`.
-#' @param pivot A character string specifying the format of the returned summary table.
-#' The default is `longer`, which returns the data in long format. To return the data 
-#' in wide format, use `wider`.
+#' @param pivot A character string that determines the format of the table. By default, 
+#' `longer` returns the data in the long format. To return the data in the `wide` format, 
+#' specify `wider`.
 #' @param only A character string or vector of strings indicating the types of summary 
 #' data to return. The default is `NULL`, which includes both counts and percentages. To 
-#' return only one type, specify `count` or `percent`. Percentages are calculated column-
-#' wise, grouped by `col_var`.
-#'
-#' @returns A tibble displaying relative frequency counts and/or percentages of `row_var`, 
-#' grouped by `col_var`. 
+#' return only one type, specify `count` or `percent`.
+#' @param ignore An optional named vector or list that defines values to exclude from 
+#' `row_var` and `col_var`. If set to `NULL` (default), all values are retained. To exclude 
+#' multiple values from both `row_var` and `col_var`, supply a named list.
+#' 
+#' @returns A tibble showing relative frequencies and/or percentages of `row_var` 
+#' by `col_var`.
 #'
 #' @author Ama Nyame-Mensah
 #'

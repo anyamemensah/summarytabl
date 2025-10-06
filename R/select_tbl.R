@@ -1,15 +1,12 @@
 #' @title Summarize multiple response variables
 #'
-#' @description `select_tbl()` presents frequency counts and percentages 
-#' (count, percent) for binary (e.g., Unselected/Selected) and ordinal (e.g., 
-#' strongly disagree to strongly agree) variables with the same variable stem. 
-#' A variable stem is a common prefix found in related variable names, often 
-#' corresponding to similar survey items, that represents a shared concept before 
-#' unique identifiers (like time points) are added. For example, in the `stem_social_psych` 
-#' dataset, the two variables `belong_belongStem_w1` and `belong_belongStem_w2` 
-#' share the variable stem `belong_belongStem` (e.g., "I feel like an outsider in 
-#' STEM"), with suffixes (_w1, _w2) indicating different measurement waves. By 
-#' default, missing data are excluded from the calculations in a listwise fashion.
+#' @description `select_tbl()` displays frequency counts and percentages (i.e., 
+#' count and percent) for multiple response variables, including binary variables 
+#' (such as Unselected/Selected) and ordinal variables (such as responses ranging 
+#' from strongly disagree to strongly agree), that share a common variable stem. 
+#' A variable 'stem' is a shared naming pattern across related variables, often 
+#' representing repeated measures of the same concept or a series of items measuring 
+#' a single construct. Missing data are excluded using `listwise` deletion by default.
 #'
 #' @param data A data frame.
 #' @param var_stem A character string of a variable stem or the full name of a variable 
@@ -18,25 +15,23 @@
 #' is `FALSE`.
 #' @param ignore_stem_case A logical value indicating whether the search for columns 
 #' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param na_removal A character string specifying how to remove missing values. Should 
-#' be one of `pairwise` or `listwise`. Default is `listwise`.
-#' @param pivot A character string specifying the format of the returned summary table.
-#' The default is `longer`, which returns the data in long format. To return the data in
-#' wide format, use `wider`.
-#' @param only A character string or vector of character strings of the kinds of summary 
-#' data to return. Default is `NULL`, which returns counts (count) and percentages 
-#' (percent).
-#' @param var_labels An optional named character vector or list where each element maps
-#' labels to variable names. If any element is unnamed or if any labels do not match 
-#' variables in returned from `data`, all labels will be ignored and the table will be 
-#' printed without them.
-#' @param ignore An optional vector that contains values to exclude from the data. Default 
-#' is `NULL`, which includes all present values.
+#' @param na_removal A character string that specifies the method for handling missing 
+#' values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param pivot A character string that determines the format of the table. By default, 
+#' `longer` returns the data in the long format. To receive the data in the `wide` 
+#' format, specify `wider`.
+#' @param only A character string or vector of character strings of the types of summary 
+#' data to return. Default is `NULL`, which returns both counts and percentages. To return 
+#' only counts or percentages, use `count` or `percent`, respectively.
+#' @param var_labels An optional named character vector or list used to assign custom 
+#' labels to variable names. Each element should be named and correspond to a variable in 
+#' the returned table. If any element is unnamed or references a variable not returned in 
+#' the table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional vector of values to exclude from variables matching the 
+#' specified variable stem. Defaults to `NULL`, which retains all values.
 #'
-#' @returns A tibble displaying frequency counts and/or percentages for each value of a 
-#' set of variables sharing the same variable stem. When the output is in the wider format, 
-#' columns beginning with `count_value` and `percent_value` prefixes report the count and 
-#' percentage, respectively, for each distinct response  value of the variable.
+#' @returns A tibble showing the relative frequencies and/or percentages of multiple response 
+#' variables sharing a common variable stem.
 #'
 #' @author Ama Nyame-Mensah
 #'

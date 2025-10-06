@@ -118,6 +118,29 @@ test_that("Invalid 'only' argument", {
   )
 })
 
+test_that("Invalid 'group'/'group_type' argument", {
+  expect_error(
+    select_group_tbl(data = depressive, 
+                   var_stem = "dep",
+                   group = "_\\d",
+                   group_type = "variable",
+                   group_name = "item_number"),
+    paste("Invalid 'group' argument. The value provided to 'group' is", 
+          "not a column in 'data'. Check for typos, spelling mistakes,",
+          "or invalid characters.")
+  )
+  
+  expect_error(
+    select_group_tbl(data = depressive, 
+                     var_stem = "dep",
+                     group = "sex",
+                     group_type = "pattern"),
+    paste("Invalid 'group' argument. The value provided to 'group' did",
+          "not produce a unique or expected set of column names in 'data'.",
+          "Please check for typos, spelling mistakes, or invalid characters."))
+  
+})
+
 
 test_that("Expected output longer format", {
   observed <-
@@ -360,7 +383,9 @@ test_that("Error and expected output with ignore_group_case", {
       pivot = "wider",
       only = "count"
     ),
-    "The 'group' argument is not a column in 'data'."
+    paste("Invalid 'group' argument. The value provided to 'group' is", 
+          "not a column in 'data'. Check for typos, spelling mistakes,",
+          "or invalid characters.")
   )
   
   observed <-

@@ -28,42 +28,37 @@ is \code{FALSE}.}
 \item{ignore_stem_case}{A logical value indicating whether the search for columns
 matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
 
-\item{na_removal}{A character string specifying how to remove missing values. Should
-be one of \code{pairwise} or \code{listwise}. Default is \code{listwise}.}
+\item{na_removal}{A character string that specifies the method for handling missing
+values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 
-\item{pivot}{A character string specifying the format of the returned summary table.
-The default is \code{longer}, which returns the data in long format. To return the data in
-wide format, use \code{wider}.}
+\item{pivot}{A character string that determines the format of the table. By default,
+\code{longer} returns the data in the long format. To receive the data in the \code{wide}
+format, specify \code{wider}.}
 
-\item{only}{A character string or vector of character strings of the kinds of summary
-data to return. Default is \code{NULL}, which returns counts (count) and percentages
-(percent).}
+\item{only}{A character string or vector of character strings of the types of summary
+data to return. Default is \code{NULL}, which returns both counts and percentages. To return
+only counts or percentages, use \code{count} or \code{percent}, respectively.}
 
-\item{var_labels}{An optional named character vector or list where each element maps
-labels to variable names. If any element is unnamed or if any labels do not match
-variables in returned from \code{data}, all labels will be ignored and the table will be
-printed without them.}
+\item{var_labels}{An optional named character vector or list used to assign custom
+labels to variable names. Each element should be named and correspond to a variable in
+the returned table. If any element is unnamed or references a variable not returned in
+the table, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional vector that contains values to exclude from the data. Default
-is \code{NULL}, which includes all present values.}
+\item{ignore}{An optional vector of values to exclude from variables matching the
+specified variable stem. Defaults to \code{NULL}, which retains all values.}
 }
 \value{
-A tibble displaying frequency counts and/or percentages for each value of a
-set of variables sharing the same variable stem. When the output is in the wider format,
-columns beginning with \code{count_value} and \code{percent_value} prefixes report the count and
-percentage, respectively, for each distinct response  value of the variable.
+A tibble showing the relative frequencies and/or percentages of multiple response
+variables sharing a common variable stem.
 }
 \description{
-\code{select_tbl()} presents frequency counts and percentages
-(count, percent) for binary (e.g., Unselected/Selected) and ordinal (e.g.,
-strongly disagree to strongly agree) variables with the same variable stem.
-A variable stem is a common prefix found in related variable names, often
-corresponding to similar survey items, that represents a shared concept before
-unique identifiers (like time points) are added. For example, in the \code{stem_social_psych}
-dataset, the two variables \code{belong_belongStem_w1} and \code{belong_belongStem_w2}
-share the variable stem \code{belong_belongStem} (e.g., "I feel like an outsider in
-STEM"), with suffixes (_w1, _w2) indicating different measurement waves. By
-default, missing data are excluded from the calculations in a listwise fashion.
+\code{select_tbl()} displays frequency counts and percentages (i.e.,
+count and percent) for multiple response variables, including binary variables
+(such as Unselected/Selected) and ordinal variables (such as responses ranging
+from strongly disagree to strongly agree), that share a common variable stem.
+A variable 'stem' is a shared naming pattern across related variables, often
+representing repeated measures of the same concept or a series of items measuring
+a single construct. Missing data are excluded using \code{listwise} deletion by default.
 }
 \examples{
 select_tbl(data = tas,

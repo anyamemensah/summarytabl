@@ -19,19 +19,15 @@ cat_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{row_var}{A character string of the name of a column in \code{data} containing
-categorical data. This is the primary categorical variable. When pivoted to the
-\code{wider} format, the categories of this variable will appear in the rows of the
-table.}
+\item{row_var}{A character string of the name of a variable in \code{data} containing
+categorical data. This is the primary categorical variable.}
 
-\item{col_var}{A character string of the name of a column in \code{data} containing
-categorical data. This is the primary categorical variable. When pivoted to the
-\code{wider} format, the categories of this variable will appear in the columns of
-the table.}
+\item{col_var}{A character string of the name of a variable in \code{data} containing
+categorical data.}
 
 \item{margins}{A character string that determines how percentage values are
-calculated; whether they sum to one across rows, columns, or the entire table.
-Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
+calculated; whether they sum to one across rows, columns, or the entire table (i.e.,
+all). Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
 
 \item{na.rm.row_var}{A logical value indicating whether missing values for \code{row_var}
 should be removed before calculations. Default is \code{FALSE}.}
@@ -39,29 +35,27 @@ should be removed before calculations. Default is \code{FALSE}.}
 \item{na.rm.col_var}{A logical value indicating whether missing values for \code{col_var}
 should be removed before calculations. Default is \code{FALSE}.}
 
-\item{pivot}{A character string specifying the format of the returned summary table.
-The default is \code{longer}, which returns the data in long format. To return the data
-in wide format, use \code{wider}.}
+\item{pivot}{A character string that determines the format of the table. By default,
+\code{longer} returns the data in the long format. To return the data in the \code{wide} format,
+specify \code{wider}.}
 
 \item{only}{A character string or vector of strings indicating the types of summary
 data to return. The default is \code{NULL}, which includes both counts and percentages. To
-return only one type, specify \code{count} or \code{percent}. Percentages are calculated column-
-wise, grouped by \code{col_var}.}
+return only one type, specify \code{count} or \code{percent}.}
 
-\item{ignore}{A named character vector or list containing values to ignore from
-\code{row_var} and \code{col_var}.}
+\item{ignore}{An optional named vector or list that defines values to exclude from
+\code{row_var} and \code{col_var}. If set to \code{NULL} (default), all values are retained. To exclude
+multiple values from both \code{row_var} and \code{col_var}, supply a named list.}
 }
 \value{
-A tibble displaying relative frequency counts and/or percentages of \code{row_var},
-grouped by \code{col_var}.
+A tibble showing relative frequencies and/or percentages of \code{row_var}
+by \code{col_var}.
 }
 \description{
-\code{cat_group_tbl()} presents frequency counts and percentages
-(count, percent) for nominal or categorical variables by some grouping variable.
-Relative frequencies and percentages of each level of the primary categorical
-variable (\code{row_var}) within each level of the grouping variable (\code{col_var}) can
-be returned. Missing data can be excluded for either variable from the calculations.
-By default, the table is returned in the long format.
+\code{cat_group_tbl()} summarizes nominal or categorical variables by a
+grouping variable, returning frequency counts and percentages. It supports long or
+wide output formats, handles missing data, and allows percentage calculations across
+rows, columns, or the full table.
 }
 \examples{
 cat_group_tbl(data = nlsy,

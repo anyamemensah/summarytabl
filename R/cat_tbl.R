@@ -1,23 +1,21 @@
 #' @title Summarize a categorical variable
 #'
-#' @description `cat_tbl()` presents frequency counts and percentages 
-#' (count, percent) for nominal or categorical variables. Missing data can 
-#' be excluded from the calculations.
+#' @description `cat_tbl()` summarizes nominal or categorical variables, returning 
+#' frequency counts and percentages. counts and percentages. Missing values can be 
+#' excluded from the analysis.
 #'
 #' @param data A data frame.
 #' @param var A character string of the name of a variable in `data` containing 
 #' categorical data.
 #' @param na.rm A logical value indicating whether missing values should be 
 #' removed before calculations. Default is `FALSE`.
-#' @param only A character string, or vector of character strings, of the 
-#' types of summary data to return. Default is `NULL`, which returns both 
-#' counts and percentages. To return only counts or percentages, use `count` 
-#' or `percent`, respectively.
-#' @param ignore An optional vector that contains values to exclude from the data. 
-#' Default is `NULL`, which includes all present values.
+#' @param only A character string or vector of character strings of the types of 
+#' summary data to return. Default is `NULL`, which returns both counts and percentages. 
+#' To return only counts or percentages, use `count` or `percent`, respectively.
+#' @param ignore An optional vector that contains values to exclude from `var`. 
+#' Default is `NULL`, which retains all values.
 #'
-#' @returns A tibble displaying the relative frequency counts and/or percentages 
-#' of `var`.
+#' @returns A tibble showing the relative frequencies and/or percentages of `var`.
 #'
 #' @author Ama Nyame-Mensah
 #'

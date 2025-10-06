@@ -1,4 +1,5 @@
-# Function that removes unrequested 'only' columns
+#### Utility functions used in 'summarytabl'
+# Function that removes unrequested 'only' columns from 'data'
 drop_only_cols <- function(data, only, only_type) {
   if (all(only %in% only_type)) {
     remove_patterns <- setdiff(only_type, only)
@@ -13,7 +14,8 @@ drop_only_cols <- function(data, only, only_type) {
   data
 }
 
-# Function that creates a list of two-sided formulas that map 
+
+# Function that generates a list of two-sided formulas that map 
 # values from one set to another
 tbl_key <- function(values_from, values_to, string = TRUE) {
   value_lengths <- vapply(list(values_from, values_to), length, numeric(1))
@@ -35,9 +37,8 @@ tbl_key <- function(values_from, values_to, string = TRUE) {
               .f = ~ rlang::new_formula(.x, .y))
 }
 
-# Function that searches for and returns the names of columns 
-# in a data frame that start with a specified variable stem
-# (i.e., prefix)
+# Function that searches for and returns the names of columns in 
+# a 'data' that start with a specified variable stem (i.e., prefix)
 find_columns <- function(data,
                          var_stem,
                          escape = FALSE,
@@ -67,6 +68,7 @@ escape_punct <- function(x) {
                 replacement = "\\\\\\1"))
 }
 
+
 # Function that returns a set of available summary statistics 
 # (descriptive types) for a specified table type
 only_type <- function(table_type) {
@@ -83,7 +85,8 @@ only_type <- function(table_type) {
   )
 }
 
-# Function that extracts and return a specific substring (i.e., 
+
+# Function that extracts and returns a specific substring (i.e., 
 # 'group flag') from a vector of column names
 extract_group_flags <- function(cols,
                                 group_flag,
@@ -103,7 +106,7 @@ extract_group_flags <- function(cols,
   group_flag
 }
 
-# Function that extracts variable 'data type'
+# Function that extracts a standardized variable 'data type'
 get_data_type <- function(x) {
   class_x <- class(x)
   
@@ -128,7 +131,8 @@ get_data_type <- function(x) {
 }
 
 
-# Permissible data types per 'table_type'
+# Function that returns valid variable or grouping variable data types 
+# based on the specified 'table_type'
 return_data_types <- function(table_type) {
   valid_var_types <- 
     switch(
@@ -147,7 +151,8 @@ return_data_types <- function(table_type) {
                valid_grp_type = valid_grp_type))
 }
 
-# Helper to check 'ignore' structure
+
+# Function that validates the structure of the 'ignore' argument
 check_ignore_struct <- function(ignore, table_type, group_func) {
   
   if (!is.null(ignore) && !(is.vector(ignore) || is.list(ignore))) { 
@@ -169,7 +174,8 @@ check_ignore_struct <- function(ignore, table_type, group_func) {
 }
 
 
-# Function to apply 'ignore' values logic to variables
+# Function that defines mapping rules for handling the 'ignore' 
+# argument and creating 'ignore_map'
 extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
   ignore_map <- list()
   
@@ -212,8 +218,8 @@ extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
 }
 
 
-# Function to convert haven_labelled vector into character vector
-# only value labels present in 'x' are retained
+# Function that converts a haven_labelled vector to a character 
+# vector, retaining only values present in x
 convert_labelled_to_chr <- function(x, return_labels = FALSE) {
   x_value_labels <- attr(x, "labels", exact = TRUE)
   x_chr <- as.character(unlist(lapply(x, function(ele) ele)))
@@ -240,7 +246,8 @@ convert_labelled_to_chr <- function(x, return_labels = FALSE) {
   return(x_chr)
 }
 
-# Helper function to validate 'data' argument
+
+# Function that validates the 'data' argument
 check_df <- function(data) {
   if (!is.data.frame(data)) {
     stop("The 'data' argument is not a data frame.")
@@ -253,7 +260,8 @@ check_df <- function(data) {
   return(list(valid = TRUE, df = data))
 }
 
-# Function for validating 'na.rm' arguments
+
+# Function that validates 'na.rm' arguments
 check_na.rm <- function(na.rm, var_label) {
   if (!is.logical(na.rm) || length(na.rm) != 1) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a logical vector of length one.",
@@ -263,6 +271,8 @@ check_na.rm <- function(na.rm, var_label) {
   return(list(valid = TRUE, na.rm = na.rm))
 }
 
+
+# Function that validates 'na_removal' arguments
 check_na_removal <- function(na_removal) {
   if (!is.character(na_removal) || length(na_removal) != 1) { 
     stop("Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one.") 
@@ -276,7 +286,8 @@ check_na_removal <- function(na_removal) {
 }
 
 
-# Function for validating variables
+# Function that validates individual variable arguments (e.g.,
+# 'var', 'col_var', 'row_var')
 check_var <- function(var_name, var_label, data) { 
   if (!is.character(var_name) || length(var_name) != 1) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a character vector of length one.", 
@@ -290,7 +301,10 @@ check_var <- function(var_name, var_label, data) {
   return(list(valid = TRUE, var = var_name, label = var_label))
 }
 
-# Helper functions for validating 'var_stem'
+
+# Function that checks that functions that only requires the 'var_stem' 
+# argument is correctly specified and returns the columns that match 
+# the provided prefix
 check_var_stem <- function(data,
                            var_stem,
                            var_label,
@@ -319,8 +333,9 @@ check_var_stem <- function(data,
 }
 
 
-# Function for validating functions with both 'var_stem' and 
-# 'group' arguments
+# Function that checks that functions that require both 'var_stem' and 
+# 'group' arguments are correctly specified and returns the columns that 
+# match these criteria.
 check_group_var_stem <- function(data = data,
                                  var_stem = var_stem,
                                  var_label = var_label,
@@ -351,11 +366,13 @@ check_group_var_stem <- function(data = data,
   if (group_type == "pattern") {
     cols_no_group <- unique(gsub(pattern = group, replacement = "", x = cols))
     
-    if (all(cols_no_group %in% cols) || !is.character(cols_no_group) || length(cols_no_group) != 1) {
-      stop(paste0(
-        "Invalid 'group_type' argument. Try changing the argument to: ",
-        ifelse(group_type == "pattern", "variable", "pattern"),
-        "."))
+    if (all(cols_no_group %in% cols) || !is.character(cols_no_group) || 
+        length(cols_no_group) != 1) {
+      stop(
+        paste("Invalid 'group' argument. The value provided to 'group' did",
+              "not produce a unique or expected set of column names in 'data'.",
+              "Please check for typos, spelling mistakes, or invalid characters.")
+      )
     }
   } else {
     group_col <- grep(pattern = group, 
@@ -364,7 +381,11 @@ check_group_var_stem <- function(data = data,
                       value = TRUE)
     
     if (!is.character(group_col) || length(group_col) != 1) {
-      stop("The 'group' argument is not a column in 'data'.")
+      stop(
+        paste("Invalid 'group' argument. The value provided to 'group' is", 
+              "not a column in 'data'. Check for typos, spelling mistakes,",
+              "or invalid characters.")
+      )
     }
     
     group <- group_col
@@ -378,7 +399,7 @@ check_group_var_stem <- function(data = data,
 }
 
 
-# Function to check variable data types
+# Function that validates variable data types
 check_data_type <- function(data_type, table_type, variable_type, arg_name) {
   
   valid_types <- return_data_types(table_type)[[variable_type]] 
@@ -391,7 +412,8 @@ check_data_type <- function(data_type, table_type, variable_type, arg_name) {
   return(list(valid = TRUE, dtype = data_type))
 }
 
-# Function to validate 'only' argument
+
+# Function that validates the 'only' argument
 check_only <- function(only = NULL, table_type) {
   if (is.null(only)) {
     current_only <- only_type(table_type)
@@ -412,7 +434,7 @@ check_only <- function(only = NULL, table_type) {
 }
 
 
-# Function to validate 'pivot' argument
+# Function that validates the 'pivot' argument
 check_pivot <- function(pivot = "longer") {
   if (!is.character(pivot) || length(pivot) != 1) {
     stop("Invalid 'pivot' argument. 'pivot' must be a character vector of length one.")
@@ -425,7 +447,8 @@ check_pivot <- function(pivot = "longer") {
   return(list(valid = TRUE, pivot = pivot))
 }
 
-# Function to validate 'margins' argument
+
+# Function that validates the 'margins' argument
 check_margins <- function(margins) {
   if (!is.character(margins) || length(margins) != 1) {
     stop("Invalid 'margins' argument. 'margins' must be a character vector of length one.")
@@ -436,240 +459,5 @@ check_margins <- function(margins) {
   }
   
   return(list(valid = TRUE, margins = margins))
-}
-
-
-# Helper function to validate 'cat_tbl' args
-check_cat_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    var = function(args)
-      check_var(
-        var_name = args$var_name,
-        var_label = args$var_label,
-        data = args$data
-      ),
-    dtype = function(args)
-      check_data_type(
-        data_type = get_data_type(args$data[[args$var_name]]), 
-        table_type = args$table_type,
-        variable_type = args$variable_type,
-        arg_name = args$var_label
-      ),
-    na.rm = function(args)
-      check_na.rm(na.rm = args$na.rm, var_label = args$label_na_rm),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    table_type = function(args)
-      args$table_type
-  )
-  
-  lapply(checks, function(chk) chk(args))
-}
-
-# Helper function to validate 'cat_group_tbl' args
-check_cat_group_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    row_var = function(args)
-      check_var(
-        var_name = args$row_var,
-        var_label = args$var_label_row,
-        data = args$data
-      ),
-    col_var = function(args)
-      check_var(
-        var_name = args$col_var,
-        var_label = args$var_label_col,
-        data = args$data
-      ),
-    margins = function(args)
-      check_margins(margins = args$margins),
-    row_dtype = function(args)
-      check_data_type(
-        data_type = get_data_type(args$data[[args$row_var]]), 
-        table_type = args$table_type,
-        variable_type = args$variable_type,
-        arg_name = args$var_label_row
-      ),
-    col_dtype = function(args)
-      check_data_type(
-        data_type = get_data_type(args$data[[args$col_var]]), 
-        table_type = args$table_type,
-        variable_type = args$variable_type,
-        arg_name = args$var_label_col
-      ),
-    na_row = function(args)
-      check_na.rm(na.rm = args$na_rm_row_var, var_label = args$label_na_rm_row),
-    na_col = function(args)
-      check_na.rm(na.rm = args$na_rm_col_var, var_label = args$label_na_rm_col),
-    pivot = function(args)
-      check_pivot(pivot = args$pivot),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    table_type = function(args)
-      args$table_type
-  )
-  
-  lapply(checks, function(chk) chk(args))
-}
-
-
-# Helper function to validate 'select_tbl' args
-check_select_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    var_stem = function(args)
-      check_var_stem(
-        data = args$data,
-        var_stem = args$var_stem,
-        var_label = args$var_label,
-        var_stem_labels = args$var_labels,
-        escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case
-      ),
-    na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
-    pivot = function(args)
-      check_pivot(pivot = args$pivot),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    table_type = function(args)
-      args$table_type
-  )
-  
-  lapply(checks, function(chk) chk(args))
-}
-
-
-# Helper function to validate 'select_group_tbl' args
-check_select_group_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    var_stem = function(args)
-      check_group_var_stem(
-        data = args$data,
-        var_stem = args$var_stem,
-        var_label = args$var_label,
-        escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case,
-        group = args$group_var, 
-        group_type = args$group_type, 
-        escape_group = args$escape_group, 
-        ignore_group_case = args$ignore_group_case, 
-        remove_group_non_alnum = args$remove_group_non_alnum, 
-        var_stem_labels = args$var_labels
-      ),
-    na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
-    pivot = function(args)
-      check_pivot(pivot = args$pivot),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    margins = function(args)
-      check_margins(args$margins),
-    table_type = function(args)
-      args$table_type,
-    group_type = function(args)
-      args$group_type,
-    group_name = function (args)
-      args$group_name,
-    escape_group = function (args)
-      args$escape_group,
-    ignore_group_case = function (args)
-      args$ignore_group_case,
-    remove_group_non_alnum = function (args)
-      args$remove_group_non_alnum
-  )
-  
-  lapply(checks, function(chk) chk(args))
-}
-
-
-# Helper function to validate 'mean_tbl' args
-check_mean_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    var_stem = function(args)
-      check_var_stem(
-        data = args$data,
-        var_stem = args$var_stem,
-        var_label = args$var_label,
-        var_stem_labels = args$var_labels,
-        escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case
-      ),
-    na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    table_type = function(args)
-      args$table_type
-  )
-  
-  lapply(checks, function(chk) chk(args))
-}
-
-# Helper function to validate 'mean_group_tbl' args
-check_mean_group_args <- function(args) {
-  checks <- list(
-    data = function(args)
-      check_df(data = args$data),
-    var_stem = function(args)
-      check_group_var_stem(
-        data = args$data,
-        var_stem = args$var_stem,
-        var_label = args$var_label,
-        escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case,
-        group = args$group_var, 
-        group_type = args$group_type, 
-        escape_group = args$escape_group, 
-        ignore_group_case = args$ignore_group_case, 
-        remove_group_non_alnum = args$remove_group_non_alnum, 
-        var_stem_labels = args$var_labels
-      ),
-    na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
-    only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
-    ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
-    table_type = function(args)
-      args$table_type,
-    group_type = function(args)
-      args$group_type,
-    group_name = function (args)
-      args$group_name,
-    escape_group = function (args)
-      args$escape_group,
-    ignore_group_case = function (args)
-      args$ignore_group_case,
-    remove_group_non_alnum = function (args)
-      args$remove_group_non_alnum
-  )
-  
-  lapply(checks, function(chk) chk(args))
 }
 

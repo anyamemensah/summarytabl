@@ -1,81 +1,76 @@
 #' Summarize continuous variables by group
 #'
-#' @description `mean_group_tbl()` presents descriptive statistics (mean, sd, minimum, 
-#' maximum, number of non-missing observations) for interval (e.g., Test scores) and 
-#' ratio level (e.g., Age) variables with the same variable stem by some grouping variable. 
-#' A variable stem is a common prefix found in related variable names, often corresponding 
-#' to similar survey items, that represents a shared concept before unique identifiers (like 
-#' time points) are added. For example, in the `stem_social_psych` dataset, the two variables 
-#' 'belong_belongStem_w1' and 'belong_belongStem_w2' share the variable stem 'belong_belongStem' 
-#' (e.g., "I feel like an outsider in STEM"), with suffixes (_w1, _w2) indicating different 
-#' measurement waves. By default, missing data are excluded from the calculations in a listwise 
-#' fashion.
+#' @description `mean_group_tbl()` calculates descriptive statistics (mean, standard 
+#' deviation, minimum, maximum, and number of non-missing observations) for interval 
+#' and ratio-level variables that share a common prefix (variable stem), grouped either 
+#' by another variable in your dataset or by a matched pattern in the variable names. A 
+#' variable 'stem' is a shared naming pattern across related variables, often representing 
+#' repeated measures of the same concept or a series of items measuring a single construct. 
+#' By default, missing data are excluded using `listwise` deletion.
 #'
 #' @param data A data frame.
 #' @param var_stem A character string of a variable stem or the full name of a variable in 
 #' `data`.
 #' @param escape_stem A logical value indicating whether to escape `var_stem`. Default is
 #' `FALSE`.
-#' @param ignore_stem_case A logical value indicating whether the search for columns matching
-#' the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param group A character string of a variable in `data` or a pattern to use to search for 
-#' variables in `data`.
-#' @param group_type A character string that defines the type of grouping variable. Should be 
-#' one of `pattern` or `variable`. Default is `variable`, in which case the variable matching 
-#' the `group` string will be searched for within `data`.
-#' @param group_name A character string passed to the final table to rename the `group` column.
-#' @param escape_group A logical value indicating whether to escape string supplied to `group`.
-#' @param ignore_group_case A logical value indicating whether `group` is case-insensitive.
-#' Default is `FALSE`.
+#' @param ignore_stem_case A logical value indicating whether the search for columns 
+#' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
+#' @param group A character string representing a variable name or a pattern used to search 
+#' for variables in `data`.
+#' @param group_type A character string that defines how the `group` argument should be
+#' interpreted. Should be one of `pattern` or `variable`. Defaults to `variable`, which 
+#' searches for a matching variable name in `data`.
+#' @param group_name An optional character string used to rename the `group` column in the 
+#' final table. When `group_type` is set to `variable`, the column name defaults to the 
+#' matched variable name from `data.` When set to `pattern`, the default column name is 
+#' `group`.
+#' @param escape_group A logical value indicating whether to escape string supplied to 
+#' `group`.
+#' @param ignore_group_case A logical value specifying whether the search for a grouping 
+#' variable (if `group_type` is `variable`) or for variables matching a pattern (if 
+#' `group_type` is `pattern`) should be case-insensitive. Default is `FALSE`. Set to `TRUE` 
+#' to ignore case. 
 #' @param remove_group_non_alnum A logical value indicating whether to remove all non-
-#' alphanumeric characters (anything that is not a letter or number) from `group`. Default 
-#' is `TRUE`.
-#' @param na_removal A character string specifying how to remove missing values. Should be
-#' one of `pairwise` or `listwise`. Default is `listwise`.
-#' @param only A character string or vector of character strings of the types of
-#' summary data to return. Default is `NULL`, which returns mean (mean), standard
-#' deviation (sd), minimum value (min), maximum value (max), and non-missing responses
-#' (nobs).
-#' @param var_labels An optional named character vector or list where each element maps
-#' labels to variable names. If any element is unnamed or if any labels do not match 
-#' variables in returned from `data`, all labels will be ignored and the table will be 
-#' printed without them.
-#' @param ignore An optional named vector or list specifying values to exclude from the 
-#' dataset and analysis. By default, `NULL` includes all available values. To omit values
-#' from variables returned by `var_stem`, use the provided stem as the name. To exclude 
-#' values from both `var_stem` variables and a grouping variable in `data`, supply a list.
+#' alphanumeric characters (i.e., anything that is not a letter or number) from `group`. 
+#' Default is `TRUE`.
+#' @param na_removal A character string that specifies the method for handling missing 
+#' values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param only A character string or vector of character strings specifying which summary 
+#' statistics to return. Defaults to NULL, which includes mean (mean), standard deviation 
+#' (sd), minimum (min), maximum (max), and count of non-missing values (nobs).
+#' @param var_labels An optional named character vector or list used to assign custom 
+#' labels to variable names. Each element should be named and correspond to a variable in 
+#' the returned table. If any element is unnamed or references a variable not returned in 
+#' the table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional named vector or list that defines values to exclude from 
+#' variables matching the specified variable stem and, if applicable, a grouping variable 
+#' in `data.` If set to `NULL` (default), all values are retained. To exclude values from 
+#' variables identified by `var_stem`, use the stem name as the key. To exclude multiple 
+#' values from both `var_stem` variables and a grouping variable, supply a named list.
 #'
-#' @returns A tibble presenting summary statistics (e.g., mean, standard deviation, minimum 
-#' value, maximum, number of non-missing observations) for a set of variables sharing the 
-#' same variable stem. The results are grouped by either a grouping variable in the data or 
-#' by a pattern matched with variable names.
+#' @returns A tibble presenting summary statistics for continuous variables that share a 
+#' common stem in their names. The statistics are grouped either by a specified grouping 
+#' variable within the dataset or by a matched pattern in the variable names.
 #'
 #' @author Ama Nyame-Mensah
 #'
 #' @examples
-#' mean_group_tbl(data = stem_social_psych,
-#'                var_stem = "belong_welcomedStem",
-#'                group = "_w\\d",
-#'                group_type = "pattern",
+#' sdoh_child_ages_region <- dplyr::select(sdoh, c(REGION, ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+#'                                                 ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+#' mean_group_tbl(data = sdoh_child_ages_region,
+#'                var_stem = "ACS_PCT_AGE",
+#'                group = "REGION",
+#'                group_name = "us_region",
 #'                na_removal = "pairwise",
-#'                var_labels = c(belong_welcomedStem_w1 = "I feel welcomed in STEM workplaces",
-#'                               belong_welcomedStem_w2 = "I feel welcomed in STEM workplaces"),
-#'                group_name = "wave")
-#' 
-#' mean_group_tbl(data = social_psy_data,
-#'                var_stem = "belong",
-#'                group = "gender",
-#'                group_type = "variable",
-#'                na_removal = "pairwise",
-#'                var_labels = c(belong_1 = "I feel like I belong at this institution",
-#'                               belong_2 = "I  feel like part of the community",
-#'                               belong_3 = "I feel valued by this institution"),
-#'                group_name = "gender_identity")
+#'                var_labels = c(ACS_PCT_AGE_0_4 = "Percentage of population between ages 0-4",
+#'                               ACS_PCT_AGE_5_9 = "Percentage of population between ages 5-9",
+#'                               ACS_PCT_AGE_10_14 = "Percentage of population between ages 10-14",
+#'                               ACS_PCT_AGE_15_17 = "Percentage of population between ages 15-17"))
 #' 
 #' grouped_data <-
 #'   data.frame(
-#'     symptoms.t1 = sample(c(1:5, -999), replace = TRUE, size = 50),
-#'     symptoms.t2 = sample(c(NA, 1:5, -999), replace = TRUE, size = 50)
+#'     symptoms.t1 = sample(c(0:10, -999), replace = TRUE, size = 50),
+#'     symptoms.t2 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50)
 #'   )
 #' 
 #' mean_group_tbl(data = grouped_data,

@@ -69,6 +69,44 @@ test_that("Invalid 'only' argument", {
   )
 })
 
+test_that("Invalid 'group'/'group_type' argument", {
+  set.seed(0204)
+  symptoms_data <-
+    data.frame(
+      symptoms_t1 = sample(c(0:10, -999), replace = TRUE, size = 50),
+      symptoms_t2 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50),
+      symptoms_t3 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50),
+      group = sample(c("placebo","treatment"), replace = TRUE, size = 50)
+    )
+  
+  expect_error(
+    mean_group_tbl(data = symptoms_data, 
+                   var_stem = "symptoms",
+                   group = "_t\\d",
+                   group_type = "variable",
+                   group_name = "time_point",
+                   ignore = c(symptoms = -999),
+                   only = c("mean", "sd")),
+    paste("Invalid 'group' argument. The value provided to 'group' is", 
+          "not a column in 'data'. Check for typos, spelling mistakes,",
+          "or invalid characters.")
+  )
+  
+  expect_error(
+    mean_group_tbl(data = symptoms_data, 
+                   var_stem = "symptoms",
+                   group = "group",
+                   group_type = "pattern",
+                   group_name = "study_group",
+                   ignore = c(symptoms = -999),
+                   only = c("mean", "sd")),
+    paste("Invalid 'group' argument. The value provided to 'group' did",
+          "not produce a unique or expected set of column names in 'data'.",
+          "Please check for typos, spelling mistakes, or invalid characters.")
+  )
+
+})
+
 
 test_that("Expected output for group pattern with specified group name", {
   observed <-
@@ -315,7 +353,9 @@ test_that("Error and expected output with ignore_group_case", {
       group_type = "variable",
       ignore_group_case = FALSE
     ),
-    "The 'group' argument is not a column in 'data'."
+    paste("Invalid 'group' argument. The value provided to 'group' is", 
+          "not a column in 'data'. Check for typos, spelling mistakes,",
+          "or invalid characters.")
   )
   
   observed1 <-
