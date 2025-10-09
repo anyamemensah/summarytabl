@@ -183,30 +183,31 @@ variable within the dataset or by a matched pattern in the variable names.</p>
 <span class="r-in"><span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span></span>
 <span class="r-in"><span>               group_name <span class="op">=</span> <span class="st">"us_region"</span>,</span></span>
 <span class="r-in"><span>               na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span></span>
-<span class="r-in"><span>               var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"Percentage of population between ages 0-4"</span>,</span></span>
-<span class="r-in"><span>                              ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"Percentage of population between ages 5-9"</span>,</span></span>
-<span class="r-in"><span>                              ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"Percentage of population between ages 10-14"</span>,</span></span>
-<span class="r-in"><span>                              ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"Percentage of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>               var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"% of population between ages 0-4"</span>,</span></span>
+<span class="r-in"><span>                              ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"% of population between ages 5-9"</span>,</span></span>
+<span class="r-in"><span>                              ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"% of population between ages 10-14"</span>,</span></span>
+<span class="r-in"><span>                              ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"% of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 16 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    variable          variable_label      us_region  mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ACS_PCT_AGE_0_4   Percentage of popu… Midwest    5.90 1.13   2.4  12.0   <span style="text-decoration: underline;">1</span>055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ACS_PCT_AGE_0_4   Percentage of popu… Northeast  5.04 0.829  0.95  8.12   217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ACS_PCT_AGE_0_4   Percentage of popu… South      5.76 1.26   0.98 18.4   <span style="text-decoration: underline;">1</span>422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ACS_PCT_AGE_0_4   Percentage of popu… West       5.80 1.67   0.23 13.8    449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ACS_PCT_AGE_5_9   Percentage of popu… Midwest    6.17 1.18   0.95 12.9   <span style="text-decoration: underline;">1</span>055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ACS_PCT_AGE_5_9   Percentage of popu… Northeast  5.28 0.762  0.53  7.53   217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ACS_PCT_AGE_5_9   Percentage of popu… South      5.99 1.24   0    14.9   <span style="text-decoration: underline;">1</span>422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ACS_PCT_AGE_5_9   Percentage of popu… West       6.23 1.78   0    12.2    449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ACS_PCT_AGE_10_14 Percentage of popu… Midwest    6.48 1.15   1.71 11.6   <span style="text-decoration: underline;">1</span>055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ACS_PCT_AGE_10_14 Percentage of popu… Northeast  5.69 0.779  1.08  7.94   217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ACS_PCT_AGE_10_14 Percentage of popu… South      6.48 1.23   0    13.6   <span style="text-decoration: underline;">1</span>422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> ACS_PCT_AGE_10_14 Percentage of popu… West       6.46 1.62   0    11.6    449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> ACS_PCT_AGE_15_17 Percentage of popu… Midwest    3.94 0.635  0.64  7.83  <span style="text-decoration: underline;">1</span>055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> ACS_PCT_AGE_15_17 Percentage of popu… Northeast  3.59 0.383  2.02  4.67   217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> ACS_PCT_AGE_15_17 Percentage of popu… South      3.86 0.747  0    11.9   <span style="text-decoration: underline;">1</span>422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> ACS_PCT_AGE_15_17 Percentage of popu… West       3.80 0.985  0    11.6    449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ACS_PCT_AGE_0_4   % of population be… Midwest    5.90 1.13   2.4  12.0   <span style="text-decoration: underline;">1</span>055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ACS_PCT_AGE_0_4   % of population be… Northeast  5.04 0.829  0.95  8.12   217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ACS_PCT_AGE_0_4   % of population be… South      5.76 1.26   0.98 18.4   <span style="text-decoration: underline;">1</span>422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ACS_PCT_AGE_0_4   % of population be… West       5.80 1.67   0.23 13.8    449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ACS_PCT_AGE_5_9   % of population be… Midwest    6.17 1.18   0.95 12.9   <span style="text-decoration: underline;">1</span>055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ACS_PCT_AGE_5_9   % of population be… Northeast  5.28 0.762  0.53  7.53   217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ACS_PCT_AGE_5_9   % of population be… South      5.99 1.24   0    14.9   <span style="text-decoration: underline;">1</span>422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ACS_PCT_AGE_5_9   % of population be… West       6.23 1.78   0    12.2    449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ACS_PCT_AGE_10_14 % of population be… Midwest    6.48 1.15   1.71 11.6   <span style="text-decoration: underline;">1</span>055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ACS_PCT_AGE_10_14 % of population be… Northeast  5.69 0.779  1.08  7.94   217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ACS_PCT_AGE_10_14 % of population be… South      6.48 1.23   0    13.6   <span style="text-decoration: underline;">1</span>422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> ACS_PCT_AGE_10_14 % of population be… West       6.46 1.62   0    11.6    449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> ACS_PCT_AGE_15_17 % of population be… Midwest    3.94 0.635  0.64  7.83  <span style="text-decoration: underline;">1</span>055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> ACS_PCT_AGE_15_17 % of population be… Northeast  3.59 0.383  2.02  4.67   217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> ACS_PCT_AGE_15_17 % of population be… South      3.86 0.747  0    11.9   <span style="text-decoration: underline;">1</span>422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> ACS_PCT_AGE_15_17 % of population be… West       3.80 0.985  0    11.6    449</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0222</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">grouped_data</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    symptoms.t1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">10</span>, <span class="op">-</span><span class="fl">999</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span></span>
@@ -223,8 +224,8 @@ variable within the dataset or by a matched pattern in the variable names.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable    group  mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> symptoms.t1 t1     4.84  3.18     0    10    37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> symptoms.t2 t2     4.76  3.09     0    10    37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> symptoms.t1 t1     5.51  3.19     0    10    37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> symptoms.t2 t2     4.95  2.97     0    10    37</span>
 <span class="r-in"><span>               </span></span>
 </code></pre></div>
     </div>

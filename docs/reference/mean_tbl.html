@@ -127,8 +127,7 @@ variable stem.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">sdoh_child_ages</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sdoh</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ACS_PCT_AGE_0_4</span>, <span class="va">ACS_PCT_AGE_5_9</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sdoh_child_ages</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sdoh</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ACS_PCT_AGE_0_4</span>, <span class="va">ACS_PCT_AGE_5_9</span>,</span></span>
 <span class="r-in"><span>                                            <span class="va">ACS_PCT_AGE_10_14</span>, <span class="va">ACS_PCT_AGE_15_17</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">mean_tbl</span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh_child_ages</span>,var_stem <span class="op">=</span> <span class="st">"ACS_PCT_AGE"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
@@ -142,18 +141,18 @@ variable stem.</p>
 <span class="r-in"><span><span class="fu">mean_tbl</span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh_child_ages</span>,</span></span>
 <span class="r-in"><span>         var_stem <span class="op">=</span> <span class="st">"ACS_PCT_AGE"</span>,</span></span>
 <span class="r-in"><span>         na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span></span>
-<span class="r-in"><span>         var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"Percentage of population between ages 0-4"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"Percentage of population between ages 5-9"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"Percentage of population between ages 10-14"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"Percentage of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>         var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"% of population between ages 0-4"</span>,</span></span>
+<span class="r-in"><span>                        ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"% of population between ages 5-9"</span>,</span></span>
+<span class="r-in"><span>                        ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"% of population between ages 10-14"</span>,</span></span>
+<span class="r-in"><span>                        ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"% of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable          variable_label                  mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ACS_PCT_AGE_0_4   Percentage of population betw…  5.72 1.29   0.23  18.4  <span style="text-decoration: underline;">3</span>221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ACS_PCT_AGE_5_9   Percentage of population betw…  6.01 1.31   0     14.9  <span style="text-decoration: underline;">3</span>221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ACS_PCT_AGE_10_14 Percentage of population betw…  6.42 1.25   0     13.6  <span style="text-decoration: underline;">3</span>221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ACS_PCT_AGE_15_17 Percentage of population betw…  3.86 0.730  0     11.9  <span style="text-decoration: underline;">3</span>221</span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ACS_PCT_AGE_0_4   % of population between ages …  5.72 1.29   0.23  18.4  <span style="text-decoration: underline;">3</span>221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ACS_PCT_AGE_5_9   % of population between ages …  6.01 1.31   0     14.9  <span style="text-decoration: underline;">3</span>221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ACS_PCT_AGE_10_14 % of population between ages …  6.42 1.25   0     13.6  <span style="text-decoration: underline;">3</span>221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ACS_PCT_AGE_15_17 % of population between ages …  3.86 0.730  0     11.9  <span style="text-decoration: underline;">3</span>221</span>
+<span class="r-in"><span>                        </span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

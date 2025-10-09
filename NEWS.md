@@ -113,8 +113,6 @@ select_group_tbl(data = tas_recoded,
 	- `gss`: A subset of the `2022 General Social Survey`.
 2. A new hex sticker logo has been created for the package.
 
-<img src="./man/figures/summarytabl_logo.png" alt="summarytabl logo" style="width:150px;"/>
-
 # summarytabl 0.1.0
 
 * Developmental release of summarytabl
