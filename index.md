@@ -1,6 +1,8 @@
 
 # summarytabl <img src="man/figures/logo.png" width = "200px" align = "right">
 
+[![CRAN Version](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
+
 summarytabl is an R package that provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames. summarytabl is designed to streamline descriptive analysis of categorical, ordinal, and continuous data. Whether you’re working on a report or presentation, summarytabl simplifies the process of summarizing your data for insightful interpretation and effective communication.  
 
 ## Installation

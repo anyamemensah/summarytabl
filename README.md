@@ -6,10 +6,7 @@
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
-[![Codecov test
-coverage](https://codecov.io/gh/anyamemensah/summarytabl/graph/badge.svg)](https://app.codecov.io/gh/anyamemensah/summarytabl)
-[![R-CMD-check](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml)
+Version](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
 <!-- badges: end -->
 
 summarytabl is an R package that provides functions for tabulating and
