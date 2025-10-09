@@ -99,7 +99,7 @@ from strongly disagree to strongly agree), that share a common variable stem,
 grouped either by another variable in your dataset or by a matched pattern in the
 variable names. A variable 'stem' is a shared naming pattern across related variables,
 often representing repeated measures of the same concept or a series of items measuring
-a single construct. Missing data are excluded using \code{listwise} deletion by default
+a single construct. Missing data are excluded using \code{listwise} deletion by default.
 }
 \examples{
 select_group_tbl(data = stem_social_psych,

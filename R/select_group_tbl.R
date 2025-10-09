@@ -7,7 +7,7 @@
 #' grouped either by another variable in your dataset or by a matched pattern in the 
 #' variable names. A variable 'stem' is a shared naming pattern across related variables, 
 #' often representing repeated measures of the same concept or a series of items measuring 
-#' a single construct. Missing data are excluded using `listwise` deletion by default
+#' a single construct. Missing data are excluded using `listwise` deletion by default.
 #'
 #' @param data A data frame.
 #' @param var_stem A character string of a variable stem or the full name of a variable in 
