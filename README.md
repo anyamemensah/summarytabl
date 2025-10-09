@@ -1,7 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# summarytabl <img src="man/figures/logo.png" width = "200px" align = "right">
+# summarytabl <img src="man/figures/summarytabl_logo.png" width = "200px" align = "right">
 
 <!-- badges: start -->
 

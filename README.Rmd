@@ -2,18 +2,7 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
-# summarytabl <img src="man/figures/logo.png" width = "200px" align = "right">
+# summarytabl <img src="man/figures/summarytabl_logo.png" width = "200px" align = "right">
 
 <!-- badges: start -->
 [![CRAN Version](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
