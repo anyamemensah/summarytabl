@@ -6,12 +6,15 @@
 \alias{summarytabl-package}
 \title{summarytabl: Generate Summary Tables for Continuous, Ordinal, and Categorical Data}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames. The package was designed to streamline exploratory data analysis and simplify the creation of summary tables for reports and other purposes.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://anyamemensah.github.io/summarytabl/}
+  \item \url{https://github.com/anyamemensah/summarytabl}
 }
 
 }

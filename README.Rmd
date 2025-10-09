@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# summarytabl <img src="man/figures/logo.png" width = "200px" align = "right">
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
+[![Codecov test coverage](https://codecov.io/gh/anyamemensah/summarytabl/graph/badge.svg)](https://app.codecov.io/gh/anyamemensah/summarytabl)
+[![R-CMD-check](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+summarytabl is an R package that provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames.
+
+## Installation
+
+Install the summarytabl package from CRAN using the following command:
+
+```r
+install.packages("summarytabl")
+```
+
+For the latest updates, install the development version of the package from GitHub:
+
+``` r
+remotes::install_github("anyamemensah/summarytabl", build_vignettes = TRUE)
+```
+
+## Learn more
+
+Learn more about the package by browsing the [online documentation](https://anyamemensah.github.io/summarytabl/) or reviewing the introductory vignette:
+
+```r
+vignette("summarytabl-intro", "summarytabl")
+```
+
+If you notice a bug or would like to make a suggestion about how to improve the package, please [submit an issue](https://github.com/anyamemensah/summarytabl/issues) or join the discussion on a [pull request](https://github.com/anyamemensah/summarytabl/pulls).
+

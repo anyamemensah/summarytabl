@@ -9,3 +9,5 @@
 ^inst/ignore/
 ^index.md$
 ^README.md$
+^README\.Rmd$
+^codecov\.yml$

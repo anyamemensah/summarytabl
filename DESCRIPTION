@@ -10,7 +10,7 @@ Authors@R: c(
     )
   )
 Maintainer: Ama Nyame-Mensah <ama@anyamemensah.com>
-URL: https://anyamemensah.github.io/summarytabl/
+URL: https://anyamemensah.github.io/summarytabl/, https://github.com/anyamemensah/summarytabl
 Description: Provides functions for tabulating and summarizing continuous, ordinal, 
     and categorical variables in data frames. The package was designed to streamline 
     exploratory data analysis and simplify the creation of summary tables for reports 
