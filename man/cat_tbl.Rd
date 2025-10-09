@@ -28,7 +28,7 @@ A tibble showing the relative frequencies and/or percentages of \code{var}.
 \description{
 \code{cat_tbl()} summarizes nominal or categorical variables, returning
 frequency counts and percentages. counts and percentages. Missing values can be
-excluded from the analysis.
+excluded from the final table
 }
 \examples{
 cat_tbl(data = nlsy, var = "gender")

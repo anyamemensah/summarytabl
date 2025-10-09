@@ -44,7 +44,7 @@ searches for a matching variable name in \code{data}.}
 
 \item{group_name}{An optional character string used to rename the \code{group} column in the
 final table When \code{group_type} is set to \code{variable}, the column name defaults to the
-matched variable name from \code{data.} When set to \code{pattern}, the default column name is
+matched variable name from \code{data}. When set to \code{pattern}, the default column name is
 \code{group}.}
 
 \item{margins}{A character string that determines how percentage values are calculated;
@@ -68,7 +68,7 @@ Default is \code{TRUE}.}
 values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 
 \item{pivot}{A character string that determines the format of the table. By default,
-\code{longer} returns the data in the long format. To receive the data in the \code{wide}
+\code{longer} returns the data in the long format. To return the data in the \code{wide}
 format, specify \code{wider}.}
 
 \item{only}{A character string or vector of character strings of the types of summary

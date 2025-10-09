@@ -23,7 +23,7 @@
 #' searches for a matching variable name in `data`.
 #' @param group_name An optional character string used to rename the `group` column in the 
 #' final table When `group_type` is set to `variable`, the column name defaults to the 
-#' matched variable name from `data.` When set to `pattern`, the default column name is 
+#' matched variable name from `data`. When set to `pattern`, the default column name is 
 #' `group`.
 #' @param margins A character string that determines how percentage values are calculated; 
 #' whether they sum to one across rows, columns, or the entire variable (i.e., all). 
@@ -41,7 +41,7 @@
 #' @param na_removal A character string that specifies the method for handling missing 
 #' values: `pairwise` or `listwise`. Defaults to `listwise`.
 #' @param pivot A character string that determines the format of the table. By default, 
-#' `longer` returns the data in the long format. To receive the data in the `wide` 
+#' `longer` returns the data in the long format. To return the data in the `wide` 
 #' format, specify `wider`.
 #' @param only A character string or vector of character strings of the types of summary 
 #' data to return. Default is `NULL`, which returns both counts and percentages. To return 

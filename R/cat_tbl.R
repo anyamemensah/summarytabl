@@ -2,7 +2,7 @@
 #'
 #' @description `cat_tbl()` summarizes nominal or categorical variables, returning 
 #' frequency counts and percentages. counts and percentages. Missing values can be 
-#' excluded from the analysis.
+#' excluded from the final table
 #'
 #' @param data A data frame.
 #' @param var A character string of the name of a variable in `data` containing 
