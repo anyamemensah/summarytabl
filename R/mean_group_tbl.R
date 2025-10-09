@@ -62,11 +62,12 @@
 #'                group = "REGION",
 #'                group_name = "us_region",
 #'                na_removal = "pairwise",
-#'                var_labels = c(ACS_PCT_AGE_0_4 = "Percentage of population between ages 0-4",
-#'                               ACS_PCT_AGE_5_9 = "Percentage of population between ages 5-9",
-#'                               ACS_PCT_AGE_10_14 = "Percentage of population between ages 10-14",
-#'                               ACS_PCT_AGE_15_17 = "Percentage of population between ages 15-17"))
+#'                var_labels = c(ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
+#'                               ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
+#'                               ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
+#'                               ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
 #' 
+#' set.seed(0222)
 #' grouped_data <-
 #'   data.frame(
 #'     symptoms.t1 = sample(c(0:10, -999), replace = TRUE, size = 50),

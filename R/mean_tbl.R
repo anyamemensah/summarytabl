@@ -32,7 +32,6 @@
 #' @author Ama Nyame-Mensah
 #'
 #' @examples
-#'
 #' sdoh_child_ages <- dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
 #'                                             ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
 #' mean_tbl(data = sdoh_child_ages,var_stem = "ACS_PCT_AGE")
@@ -40,11 +39,11 @@
 #' mean_tbl(data = sdoh_child_ages,
 #'          var_stem = "ACS_PCT_AGE",
 #'          na_removal = "pairwise",
-#'          var_labels = c(ACS_PCT_AGE_0_4 = "Percentage of population between ages 0-4",
-#'                         ACS_PCT_AGE_5_9 = "Percentage of population between ages 5-9",
-#'                         ACS_PCT_AGE_10_14 = "Percentage of population between ages 10-14",
-#'                         ACS_PCT_AGE_15_17 = "Percentage of population between ages 15-17"))
-#'
+#'          var_labels = c(ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
+#'                         ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
+#'                         ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
+#'                         ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
+#'                         
 #' @export
 mean_tbl <- function(data,
                      var_stem,
