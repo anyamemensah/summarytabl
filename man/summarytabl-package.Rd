@@ -13,6 +13,7 @@ Useful links:
 \itemize{
   \item \url{https://anyamemensah.github.io/summarytabl/}
   \item \url{https://github.com/anyamemensah/summarytabl}
+  \item Report bugs at \url{https://github.com/anyamemensah/summarytabl/issues}
 }
 
 }
