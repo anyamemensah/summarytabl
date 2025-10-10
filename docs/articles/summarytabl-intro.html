@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">summarytabl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,25 +81,58 @@ examples of how to apply them to your data frames.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://anyamemensah.github.io/summarytabl/">summarytabl</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="types-of-functions">Types of functions<a class="anchor" aria-label="anchor" href="#types-of-functions"></a>
+<h2 id="types-of-functions">Types of Functions<a class="anchor" aria-label="anchor" href="#types-of-functions"></a>
 </h2>
-<p>This package has three types of functions to help you summarize your
-data. Those for:</p>
-<ol style="list-style-type: decimal">
-<li>Categorical data, such as binary (e.g., Unselected/Selected) or
-nominal (e.g., woman/man/non-binary) variables</li>
-<li>Multiple response data, including binary (e.g.,
-Unselected/Selected), ordinal (e.g., never, sometimes, often), or Likert
-and Likert-type (e.g., strongly disagree to strongly agree)
-variables</li>
-<li>Continuous data, like interval (e.g., test scores) and ratio-level
-(e.g., age) variables</li>
-</ol>
-<p>Functions for categorical data start with <code>cat_</code>, those
-for multiple response data start with <code>select_</code>, and
-functions for continuous data start with <code>mean_</code>.</p>
+<div class="section level3">
+<h3 id="categorical-data-functions">Categorical Data Functions<a class="anchor" aria-label="anchor" href="#categorical-data-functions"></a>
+</h3>
+<p>These functions are designed to summarize categorical data,
+including:</p>
+<ul>
+<li>Binary variables (e.g., Unselected/Selected)</li>
+<li>Nominal variables (e.g., woman/man/non-binary)</li>
+</ul>
+<p>Functions that summarize categorical data start with the prefix
+<code>cat_</code>:</p>
+<ul>
+<li>cat_tbl</li>
+<li>cat_group_tbl</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="multiple-response-data-functions">Multiple Response Data Functions<a class="anchor" aria-label="anchor" href="#multiple-response-data-functions"></a>
+</h3>
+<p>These functions handle multiple response data, which can include:</p>
+<ul>
+<li>Binary variables (e.g., Unselected/Selected)</li>
+<li>Ordinal variables (e.g., never, sometimes, often)</li>
+<li>Likert and Likert-type variables (e.g., strongly disagree to
+strongly agree)</li>
+</ul>
+<p>Functions for multiple response data start with the prefix
+<code>select_</code>:</p>
+<ul>
+<li>select_tbl</li>
+<li>select_group_tbl</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="continuous-data-functions">Continuous Data Functions<a class="anchor" aria-label="anchor" href="#continuous-data-functions"></a>
+</h3>
+<p>These functions are used for continuous data, such as:</p>
+<ul>
+<li>Interval-level variables (e.g., test scores)</li>
+<li>Ratio-level variables (e.g., age)</li>
+</ul>
+<p>Functions for continuous data start with the prefix
+<code>mean_</code>:</p>
+<ul>
+<li>mean_tbl</li>
+<li>mean_group_tbl</li>
+</ul>
 <p>To learn more about how these functions work, read the next few
 sections.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="categorical-variables">Categorical variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
@@ -215,7 +248,7 @@ them in a named list:</p>
 <p>Use the <code>margins</code> argument to define how percentages are
 calculated and shown in the resulting table:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Default: percentages sum to one across the entire table</span></span>
+<code class="sourceCode R"><span><span class="co"># Default: percentages across the full table sum to one</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
 <span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
 <span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span>,</span>
@@ -227,7 +260,7 @@ calculated and shown in the resulting table:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> Hispanic                  589             42            0.198           0.014<span style="text-decoration: underline;">1</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> Non-Black,Non…           <span style="text-decoration: underline;">1</span>394             83            0.468           0.027<span style="text-decoration: underline;">9</span></span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Rowwise: percentages sum to one across rows</span></span>
+<code class="sourceCode R"><span><span class="co"># Rowwise: percentages sum to one across columns within each row</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
 <span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
 <span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span>,</span>
@@ -240,7 +273,7 @@ calculated and shown in the resulting table:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> Hispanic                  589             42            0.933           0.066<span style="text-decoration: underline;">6</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> Non-Black,Non…           <span style="text-decoration: underline;">1</span>394             83            0.944           0.056<span style="text-decoration: underline;">2</span></span></span></code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Columnwise: percentages sum to one across columns</span></span>
+<code class="sourceCode R"><span><span class="co"># Columnwise: percentages within each column sum to one</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
 <span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
 <span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span>,</span>
@@ -311,20 +344,19 @@ calculated and shown in the resulting table:</p>
 </h3>
 <p>With <code><a href="../reference/select_tbl.html">select_tbl()</a></code>, you can produce a summary table for
 multiple response variables with the same variable stem. A variable stem
-is a common prefix found in related variable names, often corresponding
-to similar survey items, that represents a shared concept before unique
-identifiers.</p>
+is a shared prefix in a set of related variable names, typically used to
+represent a common concept across similar survey items.</p>
 <p>For example, the <code>depressive</code> dataset contains eight
 variables that share the same variable stem: <code>dep</code>, with each
-one representing a different item (such as a statement, question, or
-indicator) used to measure depression:</p>
+one representing a different item (such as a statement or question) used
+to measure depression:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">depressive</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "cid"   "race"  "sex"   "yob"   "dep_1" "dep_2" "dep_3" "dep_4" "dep_5"</span></span>
 <span><span class="co">## [10] "dep_6" "dep_7" "dep_8"</span></span></code></pre>
-<p>With the <code><a href="../reference/select_tbl.html">select_tbl()</a></code> function, you can summarize these
-responses to see how many respondents selected each answer option for
-every variable.</p>
+<p>The <code><a href="../reference/select_tbl.html">select_tbl()</a></code> function lets you summarize responses
+to these items by showing how many respondents chose each answer option
+(i.e., value) for every variable.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, var_stem <span class="op">=</span> <span class="st">"dep"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
@@ -543,15 +575,7 @@ demographic variables like gender, age, or race:</p>
 <span>      .fns <span class="op">=</span> <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">.x</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="st">"often"</span>, </span>
 <span>                                <span class="va">.x</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"sometimes"</span>, </span>
 <span>                                <span class="va">.x</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="st">"hardly ever"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span></span>
-<span>      .cols <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"dep"</span><span class="op">)</span>,</span>
-<span>      .fns <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">.</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"often"</span>, <span class="st">"sometimes"</span>, <span class="st">"hardly ever"</span><span class="op">)</span>,</span>
-<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"often"</span>, <span class="st">"sometimes"</span>, <span class="st">"hardly ever"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># longer format</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
@@ -560,17 +584,17 @@ demographic variables like gender, age, or race:</p>
 <span>                 pivot <span class="op">=</span> <span class="st">"longer"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 72 × 5</span></span></span>
 <span><span class="co">##    variable race                   values      count percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  often          45  0.028<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  sometimes     194  0.121 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  hardly ever   248  0.154 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               often          28  0.017<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               sometimes     155  0.096<span style="text-decoration: underline;">5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               hardly ever   187  0.116 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic often          36  0.022<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic sometimes     340  0.212 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic hardly ever   374  0.233 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  often          49  0.030<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  hardly ever   248  0.154 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  often          45  0.028<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  sometimes     194  0.121 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               hardly ever   187  0.116 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               often          28  0.017<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               sometimes     155  0.096<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic hardly ever   374  0.233 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic often          36  0.022<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic sometimes     340  0.212 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  hardly ever   234  0.146 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 62 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># wider format</span></span>
@@ -580,17 +604,17 @@ demographic variables like gender, age, or race:</p>
 <span>                 pivot <span class="op">=</span> <span class="st">"wider"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 8</span></span></span>
 <span><span class="co">##    variable values   count_race_Black count_race_Hispanic count_race_Non-Black…¹</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    often                  45                  28                     36</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    sometim…              194                 155                    340</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    hardly …              248                 187                    374</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_2    often                  49                  36                     59</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    sometim…              204                 163                    379</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    hardly …              234                 171                    312</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_3    often                 330                 246                    586</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_3    sometim…              138                 104                    150</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    hardly …               19                  20                     14</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4    often                 183                 131                    287</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    hardly …              248                 187                    374</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    often                  45                  28                     36</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    sometim…              194                 155                    340</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_2    hardly …              234                 171                    312</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    often                  49                  36                     59</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    sometim…              204                 163                    379</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_3    hardly …               19                  20                     14</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_3    often                 330                 246                    586</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    sometim…              138                 104                    150</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4    hardly …               45                  38                     87</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ abbreviated name: ¹​`count_race_Non-Black/Non-Hispanic`</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: percent_race_Black &lt;dbl&gt;, percent_race_Hispanic &lt;dbl&gt;,</span></span></span>
@@ -609,18 +633,18 @@ variables sharing that stem.</p>
 <span>                 pivot <span class="op">=</span> <span class="st">"longer"</span>,</span>
 <span>                 ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>dep <span class="op">=</span> <span class="st">"often"</span>, race <span class="op">=</span> <span class="st">"Non-Black/Non-Hispanic"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 31 × 5</span></span></span>
-<span><span class="co">##    variable race     values count percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black         2    16   0.254</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black         3    18   0.286</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Hispanic      2    20   0.317</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic      3     9   0.143</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black         2    16   0.254</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black         3    18   0.286</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_2    Hispanic      2    16   0.254</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_2    Hispanic      3    13   0.206</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black         2    34   0.540</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_3    Hispanic      2    21   0.333</span></span>
+<span><span class="co">##    variable race     values      count percent</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black    hardly ever    18   0.286</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black    sometimes      16   0.254</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Hispanic hardly ever     9   0.143</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic sometimes      20   0.317</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black    hardly ever    18   0.286</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black    sometimes      16   0.254</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_2    Hispanic hardly ever    13   0.206</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_2    Hispanic sometimes      16   0.254</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black    sometimes      34   0.540</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_3    Hispanic hardly ever     8   0.127</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 21 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal: 'often' value removed from all</span></span>
@@ -633,21 +657,21 @@ variables sharing that stem.</p>
 <span>                 ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>dep <span class="op">=</span> <span class="st">"often"</span>, race <span class="op">=</span> <span class="st">"Non-Black/Non-Hispanic"</span><span class="op">)</span>,</span>
 <span>                 na_removal <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 32 × 5</span></span></span>
-<span><span class="co">##    variable race     values count percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black         2   203  0.251 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black         3   256  0.317 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Hispanic      2   159  0.197 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic      3   190  0.235 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black         2   213  0.269 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black         3   241  0.305 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_2    Hispanic      2   165  0.209 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_2    Hispanic      3   172  0.217 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black         2   149  0.507 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_3    Black         3    20  0.068<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">##    variable race     values      count percent</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black    hardly ever   256  0.317 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black    sometimes     203  0.251 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Hispanic hardly ever   190  0.235 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic sometimes     159  0.197 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black    hardly ever   241  0.305 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black    sometimes     213  0.269 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_2    Hispanic hardly ever   172  0.217 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_2    Hispanic sometimes     165  0.209 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black    hardly ever    20  0.068<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_3    Black    sometimes     149  0.507 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 22 more rows</span></span></span></code></pre>
-<p>Use a list if you want to exclude several values from the same
-<code>var_stem</code> or <code>group</code> variable:</p>
+<p>Use a list when you need to exclude multiple values from the same
+<code>var_stem</code> or <code>group</code> variable</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
@@ -656,23 +680,23 @@ variables sharing that stem.</p>
 <span>                 ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>race <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Hispanic"</span>, <span class="st">"Non-Black/Non-Hispanic"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 5</span></span></span>
 <span><span class="co">##    variable race  values      count percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black often          45  0.092<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black sometimes     194  0.398 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black hardly ever   248  0.509 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_2    Black often          49  0.101 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black sometimes     204  0.419 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black hardly ever   234  0.480 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_3    Black often         330  0.678 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_3    Black sometimes     138  0.283 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black hardly ever    19  0.039<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4    Black often         183  0.376 </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black hardly ever   248  0.509 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black often          45  0.092<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black sometimes     194  0.398 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_2    Black hardly ever   234  0.480 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_2    Black often          49  0.101 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_2    Black sometimes     204  0.419 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_3    Black hardly ever    19  0.039<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_3    Black often         330  0.678 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black sometimes     138  0.283 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4    Black hardly ever    45  0.092<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
 <p>When <code>group_type</code> is <code>variable</code> you can use the
 <code>margins</code> argument to define how percentages are calculated
 and shown in the resulting table:</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Default: percentages for each variable sum to one.</span></span>
+<code class="sourceCode R"><span><span class="co"># Default: percentages across each variable sum to one</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span>,</span>
@@ -680,21 +704,21 @@ and shown in the resulting table:</p>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 72 × 4</span></span></span>
 <span><span class="co">##    variable race                   values      percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  often        0.028<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  sometimes    0.121 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  hardly ever  0.154 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               often        0.017<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               sometimes    0.096<span style="text-decoration: underline;">5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               hardly ever  0.116 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic often        0.022<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic sometimes    0.212 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic hardly ever  0.233 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  often        0.030<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  hardly ever  0.154 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  often        0.028<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  sometimes    0.121 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               hardly ever  0.116 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               often        0.017<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               sometimes    0.096<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic hardly ever  0.233 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic often        0.022<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic sometimes    0.212 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  hardly ever  0.146 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 62 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Rowwise: for each value of the variable, the percentages </span></span>
-<span><span class="co"># for all levels of the grouping variable sum to one</span></span>
+<span><span class="co"># across all levels of the grouping variable sum to one</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span>,</span>
@@ -703,22 +727,22 @@ and shown in the resulting table:</p>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 72 × 4</span></span></span>
 <span><span class="co">##    variable race                   values      percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  often         0.413</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Hispanic               often         0.257</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Non-Black/Non-Hispanic often         0.330</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Black                  sometimes     0.282</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               sometimes     0.225</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Non-Black/Non-Hispanic sometimes     0.493</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Black                  hardly ever   0.307</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Hispanic               hardly ever   0.231</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic hardly ever   0.462</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  often         0.340</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  hardly ever   0.307</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Hispanic               hardly ever   0.231</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Non-Black/Non-Hispanic hardly ever   0.462</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Black                  often         0.413</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               often         0.257</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Non-Black/Non-Hispanic often         0.330</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Black                  sometimes     0.282</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Hispanic               sometimes     0.225</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic sometimes     0.493</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  hardly ever   0.326</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 62 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Columnwise: for each level of the grouping variable, </span></span>
-<span><span class="co"># the percentages for all values of the main variable </span></span>
-<span><span class="co"># sum to one</span></span>
+<span><span class="co"># the percentages across all values of the variable sum </span></span>
+<span><span class="co"># to one.</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span>,</span>
@@ -727,19 +751,19 @@ and shown in the resulting table:</p>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 72 × 4</span></span></span>
 <span><span class="co">##    variable race                   values      percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  often        0.092<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  sometimes    0.398 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  hardly ever  0.509 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               often        0.075<span style="text-decoration: underline;">7</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               sometimes    0.419 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               hardly ever  0.505 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic often        0.048 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic sometimes    0.453 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic hardly ever  0.499 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  often        0.101 </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> dep_1    Black                  hardly ever  0.509 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> dep_1    Black                  often        0.092<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> dep_1    Black                  sometimes    0.398 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> dep_1    Hispanic               hardly ever  0.505 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> dep_1    Hispanic               often        0.075<span style="text-decoration: underline;">7</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> dep_1    Hispanic               sometimes    0.419 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> dep_1    Non-Black/Non-Hispanic hardly ever  0.499 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> dep_1    Non-Black/Non-Hispanic often        0.048 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_1    Non-Black/Non-Hispanic sometimes    0.453 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  hardly ever  0.480 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 62 more rows</span></span></span></code></pre>
-<p>Another application of <code>select_group_tbl</code> is summarizing
+<p>Another application of <code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> is summarizing
 responses based on a matching pattern, such as survey time points (e.g.,
 waves). To use this feature, set <code>group_type</code> to
 <code>pattern</code> and enter the pattern to search for in the
@@ -825,21 +849,20 @@ interpret:</p>
 <span>                 group <span class="op">=</span> <span class="st">"_w\\d"</span>,</span>
 <span>                 group_type <span class="op">=</span> <span class="st">"pattern"</span>,</span>
 <span>                 group_name <span class="op">=</span> <span class="st">"wave"</span>,</span>
-<span>                 pivot <span class="op">=</span> <span class="st">"longer"</span>,</span>
-<span>                 only <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
-<span><span class="co">##    variable             wave  values count</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> belong_belongStem_w1 w1         1     5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> belong_belongStem_w1 w1         2    20</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> belong_belongStem_w1 w1         3    59</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> belong_belongStem_w1 w1         4   107</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> belong_belongStem_w1 w1         5    79</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> belong_belongStem_w2 w2         1    11</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> belong_belongStem_w2 w2         2    11</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> belong_belongStem_w2 w2         3    44</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> belong_belongStem_w2 w2         4   113</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91</span></span></code></pre>
+<span>                 pivot <span class="op">=</span> <span class="st">"longer"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
+<span><span class="co">##    variable             wave  values count percent</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> belong_belongStem_w1 w1         1     5  0.018<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> belong_belongStem_w1 w1         2    20  0.074<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> belong_belongStem_w1 w1         3    59  0.219 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> belong_belongStem_w1 w1         4   107  0.396 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> belong_belongStem_w1 w1         5    79  0.293 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> belong_belongStem_w2 w2         1    11  0.040<span style="text-decoration: underline;">7</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> belong_belongStem_w2 w2         2    11  0.040<span style="text-decoration: underline;">7</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> belong_belongStem_w2 w2         3    44  0.163 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> belong_belongStem_w2 w2         4   113  0.419 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91  0.337</span></span></code></pre>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Counts only</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
@@ -898,8 +921,7 @@ table provides descriptive statistics for each variable, including the
 mean, standard deviation, minimum, maximum, and the number of
 non-missing values.</p>
 <div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
-<span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
 <span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -1011,7 +1033,7 @@ variable names easier to interpret.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2  <span style="text-decoration: underline;">3</span>227</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Means and standard deviations  returned</span></span>
+<code class="sourceCode R"><span><span class="co"># Means and standard deviations returned</span></span>
 <span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>         na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
@@ -1138,7 +1160,7 @@ exclude for variables sharing the same stem.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_MEDICAL      West     92.5 15.8   33.3    100   224</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_AIDE         Midwest  98.0  7.85  50      100   588</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_AIDE         West     96.4 10.8   33.3    100   247</span></span></code></pre>
-<p>Another application of <code>mean_group_tbl</code> is summarizing
+<p>Another application of <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> is summarizing
 responses based on a matching pattern, such as survey time points (e.g.,
 waves). To use this feature, set <code>group_type</code> to
 <code>pattern</code> and enter the pattern to search for in the

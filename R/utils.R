@@ -38,7 +38,7 @@ tbl_key <- function(values_from, values_to, string = TRUE) {
 }
 
 # Function that searches for and returns the names of columns in 
-# a 'data' that start with a specified variable stem (i.e., prefix)
+# a data frame that start with a specified variable stem (i.e., prefix)
 find_columns <- function(data,
                          var_stem,
                          escape = FALSE,
@@ -115,8 +115,8 @@ get_data_type <- function(x) {
   } else if ("ordered" %in% class_x || "factor" %in% class_x) {
     "factor"
   } else if ("POSIXt" %in% class_x || "POSIXct" %in% class_x ||
-             "POSIXlt" %in% class_x || "POSIXt" %in% class_x ||
-             "Date" %in% class_x  || "difftime" %in% class_x) {
+             "POSIXlt" %in% class_x || "Date" %in% class_x  || 
+             "difftime" %in% class_x) {
     "datetime"
   } else if ("numeric" %in% class_x || "integer" %in% class_x ||
              "double" %in% class_x) {
@@ -144,11 +144,11 @@ return_data_types <- function(table_type) {
                  "logical", "numeric")
     )
   
-  valid_grp_type <- c("haven_labelled", "factor", "character", 
+  valid_grp_types <- c("haven_labelled", "factor", "character", 
                       "logical", "datetime", "numeric")
 
   return (list(valid_var_types = valid_var_types, 
-               valid_grp_type = valid_grp_type))
+               valid_grp_types = valid_grp_types))
 }
 
 
@@ -219,7 +219,7 @@ extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
 
 
 # Function that converts a haven_labelled vector to a character 
-# vector, retaining only values present in x
+# vector, retaining only values present in 'x'
 convert_labelled_to_chr <- function(x, return_labels = FALSE) {
   x_value_labels <- attr(x, "labels", exact = TRUE)
   x_chr <- as.character(unlist(lapply(x, function(ele) ele)))
@@ -286,8 +286,8 @@ check_na_removal <- function(na_removal) {
 }
 
 
-# Function that validates individual variable arguments (e.g.,
-# 'var', 'col_var', 'row_var')
+# Function that validates individual variable arguments 
+# (i.e., 'var', 'col_var', 'row_var')
 check_var <- function(var_name, var_label, data) { 
   if (!is.character(var_name) || length(var_name) != 1) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a character vector of length one.", 
@@ -302,9 +302,9 @@ check_var <- function(var_name, var_label, data) {
 }
 
 
-# Function that checks that functions that only requires the 'var_stem' 
-# argument is correctly specified and returns the columns that match 
-# the provided prefix
+# Function that checks that functions needing only the 'var_stem' 
+# argument are correctly set up, and returns the columns that match 
+# the given prefix
 check_var_stem <- function(data,
                            var_stem,
                            var_label,
@@ -333,9 +333,9 @@ check_var_stem <- function(data,
 }
 
 
-# Function that checks that functions that require both 'var_stem' and 
-# 'group' arguments are correctly specified and returns the columns that 
-# match these criteria.
+# Function that checks that functions needing both 'var_stem' and 
+# 'group' arguments are correctly set up, and returns columns that 
+# match those conditions
 check_group_var_stem <- function(data = data,
                                  var_stem = var_stem,
                                  var_label = var_label,

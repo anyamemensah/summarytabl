@@ -4,7 +4,8 @@
 <!-- badges: start -->
 
 [![CRAN
-Version](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
+status](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
+[![R-CMD-check](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 summarytabl is an R package that provides functions for tabulating and

@@ -193,7 +193,7 @@ select_group_tbl <- function(data,
     group_dtype <- check_data_type(
       data_type = get_data_type(data_sub[[group_var]]),
       table_type = checks$table_type,
-      variable_type = "valid_grp_type",
+      variable_type = "valid_grp_types",
       arg_name = "group"
     )
     
