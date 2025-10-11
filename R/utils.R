@@ -154,7 +154,6 @@ return_data_types <- function(table_type) {
 
 # Function that validates the structure of the 'ignore' argument
 check_ignore_struct <- function(ignore, table_type, group_func) {
-  
   if (!is.null(ignore) && !(is.vector(ignore) || is.list(ignore))) { 
     stop("'ignore' must be a vector, list, or NULL.") 
   }
@@ -170,6 +169,7 @@ check_ignore_struct <- function(ignore, table_type, group_func) {
       return(list(ignore = ignore)) 
     } 
   } 
+  
   return(list(ignore = NULL))
 }
 
@@ -226,7 +226,6 @@ convert_labelled_to_chr <- function(x, return_labels = FALSE) {
   unique_values <- na.omit(x_chr)
   
   if (return_labels) {
-    
     if (!all(unique_values %in% unname(x_value_labels))) {
       labels_to_add <- unique_values[!unique_values %in% x_value_labels]
       x_value_labels <- c(x_value_labels, stats::setNames(labels_to_add, as.character(labels_to_add)))

@@ -111,7 +111,7 @@ select_group_tbl(data = tas_recoded,
 1. Two new datasets were added to the package.
 	- `sdoh`: A subset of the `2020 Social Determinants of Health Database`.
 	- `gss`: A subset of the `2022 General Social Survey`.
-2. A new hex sticker logo has been created for the package.
+2. A new hex sticker logo was created for the package.
 
 # summarytabl 0.1.0
 
