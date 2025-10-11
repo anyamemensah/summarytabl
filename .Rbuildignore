@@ -8,3 +8,4 @@
 ^\.github$
 ^doc$
 ^index.md$
+^cran-comments\.md$
