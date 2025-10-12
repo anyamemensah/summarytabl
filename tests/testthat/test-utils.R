@@ -223,5 +223,64 @@ test_that("convert labelled vector to character vector", {
 
 
 
+test_that("check_ignore_struct", {
+  observed1 <- check_ignore_struct(NULL, "cat", FALSE)
+  observed2 <- check_ignore_struct(NULL, "mean", FALSE)
+  observed3 <- check_ignore_struct(NULL, "select", FALSE)
+  observed4 <- check_ignore_struct(NULL, "cat", TRUE)
+  observed5 <- check_ignore_struct(NULL, "mean", TRUE)
+  observed6 <- check_ignore_struct(NULL, "select", TRUE)
+  
+  expected <- list(ignore = NULL)
+  
+  expect_equal(observed1, expected)
+  expect_equal(observed2, expected)
+  expect_equal(observed3, expected)
+  expect_equal(observed4, expected)
+  expect_equal(observed5, expected)
+  expect_equal(observed6, expected)
+})
+
+
+test_that("extract_ignore_map", {
+  observed1_result <-
+    extract_ignore_map(
+      vars = c("var1", "group1"),
+      ignore = c(group1 = 2),
+      var_stem_map = NULL
+    )
+  
+  observed2_result <-
+    extract_ignore_map(
+      vars = "stem",
+      ignore = c(stem = 1),
+      var_stem_map = stats::setNames(c("stem_1", "stem_2", "stem_3"), rep("stem", 3))
+    )
+  
+  observed3_result <-
+    extract_ignore_map(
+      vars = c("stem", "group_var"),
+      ignore = list(stem = 1, group_var = "category"),
+      var_stem_map = stats::setNames(c("stem_1", "stem_2", "stem_3"), rep("stem", 3))
+    )
+  
+  observed4_result <-
+    extract_ignore_map(
+      vars = c("stem", "grp_var"),
+      ignore = list(stem = 1, group_var = "category"),
+      var_stem_map = stats::setNames(c("stem_1", "stem_2", "stem_3"), rep("stem", 3))
+    )
+                                        
+  expected1 <- list(group1 = 2)
+  expected2 <- list(stem_1 = 1, stem_2 = 1, stem_3 = 1)
+  expected3 <- list(stem_1 = 1, stem_2 = 1, stem_3 = 1, group_var = "category")
+  expected4 <- list(stem_1 = 1, stem_2 = 1, stem_3 = 1)
+  
+  expect_equal(observed1_result$ignore_map, expected1)
+  expect_equal(observed2_result$ignore_map, expected2)
+  expect_equal(observed3_result$ignore_map, expected3)
+  expect_equal(observed4_result$ignore_map, expected4)
+})
+
 
 

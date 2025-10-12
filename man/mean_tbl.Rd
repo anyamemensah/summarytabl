@@ -18,11 +18,11 @@ mean_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character string of a variable stem or the full name of a variable in
-\code{data}.}
+\item{var_stem}{A character string of a variable stem or the full name of a variable
+in \code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default is
-\code{FALSE}.}
+\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default
+is \code{FALSE}.}
 
 \item{ignore_stem_case}{A logical value indicating whether the search for columns
 matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
@@ -39,8 +39,8 @@ labels to variable names. Each element should be named and correspond to a varia
 the returned table. If any element is unnamed or references a variable not returned in
 the table, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional vector of values to exclude from variables matching the
-specified variable stem. Defaults to \code{NULL}, which retains all values.}
+\item{ignore}{An optional vector of values to exclude from variables identified by
+\code{var_stem}. Defaults to \code{NULL}, which retains all values.}
 }
 \value{
 A tibble showing summary statistics for continuous variables sharing a common
@@ -55,17 +55,20 @@ repeated measures of the same concept or a series of items measuring a single
 construct. Missing data are excluded using \code{listwise} deletion by default.
 }
 \examples{
-sdoh_child_ages <- dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
-                                            ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
-mean_tbl(data = sdoh_child_ages,var_stem = "ACS_PCT_AGE")
+sdoh_child_ages <- 
+  dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+                        ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+
+mean_tbl(data = sdoh_child_ages, var_stem = "ACS_PCT_AGE")
 
 mean_tbl(data = sdoh_child_ages,
          var_stem = "ACS_PCT_AGE",
          na_removal = "pairwise",
-         var_labels = c(ACS_PCT_AGE_0_4 = "\% of population between ages 0-4",
-                        ACS_PCT_AGE_5_9 = "\% of population between ages 5-9",
-                        ACS_PCT_AGE_10_14 = "\% of population between ages 10-14",
-                        ACS_PCT_AGE_15_17 = "\% of population between ages 15-17"))
+         var_labels = c(
+           ACS_PCT_AGE_0_4 = "\% of population between ages 0-4",
+           ACS_PCT_AGE_5_9 = "\% of population between ages 5-9",
+           ACS_PCT_AGE_10_14 = "\% of population between ages 10-14",
+           ACS_PCT_AGE_15_17 = "\% of population between ages 15-17"))
                         
 }
 \author{

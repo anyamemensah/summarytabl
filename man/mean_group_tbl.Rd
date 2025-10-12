@@ -2,7 +2,7 @@
 % Please edit documentation in R/mean_group_tbl.R
 \name{mean_group_tbl}
 \alias{mean_group_tbl}
-\title{Summarize continuous variables by group}
+\title{Summarize continuous variables by group or pattern}
 \usage{
 mean_group_tbl(
   data,
@@ -24,14 +24,14 @@ mean_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character string of a variable stem or the full name of a variable in
-\code{data}.}
+\item{var_stem}{A character string of a variable stem or the full name of a variable
+in \code{data}.}
 
-\item{group}{A character string representing a variable name or a pattern used to search
-for variables in \code{data}.}
+\item{group}{A character string representing a variable name or a pattern used to
+search for variables in \code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default is
-\code{FALSE}.}
+\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default
+is \code{FALSE}.}
 
 \item{ignore_stem_case}{A logical value indicating whether the search for columns
 matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
@@ -40,18 +40,18 @@ matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALS
 interpreted. Should be one of \code{pattern} or \code{variable}. Defaults to \code{variable}, which
 searches for a matching variable name in \code{data}.}
 
-\item{group_name}{An optional character string used to rename the \code{group} column in the
-final table. When \code{group_type} is set to \code{variable}, the column name defaults to the
-matched variable name from \code{data.} When set to \code{pattern}, the default column name is
-\code{group}.}
+\item{group_name}{An optional character string used to rename the \code{group} column in
+the final table. When \code{group_type} is set to \code{variable}, the column name defaults to
+the matched variable name from \code{data.} When set to \code{pattern}, the default column name
+is \code{group}.}
 
 \item{escape_group}{A logical value indicating whether to escape string supplied to
 \code{group}.}
 
 \item{ignore_group_case}{A logical value specifying whether the search for a grouping
 variable (if \code{group_type} is \code{variable}) or for variables matching a pattern (if
-\code{group_type} is \code{pattern}) should be case-insensitive. Default is \code{FALSE}. Set to \code{TRUE}
-to ignore case.}
+\code{group_type} is \code{pattern}) should be case-insensitive. Default is \code{FALSE}. Set to
+\code{TRUE} to ignore case.}
 
 \item{remove_group_non_alnum}{A logical value indicating whether to remove all non-
 alphanumeric characters (i.e., anything that is not a letter or number) from \code{group}.
@@ -71,9 +71,9 @@ the table, all labels will be ignored and the table will be printed without them
 
 \item{ignore}{An optional named vector or list that defines values to exclude from
 variables matching the specified variable stem and, if applicable, a grouping variable
-in \code{data.} If set to \code{NULL} (default), all values are retained. To exclude values from
+in \code{data}. If set to \code{NULL} (default), all values are retained. To exclude values from
 variables identified by \code{var_stem}, use the stem name as the key. To exclude multiple
-values from both \code{var_stem} variables and a grouping variable, supply a named list.}
+values from \code{var_stem} variables or a grouping variable, provide them as a named list.}
 }
 \value{
 A tibble presenting summary statistics for continuous variables that share a
@@ -83,24 +83,27 @@ variable within the dataset or by a matched pattern in the variable names.
 \description{
 \code{mean_group_tbl()} calculates descriptive statistics (mean, standard
 deviation, minimum, maximum, and number of non-missing observations) for interval
-and ratio-level variables that share a common prefix (variable stem), grouped either
-by another variable in your dataset or by a matched pattern in the variable names. A
-variable 'stem' is a shared naming pattern across related variables, often representing
-repeated measures of the same concept or a series of items measuring a single construct.
-By default, missing data are excluded using \code{listwise} deletion.
+and ratio-level variables that share a common prefix (variable stem), grouped
+either by another variable in your dataset or by a matched pattern in the variable
+names. A variable 'stem' is a shared naming pattern across related variables, often
+representing repeated measures of the same concept or a series of items measuring
+a single construct. By default, missing data are excluded using \code{listwise} deletion.
 }
 \examples{
-sdoh_child_ages_region <- dplyr::select(sdoh, c(REGION, ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
-                                                ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+sdoh_child_ages_region <- 
+  dplyr::select(sdoh, c(REGION, ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+                        ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+
 mean_group_tbl(data = sdoh_child_ages_region,
                var_stem = "ACS_PCT_AGE",
                group = "REGION",
                group_name = "us_region",
                na_removal = "pairwise",
-               var_labels = c(ACS_PCT_AGE_0_4 = "\% of population between ages 0-4",
-                              ACS_PCT_AGE_5_9 = "\% of population between ages 5-9",
-                              ACS_PCT_AGE_10_14 = "\% of population between ages 10-14",
-                              ACS_PCT_AGE_15_17 = "\% of population between ages 15-17"))
+               var_labels = c(
+                 ACS_PCT_AGE_0_4 = "\% of population between ages 0-4",
+                 ACS_PCT_AGE_5_9 = "\% of population between ages 5-9",
+                 ACS_PCT_AGE_10_14 = "\% of population between ages 10-14",
+                 ACS_PCT_AGE_15_17 = "\% of population between ages 15-17"))
 
 set.seed(0222)
 grouped_data <-

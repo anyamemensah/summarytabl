@@ -1,35 +1,35 @@
-#' Summarize continuous variables by group
+#' Summarize continuous variables by group or pattern
 #'
 #' @description `mean_group_tbl()` calculates descriptive statistics (mean, standard 
 #' deviation, minimum, maximum, and number of non-missing observations) for interval 
-#' and ratio-level variables that share a common prefix (variable stem), grouped either 
-#' by another variable in your dataset or by a matched pattern in the variable names. A 
-#' variable 'stem' is a shared naming pattern across related variables, often representing 
-#' repeated measures of the same concept or a series of items measuring a single construct. 
-#' By default, missing data are excluded using `listwise` deletion.
+#' and ratio-level variables that share a common prefix (variable stem), grouped 
+#' either by another variable in your dataset or by a matched pattern in the variable 
+#' names. A variable 'stem' is a shared naming pattern across related variables, often 
+#' representing repeated measures of the same concept or a series of items measuring 
+#' a single construct. By default, missing data are excluded using `listwise` deletion.
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a variable in 
-#' `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default is
-#' `FALSE`.
+#' @param var_stem A character string of a variable stem or the full name of a variable 
+#' in `data`.
+#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default 
+#' is `FALSE`.
 #' @param ignore_stem_case A logical value indicating whether the search for columns 
 #' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param group A character string representing a variable name or a pattern used to search 
-#' for variables in `data`.
+#' @param group A character string representing a variable name or a pattern used to 
+#' search for variables in `data`.
 #' @param group_type A character string that defines how the `group` argument should be
 #' interpreted. Should be one of `pattern` or `variable`. Defaults to `variable`, which 
 #' searches for a matching variable name in `data`.
-#' @param group_name An optional character string used to rename the `group` column in the 
-#' final table. When `group_type` is set to `variable`, the column name defaults to the 
-#' matched variable name from `data.` When set to `pattern`, the default column name is 
-#' `group`.
+#' @param group_name An optional character string used to rename the `group` column in 
+#' the final table. When `group_type` is set to `variable`, the column name defaults to 
+#' the matched variable name from `data.` When set to `pattern`, the default column name 
+#' is `group`.
 #' @param escape_group A logical value indicating whether to escape string supplied to 
 #' `group`.
 #' @param ignore_group_case A logical value specifying whether the search for a grouping 
 #' variable (if `group_type` is `variable`) or for variables matching a pattern (if 
-#' `group_type` is `pattern`) should be case-insensitive. Default is `FALSE`. Set to `TRUE` 
-#' to ignore case. 
+#' `group_type` is `pattern`) should be case-insensitive. Default is `FALSE`. Set to 
+#' `TRUE` to ignore case. 
 #' @param remove_group_non_alnum A logical value indicating whether to remove all non-
 #' alphanumeric characters (i.e., anything that is not a letter or number) from `group`. 
 #' Default is `TRUE`.
@@ -44,9 +44,9 @@
 #' the table, all labels will be ignored and the table will be printed without them.
 #' @param ignore An optional named vector or list that defines values to exclude from 
 #' variables matching the specified variable stem and, if applicable, a grouping variable 
-#' in `data.` If set to `NULL` (default), all values are retained. To exclude values from 
+#' in `data`. If set to `NULL` (default), all values are retained. To exclude values from 
 #' variables identified by `var_stem`, use the stem name as the key. To exclude multiple 
-#' values from both `var_stem` variables and a grouping variable, supply a named list.
+#' values from `var_stem` variables or a grouping variable, provide them as a named list.
 #'
 #' @returns A tibble presenting summary statistics for continuous variables that share a 
 #' common stem in their names. The statistics are grouped either by a specified grouping 
@@ -55,17 +55,20 @@
 #' @author Ama Nyame-Mensah
 #'
 #' @examples
-#' sdoh_child_ages_region <- dplyr::select(sdoh, c(REGION, ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
-#'                                                 ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+#' sdoh_child_ages_region <- 
+#'   dplyr::select(sdoh, c(REGION, ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+#'                         ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+#' 
 #' mean_group_tbl(data = sdoh_child_ages_region,
 #'                var_stem = "ACS_PCT_AGE",
 #'                group = "REGION",
 #'                group_name = "us_region",
 #'                na_removal = "pairwise",
-#'                var_labels = c(ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
-#'                               ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
-#'                               ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
-#'                               ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
+#'                var_labels = c(
+#'                  ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
+#'                  ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
+#'                  ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
+#'                  ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
 #' 
 #' set.seed(0222)
 #' grouped_data <-
@@ -121,41 +124,25 @@ mean_group_tbl <- function(data,
   cols <- checks$var_stem$cols
   df <- checks$data$df
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
+  dtypes <- checks$var_stem$dtypes
+  
   data_sub <- df[c(cols, group_var)]
   
-  dtypes <- setNames(
-    lapply(cols, function(x) {
-      check_data_type(
-        data_type = get_data_type(data_sub[[x]]),
-        table_type = checks$table_type,
-        variable_type = "valid_var_types",
-        arg_name = "cols"
-      )
-    }),
-    cols
-  )
-  
-  if (!is.null(group_var)) {
-    group_dtype <- check_data_type(
-      data_type = get_data_type(data_sub[[group_var]]),
-      table_type = checks$table_type,
-      variable_type = "valid_grp_types",
-      arg_name = "group"
-    )
-    
-    if (group_dtype$dtype == "haven_labelled") {
+  if (!is.null(group_var) && dtypes[[group_var]] == "haven_labelled") {
       data_sub[[group_var]] <- convert_labelled_to_chr(data_sub[[group_var]])
-    }
   }
   
-  ignore_map <- extract_ignore_map(
-    vars = c(checks$var_stem$var_stem),
-    ignore = checks$ignore,
-    var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
-  )$ignore_map
+  ignore_result <-
+    extract_ignore_map(
+      vars = c(checks$var_stem$var_stem, group_var),
+      ignore = checks$ignore,
+      var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+    )
+  ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <- data_sub |>
+    data_sub <-
+      data_sub |>
       dplyr::mutate(dplyr::across(
         .cols = dplyr::all_of(names(ignore_map)),
         .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
@@ -170,13 +157,15 @@ mean_group_tbl <- function(data,
   
   if (checks$group_type == "pattern") {
     for (current_cols in unique(checks$var_stem$cols_no_group)) {
-      current_cols_set <- grep(
-        pattern = paste0(current_cols, checks$var_stem$group),
-        x = checks$var_stem$cols,
-        value = TRUE
-      )
+      current_cols_set <-
+        grep(
+          pattern = paste0(current_cols, checks$var_stem$group),
+          x = checks$var_stem$cols,
+          value = TRUE
+        )
       
-      mean_group <- data_sub |>
+      mean_group <- 
+        data_sub |>
         dplyr::select(dplyr::all_of(current_cols_set)) |>
         tidyr::pivot_longer(
           cols = dplyr::all_of(current_cols_set),
@@ -212,7 +201,8 @@ mean_group_tbl <- function(data,
     
   } else {
     for (current_col in unique(cols)) {
-      temp_data <- data_sub |>
+      temp_data <- 
+        data_sub |>
         dplyr::select(dplyr::all_of(c(current_col, group_var))) |>
         dplyr::filter(
           if (na_removal == "pairwise")
@@ -220,44 +210,45 @@ mean_group_tbl <- function(data,
           else TRUE
         )
       
-      mean_group <- summarize_mean_group(
-        df = temp_data,
-        var_col = current_col,
-        group_col = group_var
-      )
+      mean_group <-
+        summarize_mean_group(df = temp_data,
+                             var_col = current_col,
+                             group_col = group_var)
       
       mean_group_tabl <- dplyr::bind_rows(mean_group_tabl, mean_group)
     }
   }
   
   if (length(checks$group_name) > 0) {
-    mean_group_tabl <- dplyr::rename(
-      mean_group_tabl,
-      !!rlang::sym(checks$group_name) := dplyr::all_of(
-        ifelse(checks$group_type == "pattern", "group", group_var)
-      )
-    )
+    mean_group_tabl <-
+      dplyr::rename(mean_group_tabl,
+                    !!rlang::sym(checks$group_name) := dplyr::all_of(ifelse(
+                      checks$group_type == "pattern", "group", group_var
+                    )))
   }
   
   var_labels <- checks$var_stem$var_labels
   
   if (!is.null(var_labels)) {
-    mean_group_tabl <- mean_group_tabl |>
-      dplyr::mutate(
-        variable_label = dplyr::case_match(
-          variable,
-          !!!tbl_key(values_from = names(var_labels), values_to = unname(var_labels)),
-          .default = variable
-        )
-      ) |>
+    mean_group_tabl <-
+      mean_group_tabl |>
+      dplyr::mutate(variable_label = dplyr::case_match(
+        variable,
+        !!!tbl_key(
+          values_from = names(var_labels),
+          values_to = unname(var_labels)
+        ),
+        .default = variable
+      )) |>
       dplyr::relocate(variable_label, .after = variable)
   }
   
-  mean_group_tabl <- drop_only_cols(
-    data = mean_group_tabl,
-    only = checks$only$only,
-    only_type = only_type(checks$table_type)
-  )
+  mean_group_tabl <- 
+    drop_only_cols(
+      data = mean_group_tabl,
+      only = checks$only$only,
+      only_type = only_type(checks$table_type)
+    )
   
   return(mean_group_tabl)
 }

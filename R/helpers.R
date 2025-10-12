@@ -97,7 +97,8 @@ check_select_args <- function(args) {
         var_label = args$var_label,
         var_stem_labels = args$var_labels,
         escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case
+        ignore_stem_case = args$ignore_stem_case,
+        table_type = args$table_type
       ),
     na_rm = function(args)
       check_na_removal(na_removal = args$na_removal),
@@ -133,7 +134,8 @@ check_select_group_args <- function(args) {
         escape_group = args$escape_group, 
         ignore_group_case = args$ignore_group_case, 
         remove_group_non_alnum = args$remove_group_non_alnum, 
-        var_stem_labels = args$var_labels
+        var_stem_labels = args$var_labels,
+        table_type = args$table_type
       ),
     na_rm = function(args)
       check_na_removal(na_removal = args$na_removal),
@@ -150,13 +152,13 @@ check_select_group_args <- function(args) {
       args$table_type,
     group_type = function(args)
       args$group_type,
-    group_name = function (args)
+    group_name = function(args)
       args$group_name,
-    escape_group = function (args)
+    escape_group = function(args)
       args$escape_group,
-    ignore_group_case = function (args)
+    ignore_group_case = function(args)
       args$ignore_group_case,
-    remove_group_non_alnum = function (args)
+    remove_group_non_alnum = function(args)
       args$remove_group_non_alnum
   )
   
@@ -176,7 +178,8 @@ check_mean_args <- function(args) {
         var_label = args$var_label,
         var_stem_labels = args$var_labels,
         escape_stem = args$escape_stem,
-        ignore_stem_case = args$ignore_stem_case
+        ignore_stem_case = args$ignore_stem_case,
+        table_type = args$table_type
       ),
     na_rm = function(args)
       check_na_removal(na_removal = args$na_removal),
@@ -210,7 +213,8 @@ check_mean_group_args <- function(args) {
         escape_group = args$escape_group, 
         ignore_group_case = args$ignore_group_case, 
         remove_group_non_alnum = args$remove_group_non_alnum, 
-        var_stem_labels = args$var_labels
+        var_stem_labels = args$var_labels,
+        table_type = args$table_type
       ),
     na_rm = function(args)
       check_na_removal(na_removal = args$na_removal),
@@ -223,13 +227,13 @@ check_mean_group_args <- function(args) {
       args$table_type,
     group_type = function(args)
       args$group_type,
-    group_name = function (args)
+    group_name = function(args)
       args$group_name,
-    escape_group = function (args)
+    escape_group = function(args)
       args$escape_group,
-    ignore_group_case = function (args)
+    ignore_group_case = function(args)
       args$ignore_group_case,
-    remove_group_non_alnum = function (args)
+    remove_group_non_alnum = function(args)
       args$remove_group_non_alnum
   )
   

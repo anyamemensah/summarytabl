@@ -2,7 +2,7 @@
 % Please edit documentation in R/cat_group_tbl.R
 \name{cat_group_tbl}
 \alias{cat_group_tbl}
-\title{Summarize a categorical variable by a grouping variable}
+\title{Summarize two categorical variables}
 \usage{
 cat_group_tbl(
   data,
@@ -26,26 +26,28 @@ categorical data. This is the primary categorical variable.}
 categorical data.}
 
 \item{margins}{A character string that determines how percentage values are
-calculated; whether they sum to one across rows, columns, or the entire table (i.e.,
-all). Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
+calculated; whether they sum to one across rows, columns, or the entire table
+(i.e., all). Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
 
-\item{na.rm.row_var}{A logical value indicating whether missing values for \code{row_var}
-should be removed before calculations. Default is \code{FALSE}.}
+\item{na.rm.row_var}{A logical value indicating whether missing values for
+\code{row_var} should be removed before calculations. Default is \code{FALSE}.}
 
-\item{na.rm.col_var}{A logical value indicating whether missing values for \code{col_var}
-should be removed before calculations. Default is \code{FALSE}.}
+\item{na.rm.col_var}{A logical value indicating whether missing values for
+\code{col_var} should be removed before calculations. Default is \code{FALSE}.}
 
-\item{pivot}{A character string that determines the format of the table. By default,
-\code{longer} returns the data in the long format. To return the data in the \code{wide} format,
-specify \code{wider}.}
+\item{pivot}{A character string that determines the format of the table. By
+default, \code{longer} returns the data in the long format. To return the data in
+the \code{wide} format, specify \code{wider}.}
 
-\item{only}{A character string or vector of strings indicating the types of summary
-data to return. The default is \code{NULL}, which includes both counts and percentages. To
-return only one type, specify \code{count} or \code{percent}.}
+\item{only}{A character string or vector of character strings of the types of
+summary data to return. Default is \code{NULL}, which returns both counts and
+percentages. To return only counts or percentages, use \code{count} or \code{percent},
+respectively.}
 
-\item{ignore}{An optional named vector or list that defines values to exclude from
-\code{row_var} and \code{col_var}. If set to \code{NULL} (default), all values are retained. To exclude
-multiple values from both \code{row_var} and \code{col_var}, supply a named list.}
+\item{ignore}{An optional named vector or list that defines values to exclude
+from \code{row_var} and \code{col_var}. If set to \code{NULL} (default), all values are retained.
+To exclude multiple values from \code{row_var} or \code{col_var}, provide them as a named
+list.}
 }
 \value{
 A tibble showing relative frequencies and/or percentages of \code{row_var}
@@ -53,9 +55,9 @@ by \code{col_var}.
 }
 \description{
 \code{cat_group_tbl()} summarizes nominal or categorical variables by a
-grouping variable, returning frequency counts and percentages. It supports long or
-wide output formats, handles missing data, and allows percentage calculations across
-rows, columns, or the full table.
+grouping variable, returning frequency counts and percentages. It supports long
+or wide output formats, handles missing data, and allows percentage calculations
+across rows, columns, or the full table.
 }
 \examples{
 cat_group_tbl(data = nlsy,

@@ -35,21 +35,21 @@ values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 \code{longer} returns the data in the long format. To receive the data in the \code{wide}
 format, specify \code{wider}.}
 
-\item{only}{A character string or vector of character strings of the types of summary
-data to return. Default is \code{NULL}, which returns both counts and percentages. To return
-only counts or percentages, use \code{count} or \code{percent}, respectively.}
+\item{only}{A character string or vector of character strings of the types of
+summary data to return. Default is \code{NULL}, which returns both counts and percentages.
+To return only counts or percentages, use \code{count} or \code{percent}, respectively.}
 
 \item{var_labels}{An optional named character vector or list used to assign custom
 labels to variable names. Each element should be named and correspond to a variable in
 the returned table. If any element is unnamed or references a variable not returned in
 the table, all labels will be ignored and the table will be printed without them.}
 
-\item{ignore}{An optional vector of values to exclude from variables matching the
-specified variable stem. Defaults to \code{NULL}, which retains all values.}
+\item{ignore}{An optional vector of values to exclude from variables identified by
+\code{var_stem}. Defaults to \code{NULL}, which retains all values.}
 }
 \value{
-A tibble showing the relative frequencies and/or percentages of multiple response
-variables sharing a common variable stem.
+A tibble showing the relative frequencies and/or percentages of multiple
+response variables sharing a common variable stem.
 }
 \description{
 \code{select_tbl()} displays frequency counts and percentages (i.e.,

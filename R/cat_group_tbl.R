@@ -1,9 +1,9 @@
-#' @title Summarize a categorical variable by a grouping variable
+#' @title Summarize two categorical variables
 #'
 #' @description `cat_group_tbl()` summarizes nominal or categorical variables by a 
-#' grouping variable, returning frequency counts and percentages. It supports long or 
-#' wide output formats, handles missing data, and allows percentage calculations across 
-#' rows, columns, or the full table.
+#' grouping variable, returning frequency counts and percentages. It supports long 
+#' or wide output formats, handles missing data, and allows percentage calculations 
+#' across rows, columns, or the full table.
 #'
 #' @param data A data frame.
 #' @param row_var A character string of the name of a variable in `data` containing 
@@ -11,21 +11,23 @@
 #' @param col_var A character string of the name of a variable in `data` containing 
 #' categorical data.
 #' @param margins A character string that determines how percentage values are 
-#' calculated; whether they sum to one across rows, columns, or the entire table (i.e.,
-#' all). Defaults to `all`, but can also be set to `rows` or `columns`.
-#' @param na.rm.row_var A logical value indicating whether missing values for `row_var`
-#' should be removed before calculations. Default is `FALSE`.
-#' @param na.rm.col_var A logical value indicating whether missing values for `col_var`
-#' should be removed before calculations. Default is `FALSE`.
-#' @param pivot A character string that determines the format of the table. By default, 
-#' `longer` returns the data in the long format. To return the data in the `wide` format, 
-#' specify `wider`.
-#' @param only A character string or vector of strings indicating the types of summary 
-#' data to return. The default is `NULL`, which includes both counts and percentages. To 
-#' return only one type, specify `count` or `percent`.
-#' @param ignore An optional named vector or list that defines values to exclude from 
-#' `row_var` and `col_var`. If set to `NULL` (default), all values are retained. To exclude 
-#' multiple values from both `row_var` and `col_var`, supply a named list.
+#' calculated; whether they sum to one across rows, columns, or the entire table 
+#' (i.e., all). Defaults to `all`, but can also be set to `rows` or `columns`.
+#' @param na.rm.row_var A logical value indicating whether missing values for 
+#' `row_var` should be removed before calculations. Default is `FALSE`.
+#' @param na.rm.col_var A logical value indicating whether missing values for 
+#' `col_var` should be removed before calculations. Default is `FALSE`.
+#' @param pivot A character string that determines the format of the table. By 
+#' default, `longer` returns the data in the long format. To return the data in 
+#' the `wide` format, specify `wider`.
+#' @param only A character string or vector of character strings of the types of 
+#' summary data to return. Default is `NULL`, which returns both counts and 
+#' percentages. To return only counts or percentages, use `count` or `percent`, 
+#' respectively.
+#' @param ignore An optional named vector or list that defines values to exclude 
+#' from `row_var` and `col_var`. If set to `NULL` (default), all values are retained. 
+#' To exclude multiple values from `row_var` or `col_var`, provide them as a named 
+#' list.
 #' 
 #' @returns A tibble showing relative frequencies and/or percentages of `row_var` 
 #' by `col_var`.
@@ -85,14 +87,17 @@ cat_group_tbl <- function(data,
     data_sub[labelled_vars] <- lapply(labelled_vars, function(v) convert_labelled_to_chr(data_sub[[v]]))
   }
   
-  ignore_map <- extract_ignore_map(
-    vars = c(row_name, col_name),
-    ignore = checks$ignore,
-    var_stem_map = NULL
-  )$ignore_map
+  ignore_result <-
+    extract_ignore_map(
+      vars = c(row_name, col_name),
+      ignore = checks$ignore,
+      var_stem_map = NULL
+    )
+  ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <- data_sub |>
+    data_sub <-
+      data_sub |>
       dplyr::mutate(dplyr::across(
         .cols = dplyr::all_of(names(ignore_map)),
         .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
@@ -108,15 +113,17 @@ cat_group_tbl <- function(data,
       dplyr::filter(!is.na(.data[[var]]))
   }
   
-  cat_group_tabl <- summarize_cat_group(
-    df = data_sub,
-    row_var = row_name,
-    col_var = col_name,
-    margins = checks$margins$margins
-  )
+  cat_group_tabl <-
+    summarize_cat_group(
+      df = data_sub,
+      row_var = row_name,
+      col_var = col_name,
+      margins = checks$margins$margins
+    )
   
   if (checks$pivot$pivot == "wider") {
-    cat_group_tabl <- cat_group_tabl |>
+    cat_group_tabl <-
+      cat_group_tabl |>
       tidyr::pivot_wider(
         id_cols = row_name,
         names_from = col_name,
@@ -125,11 +132,12 @@ cat_group_tbl <- function(data,
       )
   }
   
-  cat_group_tabl <- drop_only_cols(
-    data = cat_group_tabl,
-    only = checks$only$only,
-    only_type = only_type(checks$table_type)
-  )
+  cat_group_tabl <-
+    drop_only_cols(
+      data = cat_group_tabl,
+      only = checks$only$only,
+      only_type = only_type(checks$table_type)
+    )
   
   return(cat_group_tabl)
 }
@@ -141,20 +149,23 @@ summarize_cat_group <- function(df,
                                 margins) {
   margin_col <- if (margins == "rows") row_var else col_var
   
-  grouped_df <- df |>
+  grouped_df <- 
+    df |>
     dplyr::group_by(.data[[row_var]], .data[[col_var]]) |>
     dplyr::summarize(count = dplyr::n()) |>
     dplyr::ungroup()
   
   if (margins %in% c("rows", "columns")) {
-    grouped_df <- grouped_df |>
+    grouped_df <- 
+      grouped_df |>
       dplyr::group_by(.data[[margin_col]]) |>
       dplyr::mutate(percent = count / sum(count)) |>
       dplyr::ungroup() |>
       dplyr::arrange(.data[[margin_col]])
   } else if (margins == "all") {
     total <- sum(grouped_df$count)
-    grouped_df <- grouped_df |>
+    grouped_df <- 
+      grouped_df |>
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[row_var]], .data[[col_var]])
   }

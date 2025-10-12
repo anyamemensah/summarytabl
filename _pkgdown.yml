@@ -26,8 +26,9 @@ navbar:
         - text: Introduction to summarytabl
           href: articles/summarytabl-intro.html
     github:
-      text: GitHub
+      icon: fab fa-github fa-lg
       href: https://github.com/anyamemensah/summarytabl
+      aria-label: View source code on GitHub
 
 reference:
   - title: Categorical data

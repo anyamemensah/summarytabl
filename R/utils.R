@@ -147,8 +147,7 @@ return_data_types <- function(table_type) {
   valid_grp_types <- c("haven_labelled", "factor", "character", 
                       "logical", "datetime", "numeric")
 
-  return (list(valid_var_types = valid_var_types, 
-               valid_grp_types = valid_grp_types))
+  return (list(valid_var_types = valid_var_types, valid_grp_types = valid_grp_types))
 }
 
 
@@ -179,27 +178,29 @@ check_ignore_struct <- function(ignore, table_type, group_func) {
 extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
   ignore_map <- list()
   
-  if (!is.null(ignore) && !is.null(names(ignore))) { 
+  if (!is.null(unlist(ignore)) && !is.null(ignore) && !is.null(names(ignore))) { 
     if (is.null(var_stem_map)) { 
       for (var in vars) { 
         if (var %in% names(ignore)) { 
           ignore_map[[var]] <- ignore[[var]] } 
       } 
-    } else { 
-      for (var in vars) { 
-        if (var %in% names(var_stem_map) && var %in% names(ignore)) { 
-          full_names <- var_stem_map[names(var_stem_map) == var] 
-          for (fn in full_names) { ignore_map[[fn]] <- ignore[[var]] } 
-        } 
-      }
-      missing <- setdiff(names(ignore), names(var_stem_map)) 
-      if (length(missing) > 0) { 
-        for (nm in missing) { 
-          ignore_map[[nm]] <- ignore[[nm]] 
-        } 
-      } 
     } 
-  } else if (!is.null(ignore) && is.null(names(ignore)) && !is.null(var_stem_map)) {
+    else {
+      for (var in vars) {
+        if (var %in% names(ignore)) {
+          if (var %in% names(var_stem_map)) {
+            full_names <- var_stem_map[names(var_stem_map) == var]
+            for (fn in full_names) {
+              ignore_map[[fn]] <- ignore[[var]]
+            }
+          } else {
+            ignore_map[[var]] <- ignore[[var]]
+          }
+        }
+      }
+    }
+  } else if (!is.null(unlist(ignore)) && !is.null(ignore) && 
+             is.null(names(ignore)) && !is.null(var_stem_map)) {
     for (var in vars) { 
       if (var %in% names(var_stem_map)) {
         full_names <- var_stem_map[names(var_stem_map) == var] 
@@ -207,7 +208,8 @@ extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
         } 
       } 
     } 
-  } else if (!is.null(ignore) && is.null(names(ignore)) && is.null(var_stem_map)) {
+  } else if (!is.null(unlist(ignore)) && !is.null(ignore) && 
+             is.null(names(ignore)) && is.null(var_stem_map)) {
     ignore_map <- list(ignore_var = ignore)
     names(ignore_map) <- vars
   } else {
@@ -309,7 +311,8 @@ check_var_stem <- function(data,
                            var_label,
                            var_stem_labels,
                            escape_stem,
-                           ignore_stem_case) {
+                           ignore_stem_case,
+                           table_type) {
   if (!is.character(var_stem) || length(var_stem) != 1) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a character vector of length one.", 
                  var_label, var_label)) 
@@ -324,11 +327,24 @@ check_var_stem <- function(data,
     stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
   }
   
+  col_dtypes <- stats::setNames(lapply(cols, function(x) get_data_type(data[[x]])), cols)
+  valid_dtypes <- return_data_types(table_type)$valid_var_types
+  dtypes <- check_multi_col_data_type(col_dtypes, valid_dtypes, var_stem)
+  
   var_labels <- check_named_vctr(x = var_stem_labels, names = cols, default = NULL)
   
-  return(list(valid = TRUE, var_stem = var_stem, 
-              label = var_label, cols = cols, 
-              var_labels = var_labels))
+  
+  return(
+    list(
+      valid = TRUE, 
+      var_stem = var_stem, 
+      label = var_label,
+      cols = cols, 
+      dtypes = dtypes, 
+      var_labels = var_labels,
+      dtypes = dtypes
+    )
+  )
 }
 
 
@@ -342,11 +358,11 @@ check_group_var_stem <- function(data = data,
                                  ignore_stem_case = ignore_stem_case,
                                  group = group,
                                  group_type = group_type,
-                                 group_name = group_name,
                                  escape_group = escape_group,
                                  ignore_group_case = ignore_group_case,
                                  remove_group_non_alnum = remove_group_non_alnum,
-                                 var_stem_labels = var_labels) { 
+                                 var_stem_labels = var_labels,
+                                 table_type) { 
  
   if (!is.character(var_stem) || length(var_stem) != 1) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a character vector of length one.", 
@@ -388,29 +404,72 @@ check_group_var_stem <- function(data = data,
     }
     
     group <- group_col
+    
+    group_data <- data[[group]]
+    grp_dtype_info <-
+      check_data_type(
+        data_type = get_data_type(group_data),
+        table_type = table_type,
+        variable_type = "valid_grp_types",
+        arg_name = "group"
+      )
+    grp_dtype <- grp_dtype_info$dtype
+    names(grp_dtype) <- group
   }
+  
+  col_dtypes <- stats::setNames(lapply(cols, function(x) get_data_type(data[[x]])), cols)
+  valid_dtypes <- return_data_types(table_type)$valid_var_types
+  dtypes <- check_multi_col_data_type(col_dtypes, valid_dtypes, var_stem)
   
   var_labels <- check_named_vctr(x = var_stem_labels, names = cols, default = NULL)
   
-  return(list(valid = TRUE, var_stem = var_stem, cols = cols, var_labels = var_labels, 
-              cols_no_group = if (group_type == "pattern") cols_no_group else NULL,
-              group = group))
+  return(
+    list(
+      valid = TRUE,
+      var_stem = var_stem,
+      cols = cols,
+      var_labels = var_labels,
+      cols_no_group = if (group_type == "pattern") cols_no_group,
+      group = group,
+      dtypes = c(dtypes, if (group_type != "pattern") grp_dtype)
+    )
+  )
 }
 
 
-# Function that validates variable data types
+# Function that validates a single variable's data type
 check_data_type <- function(data_type, table_type, variable_type, arg_name) {
   
   valid_types <- return_data_types(table_type)[[variable_type]] 
   
   if (!data_type %in% valid_types) { 
-    stop(sprintf("The '%s' column has an unsupported data type. Allowed types: %s", 
+    stop(sprintf("The '%s' argument has an unsupported data type. Allowed types: %s", 
                  arg_name, paste(valid_types, collapse = ", "))) 
   }
   
   return(list(valid = TRUE, dtype = data_type))
 }
 
+
+# Function that validates multiple variables' data types
+check_multi_col_data_type <- function(dtypes, valid_dtypes, arg_name) {
+  invalid_cols <- names(dtypes)[!unlist(dtypes) %in% valid_dtypes]
+  
+  if (length(invalid_cols) > 0) {
+    stop(sprintf(
+      paste(
+        "One or more columns returned using the variable stem '%s'",
+        "contain an unsupported data type: %s.",
+        "Allowed types: %s."
+      ),
+      arg_name,
+      paste(invalid_cols, collapse = ", "),
+      paste(valid_dtypes, collapse = ", ")
+    ))
+  }
+  
+  return(dtypes)
+}
 
 # Function that validates the 'only' argument
 check_only <- function(only = NULL, table_type) {

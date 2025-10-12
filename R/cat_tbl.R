@@ -55,35 +55,39 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
     data_sub[[var_name]] <- convert_labelled_to_chr(data_sub[[var_name]])
   }
   
-  ignore_map <- extract_ignore_map(
-    vars = var_name,
-    ignore = checks$ignore$ignore,
-    var_stem_map = NULL
-  )$ignore_map
+  ignore_result <-
+    extract_ignore_map(
+      vars = var_name,
+      ignore = checks$ignore$ignore,
+      var_stem_map = NULL
+    )
+  ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub[[var_name]] <- ifelse(
-      data_sub[[var_name]] %in% ignore_map[[var_name]],
-      NA,
-      data_sub[[var_name]]
-    )
+    data_sub[[var_name]] <-
+      ifelse(data_sub[[var_name]] %in% ignore_map[[var_name]], 
+             NA, 
+             data_sub[[var_name]]
+             )
   }
   
   if (checks$na.rm$na.rm) {
     data_sub <- stats::na.omit(data_sub)
   }
   
-  cat_tabl <- data_sub |>
+  cat_tabl <- 
+    data_sub |>
     dplyr::group_by(.data[[var_name]]) |>
     dplyr::summarize(count = dplyr::n()) |>
     dplyr::ungroup() |>
     dplyr::mutate(percent = count / sum(count))
   
-  cat_tabl <- drop_only_cols(
-    data = cat_tabl,
-    only = checks$only$only,
-    only_type = only_type(checks$table_type)
-  )
+  cat_tabl <-
+    drop_only_cols(
+      data = cat_tabl,
+      only = checks$only$only,
+      only_type = only_type(checks$table_type)
+    )
   
   return(cat_tabl)
 }

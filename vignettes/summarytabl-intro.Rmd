@@ -101,7 +101,7 @@ cat_tbl(data = nlsy,
         only = "percent")
 ```  
 
-### Comparing two categorical variables
+### Summarizing two categorical variables
 
 To create a grouped frequency table for two categorical variables (i.e., a contingency table), use the `cat_group_tbl()` function.
 
@@ -545,8 +545,7 @@ mean_group_tbl(data = sdoh,
                var_stem = "HHC_PCT",
                group = "REGION",
                na_removal = "pairwise",
-               ignore = list(HHC_PCT = 0, REGION = c("Northeast", "South")
-               ))
+               ignore = list(HHC_PCT = 0, REGION = c("Northeast", "South")))
 ``` 
 
 Another application of `mean_group_tbl()` is summarizing responses based on a matching pattern, such as survey time points (e.g., waves). To use this feature, set `group_type` to `pattern` and enter the pattern to search for in the `group` argument. 

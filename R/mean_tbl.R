@@ -8,10 +8,10 @@
 #' construct. Missing data are excluded using `listwise` deletion by default.
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a variable in
-#' `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default is
-#' `FALSE`.
+#' @param var_stem A character string of a variable stem or the full name of a variable 
+#' in `data`.
+#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default 
+#' is `FALSE`.
 #' @param ignore_stem_case A logical value indicating whether the search for columns 
 #' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
 #' @param na_removal A character string that specifies the method for handling missing 
@@ -23,8 +23,8 @@
 #' labels to variable names. Each element should be named and correspond to a variable in 
 #' the returned table. If any element is unnamed or references a variable not returned in 
 #' the table, all labels will be ignored and the table will be printed without them.
-#' @param ignore An optional vector of values to exclude from variables matching the 
-#' specified variable stem. Defaults to `NULL`, which retains all values.
+#' @param ignore An optional vector of values to exclude from variables identified by 
+#' `var_stem`. Defaults to `NULL`, which retains all values.
 #'
 #' @returns A tibble showing summary statistics for continuous variables sharing a common 
 #' variable stem.
@@ -32,17 +32,20 @@
 #' @author Ama Nyame-Mensah
 #'
 #' @examples
-#' sdoh_child_ages <- dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
-#'                                             ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
-#' mean_tbl(data = sdoh_child_ages,var_stem = "ACS_PCT_AGE")
+#' sdoh_child_ages <- 
+#'   dplyr::select(sdoh, c(ACS_PCT_AGE_0_4, ACS_PCT_AGE_5_9,
+#'                         ACS_PCT_AGE_10_14, ACS_PCT_AGE_15_17))
+#' 
+#' mean_tbl(data = sdoh_child_ages, var_stem = "ACS_PCT_AGE")
 #' 
 #' mean_tbl(data = sdoh_child_ages,
 #'          var_stem = "ACS_PCT_AGE",
 #'          na_removal = "pairwise",
-#'          var_labels = c(ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
-#'                         ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
-#'                         ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
-#'                         ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
+#'          var_labels = c(
+#'            ACS_PCT_AGE_0_4 = "% of population between ages 0-4",
+#'            ACS_PCT_AGE_5_9 = "% of population between ages 5-9",
+#'            ACS_PCT_AGE_10_14 = "% of population between ages 10-14",
+#'            ACS_PCT_AGE_15_17 = "% of population between ages 15-17"))
 #'                         
 #' @export
 mean_tbl <- function(data,
@@ -73,26 +76,17 @@ mean_tbl <- function(data,
   
   data_sub <- df[cols]
   
-  dtypes <- setNames(
-    lapply(cols, function(x) {
-      check_data_type(
-        data_type = get_data_type(data_sub[[x]]),
-        table_type = checks$table_type,
-        variable_type = "valid_var_types",
-        arg_name = "cols"
-      )
-    }),
-    cols
-  )
-  
-  ignore_map <- extract_ignore_map(
-    vars = c(checks$var_stem$var_stem),
-    ignore = checks$ignore$ignore,
-    var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
-  )$ignore_map
+  ignore_result <-
+    extract_ignore_map(
+      vars = c(checks$var_stem$var_stem),
+      ignore = checks$ignore$ignore,
+      var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+    )
+  ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <- data_sub |>
+    data_sub <- 
+      data_sub |>
       dplyr::mutate(dplyr::across(
         .cols = dplyr::all_of(names(ignore_map)),
         .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
@@ -103,29 +97,33 @@ mean_tbl <- function(data,
     data_sub <- stats::na.omit(data_sub)
   }
   
-  mean_tabl <- purrr::map(cols, ~ generate_mean_tabl(data_sub, .x, checks$na_rm$na_removal)) |>
+  mean_tabl <- 
+    purrr::map(cols, ~ generate_mean_tabl(data_sub, .x, checks$na_rm$na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, mean, sd, min, max, nobs)
   
   var_labels <- checks$var_stem$var_labels
   
   if (!is.null(var_labels)) {
-    mean_tabl <- mean_tabl |>
-      dplyr::mutate(
-        variable_label = dplyr::case_match(
-          variable,
-          !!!tbl_key(values_from = names(var_labels), values_to = unname(var_labels)),
-          .default = variable
-        )
-      ) |>
+    mean_tabl <-
+      mean_tabl |>
+      dplyr::mutate(variable_label = dplyr::case_match(
+        variable,
+        !!!tbl_key(
+          values_from = names(var_labels),
+          values_to = unname(var_labels)
+        ),
+        .default = variable
+      )) |>
       dplyr::relocate(variable_label, .after = variable)
   }
   
-  mean_tabl <- drop_only_cols(
-    data = mean_tabl,
-    only = checks$only$only,
-    only_type = only_type(checks$table_type)
-  )
+  mean_tabl <- 
+    drop_only_cols(
+      data = mean_tabl,
+      only = checks$only$only,
+      only_type = only_type(checks$table_type)
+    )
   
   return(mean_tabl)
 }

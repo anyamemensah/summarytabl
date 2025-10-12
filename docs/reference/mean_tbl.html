@@ -32,7 +32,7 @@ construct. Missing data are excluded using listwise deletion by default."></head
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/summarytabl-intro.html">Introduction to summarytabl</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/anyamemensah/summarytabl">GitHub</a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/anyamemensah/summarytabl" aria-label="View source code on GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -78,13 +78,13 @@ construct. Missing data are excluded using <code>listwise</code> deletion by def
 
 
 <dt id="arg-var-stem">var_stem<a class="anchor" aria-label="anchor" href="#arg-var-stem"></a></dt>
-<dd><p>A character string of a variable stem or the full name of a variable in
-<code>data</code>.</p></dd>
+<dd><p>A character string of a variable stem or the full name of a variable
+in <code>data</code>.</p></dd>
 
 
 <dt id="arg-escape-stem">escape_stem<a class="anchor" aria-label="anchor" href="#arg-escape-stem"></a></dt>
-<dd><p>A logical value indicating whether to escape <code>var_stem</code>. Default is
-<code>FALSE</code>.</p></dd>
+<dd><p>A logical value indicating whether to escape <code>var_stem</code>. Default
+is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-ignore-stem-case">ignore_stem_case<a class="anchor" aria-label="anchor" href="#arg-ignore-stem-case"></a></dt>
@@ -111,8 +111,8 @@ the table, all labels will be ignored and the table will be printed without them
 
 
 <dt id="arg-ignore">ignore<a class="anchor" aria-label="anchor" href="#arg-ignore"></a></dt>
-<dd><p>An optional vector of values to exclude from variables matching the
-specified variable stem. Defaults to <code>NULL</code>, which retains all values.</p></dd>
+<dd><p>An optional vector of values to exclude from variables identified by
+<code>var_stem</code>. Defaults to <code>NULL</code>, which retains all values.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -127,9 +127,11 @@ variable stem.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sdoh_child_ages</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sdoh</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ACS_PCT_AGE_0_4</span>, <span class="va">ACS_PCT_AGE_5_9</span>,</span></span>
-<span class="r-in"><span>                                            <span class="va">ACS_PCT_AGE_10_14</span>, <span class="va">ACS_PCT_AGE_15_17</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">mean_tbl</span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh_child_ages</span>,var_stem <span class="op">=</span> <span class="st">"ACS_PCT_AGE"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sdoh_child_ages</span> <span class="op">&lt;-</span> </span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sdoh</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ACS_PCT_AGE_0_4</span>, <span class="va">ACS_PCT_AGE_5_9</span>,</span></span>
+<span class="r-in"><span>                        <span class="va">ACS_PCT_AGE_10_14</span>, <span class="va">ACS_PCT_AGE_15_17</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">mean_tbl</span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh_child_ages</span>, var_stem <span class="op">=</span> <span class="st">"ACS_PCT_AGE"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable           mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -141,10 +143,11 @@ variable stem.</p>
 <span class="r-in"><span><span class="fu">mean_tbl</span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh_child_ages</span>,</span></span>
 <span class="r-in"><span>         var_stem <span class="op">=</span> <span class="st">"ACS_PCT_AGE"</span>,</span></span>
 <span class="r-in"><span>         na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span></span>
-<span class="r-in"><span>         var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"% of population between ages 0-4"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"% of population between ages 5-9"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"% of population between ages 10-14"</span>,</span></span>
-<span class="r-in"><span>                        ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"% of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>         var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>           ACS_PCT_AGE_0_4 <span class="op">=</span> <span class="st">"% of population between ages 0-4"</span>,</span></span>
+<span class="r-in"><span>           ACS_PCT_AGE_5_9 <span class="op">=</span> <span class="st">"% of population between ages 5-9"</span>,</span></span>
+<span class="r-in"><span>           ACS_PCT_AGE_10_14 <span class="op">=</span> <span class="st">"% of population between ages 10-14"</span>,</span></span>
+<span class="r-in"><span>           ACS_PCT_AGE_15_17 <span class="op">=</span> <span class="st">"% of population between ages 15-17"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   variable          variable_label                  mean    sd   min   max  nobs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>

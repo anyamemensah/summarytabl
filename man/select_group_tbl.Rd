@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_group_tbl.R
 \name{select_group_tbl}
 \alias{select_group_tbl}
-\title{Summarize multiple response variables by group}
+\title{Summarize multiple response variables by group or pattern}
 \usage{
 select_group_tbl(
   data,
@@ -26,80 +26,85 @@ select_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character string of a variable stem or the full name of a variable in
-\code{data}.}
+\item{var_stem}{A character string of a variable stem or the full name of a
+variable in \code{data}.}
 
-\item{group}{A character string representing a variable name or a pattern used to
-search for variables in \code{data}.}
+\item{group}{A character string representing a variable name or a pattern used
+to search for variables in \code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default is
+\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}.
+Default is \code{FALSE}.}
+
+\item{ignore_stem_case}{A logical value indicating whether the search for
+columns matching the supplied \code{var_stem} is case-insensitive. Default is
 \code{FALSE}.}
 
-\item{ignore_stem_case}{A logical value indicating whether the search for columns
-matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
+\item{group_type}{A character string that defines how the \code{group} argument should
+be interpreted. Should be one of \code{pattern} or \code{variable}. Defaults to \code{variable},
+which searches for a matching variable name in \code{data}.}
 
-\item{group_type}{A character string that defines how the \code{group} argument should be
-interpreted. Should be one of \code{pattern} or \code{variable}. Defaults to \code{variable}, which
-searches for a matching variable name in \code{data}.}
+\item{group_name}{An optional character string used to rename the \code{group} column
+in the final table When \code{group_type} is set to \code{variable}, the column name defaults
+to the matched variable name from \code{data}. When set to \code{pattern}, the default column
+name is \code{group}.}
 
-\item{group_name}{An optional character string used to rename the \code{group} column in the
-final table When \code{group_type} is set to \code{variable}, the column name defaults to the
-matched variable name from \code{data}. When set to \code{pattern}, the default column name is
-\code{group}.}
+\item{margins}{A character string that determines how percentage values are
+calculated; whether they sum to one across rows, columns, or the entire variable
+(i.e., all). Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}. Note:
+This argument only affects the final table when \code{group_type} is \code{variable}.}
 
-\item{margins}{A character string that determines how percentage values are calculated;
-whether they sum to one across rows, columns, or the entire variable (i.e., all).
-Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}. Note: This argument only
-affects the final table when \code{group_type} is \code{variable}.}
+\item{escape_group}{A logical value indicating whether to escape string supplied
+to \code{group}.}
 
-\item{escape_group}{A logical value indicating whether to escape string supplied to
-\code{group}.}
+\item{ignore_group_case}{A logical value specifying whether the search for a
+grouping variable (if \code{group_type} is \code{variable}) or for variables matching a
+pattern (if \code{group_type} is \code{pattern}) should be case-insensitive. Default is
+\code{FALSE}. Set to \code{TRUE} to ignore case.}
 
-\item{ignore_group_case}{A logical value specifying whether the search for a grouping
-variable (if \code{group_type} is \code{variable}) or for variables matching a pattern (if
-\code{group_type} is \code{pattern}) should be case-insensitive. Default is \code{FALSE}. Set to \code{TRUE}
-to ignore case.}
+\item{remove_group_non_alnum}{A logical value indicating whether to remove all
+non-alphanumeric characters (i.e., anything that is not a letter or number) from
+\code{group}. Default is \code{TRUE}.}
 
-\item{remove_group_non_alnum}{A logical value indicating whether to remove all non-
-alphanumeric characters (i.e., anything that is not a letter or number) from \code{group}.
-Default is \code{TRUE}.}
+\item{na_removal}{A character string that specifies the method for handling
+missing values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 
-\item{na_removal}{A character string that specifies the method for handling missing
-values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
+\item{pivot}{A character string that determines the format of the table. By
+default, \code{longer} returns the data in the long format. To return the data in the
+\code{wide} format, specify \code{wider}.}
 
-\item{pivot}{A character string that determines the format of the table. By default,
-\code{longer} returns the data in the long format. To return the data in the \code{wide}
-format, specify \code{wider}.}
+\item{only}{A character string or vector of character strings of the types of
+summary data to return. Default is \code{NULL}, which returns both counts and
+percentages. To return only counts or percentages, use \code{count} or \code{percent},
+respectively.}
 
-\item{only}{A character string or vector of character strings of the types of summary
-data to return. Default is \code{NULL}, which returns both counts and percentages. To return
-only counts or percentages, use \code{count} or \code{percent}, respectively.}
-
-\item{var_labels}{An optional named character vector or list used to assign custom
-labels to variable names. Each element should be named and correspond to a variable in
-the returned table. If any element is unnamed or references a variable not returned in
-the table, all labels will be ignored and the table will be printed without them.}
+\item{var_labels}{An optional named character vector or list used to assign
+custom labels to variable names. Each element should be named and correspond to
+a variable in the returned table. If any element is unnamed or references a variable
+not returned in the table, all labels will be ignored and the table will be printed
+without them.}
 
 \item{ignore}{An optional named vector or list that defines values to exclude from
 variables matching the specified variable stem and, if applicable, a grouping variable
-in \code{data.} If set to \code{NULL} (default), all values are retained. To exclude values from
+in \code{data}. If set to \code{NULL} (default), all values are retained. To exclude values from
 variables identified by \code{var_stem}, use the stem name as the key. To exclude multiple
-values from both \code{var_stem} variables and a grouping variable, supply a named list.}
+values from \code{var_stem} variables or a grouping variable, provide them as a named list.}
 }
 \value{
-A tibble showing the relative frequencies and/or percentages of multiple response
-variables sharing a common variable stem. The statistics are grouped either by a specified
-grouping variable within the dataset or by a matched pattern in the variable names.
+A tibble showing the relative frequencies and/or percentages of multiple
+response variables sharing a common variable stem. The statistics are grouped either
+by a specified grouping variable within the dataset or by a matched pattern in the
+variable names.
 }
 \description{
-\code{select_group_tbl()} displays frequency counts and percentages (i.e.,
-count and percent) for multiple response variables, including binary variables
-(such as Unselected/Selected) and ordinal variables (such as responses ranging
-from strongly disagree to strongly agree), that share a common variable stem,
-grouped either by another variable in your dataset or by a matched pattern in the
-variable names. A variable 'stem' is a shared naming pattern across related variables,
-often representing repeated measures of the same concept or a series of items measuring
-a single construct. Missing data are excluded using \code{listwise} deletion by default.
+\code{select_group_tbl()} displays frequency counts and percentages
+(i.e., count and percent) for multiple response variables, including binary
+variables (such as Unselected/Selected) and ordinal variables (such as responses
+ranging from strongly disagree to strongly agree), that share a common variable
+stem, grouped either by another variable in your dataset or by a matched pattern in
+the variable names. A variable 'stem' is a shared naming pattern across related
+variables, often representing repeated measures of the same concept or a series of
+items measuring a single construct. Missing data are excluded using \code{listwise}
+deletion by default.
 }
 \examples{
 select_group_tbl(data = stem_social_psych,
