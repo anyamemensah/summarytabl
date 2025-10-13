@@ -23,7 +23,7 @@ cat_group_tbl(
 categorical data. This is the primary categorical variable.}
 
 \item{col_var}{A character string of the name of a variable in \code{data} containing
-categorical data.}
+categorical data. This is the secondary categorical variable.}
 
 \item{margins}{A character string that determines how percentage values are
 calculated; whether they sum to one across rows, columns, or the entire table

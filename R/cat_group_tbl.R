@@ -9,7 +9,7 @@
 #' @param row_var A character string of the name of a variable in `data` containing 
 #' categorical data. This is the primary categorical variable.
 #' @param col_var A character string of the name of a variable in `data` containing 
-#' categorical data.
+#' categorical data. This is the secondary categorical variable.
 #' @param margins A character string that determines how percentage values are 
 #' calculated; whether they sum to one across rows, columns, or the entire table 
 #' (i.e., all). Defaults to `all`, but can also be set to `rows` or `columns`.

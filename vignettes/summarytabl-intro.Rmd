@@ -9,9 +9,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the `summarytabl` package! This package makes it easy to create simple tables for summarizing continuous, ordinal, and categorical data. This document introduces you to some of `summarytabl`'s most frequently used functions, along with examples of how to apply them to your data frames.
+Welcome to the **summarytabl** package! This package makes it easy to create simple tables for summarizing continuous, ordinal, and categorical data. This document introduces you to some of **summarytabl**'s most frequently used functions, along with examples of how to apply them to your data frames.
 
-To begin, load `summarytabl`
+To begin, load **summarytabl**
 
 ```{r setup}
 library(summarytabl)
@@ -28,8 +28,8 @@ These functions are designed to summarize categorical data, including:
 
 Functions that summarize categorical data start with the prefix `cat_`:
 
-* cat_tbl
-* cat_group_tbl
+* `cat_tbl()`
+* `cat_group_tbl()`
 
 ### Multiple Response Data Functions
 
@@ -41,8 +41,8 @@ These functions handle multiple response data, which can include:
 
 Functions for multiple response data start with the prefix `select_`: 
 
-* select_tbl
-* select_group_tbl
+* `select_tbl()`
+* `select_group_tbl()`
 
 ### Continuous Data Functions
 
@@ -53,8 +53,8 @@ These functions are used for continuous data, such as:
 
 Functions for continuous data start with the prefix `mean_`:
 
-* mean_tbl
-* mean_group_tbl
+* `mean_tbl()`
+* `mean_group_tbl()`
 
 To learn more about how these functions work, read the next few sections.
 
@@ -103,7 +103,7 @@ cat_tbl(data = nlsy,
 
 ### Summarizing two categorical variables
 
-To create a grouped frequency table for two categorical variables (i.e., a contingency table), use the `cat_group_tbl()` function.
+To create a contingency table for two categorical variables, use the `cat_group_tbl()` function.
 
 ```{r}
 cat_group_tbl(data = nlsy,
@@ -118,22 +118,37 @@ cat_group_tbl(data = nlsy,
               row_var = "race",
               col_var = "bthwht",
               na.rm.row_var = TRUE,
-              ignore = c(race = "Non-Black,Non-Hispanic"),
-              pivot = "wider")
+              ignore = c(race = "Non-Black,Non-Hispanic"))
 ```    
 
-If you want to ignore more than one value per row or column, provide them in a named list:
+If you want to ignore more than one value per row or column, provide them in a named list.
 
 ```{r}
 cat_group_tbl(data = nlsy,
               row_var = "race",
               col_var = "bthwht",
               na.rm.row_var = TRUE,
-              ignore = list(race = c("Non-Black,Non-Hispanic", "Hispanic")),
-              pivot = "wider")
+              ignore = list(race = c("Non-Black,Non-Hispanic", "Hispanic")))
 ```  
 
-Use the `margins` argument to define how percentages are calculated and shown in the resulting table:
+To control whether the table is displayed in long or wide format, use the `pivot` argument.
+
+```{r}
+# Default: longer format
+cat_group_tbl(data = nlsy,
+              row_var = "race",
+              col_var = "bthwht",
+              na.rm.row_var = TRUE)
+
+# Wider format
+cat_group_tbl(data = nlsy,
+              row_var = "race",
+              col_var = "bthwht",
+              na.rm.row_var = TRUE,
+              pivot = "wider")
+``` 
+
+Use the `margins` argument to define how percentages are calculated and shown in the resulting table.
 
 ```{r}
 # Default: percentages across the full table sum to one
@@ -163,21 +178,18 @@ Finally, you can choose what information to return using the `only` argument.
 # Default: counts and percentages
 cat_group_tbl(data = nlsy,
               row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE)
+              col_var = "bthwht")
 
 # Counts only
 cat_group_tbl(data = nlsy,
               row_var = "race",
               col_var = "bthwht",
-              na.rm.row_var = TRUE,
               only = "count")
 
 # Percents only
 cat_group_tbl(data = nlsy,
               row_var = "race",
               col_var = "bthwht",
-              na.rm.row_var = TRUE,
               only = "percent")
 ```  
 
@@ -187,7 +199,7 @@ cat_group_tbl(data = nlsy,
 
 With `select_tbl()`, you can produce a summary table for multiple response variables with the same variable stem. A variable stem is a shared prefix in a set of related variable names, typically used to represent a common concept across similar survey items.
 
-For example, the `depressive` dataset contains eight variables that share the same variable stem: `dep`, with each one representing a different item (such as a statement or question) used to measure depression:
+For example, the `depressive` dataset contains eight variables that share the same variable stem: `dep`, with each one representing a different item (such as a statement or question) used to measure depression.
 
 ```{r}
 names(depressive)
@@ -199,7 +211,7 @@ The `select_tbl()` function lets you summarize responses to these items by showi
 select_tbl(data = depressive, var_stem = "dep")
 ```
 
-You can also use the `ignore` and `na_removal` arguments to exclude values from the data and specify how missing values should be handled. By default, missing values are removed `listwise`, but you can set `na_removal` to `pairwise` for pairwise removal instead:
+To exclude values from the data and specify how missing values should be handled, use the `ignore` and `na_removal` arguments. By default, missing values are removed `listwise`, but you can set `na_removal` to `pairwise` for pairwise removal instead.
 
 ```{r}
 # Default listwise removal, value '3' removed from data
@@ -228,7 +240,7 @@ select_tbl(data = depressive,
            pivot = "wider")
 ```
 
-You can use the `var_labels` argument to include variable labels in your summary table to make the variable names easier to interpret:
+You can use the `var_labels` argument to include variable labels in your summary table to make the variable names easier to interpret.
 
 ```{r}
 select_tbl(data = depressive, 
@@ -272,7 +284,7 @@ select_tbl(data = depressive,
 
 With `select_group_tbl()`, you can create a summary table for multiple response variables with the same variable stem, grouped either by another variable in your dataset or by matching a pattern in the variable names.
 
-For example, we often want to summarize survey responses by demographic variables like gender, age, or race:
+For example, we often want to summarize survey responses by demographic variables like gender, age, or race.
 
 ```{r}
 dep_recoded <- 
@@ -305,7 +317,7 @@ select_group_tbl(data = dep_recoded,
                  pivot = "wider")
 ```  
 
-As with `cat_group_tbl()`, you can define values to exclude and how to handle missing data. When excluding values, use the `var_stem` argument to specify which values to omit across variables sharing that stem.
+Similar to `cat_group_tbl()`, you can specify which values to exclude and determine how missing data should be handled. To exclude specific values across variables that share the same stem, use the same string you passed to the `var_stem` argument as the key for identifying which values to omit. If a grouping variable is specified via the `group` argument, you can exclude particular values by using the grouping variable's name as the key to identify which values should be ignored.
 
 ```{r}
 
@@ -339,7 +351,7 @@ select_group_tbl(data = dep_recoded,
                  ignore = list(race = c("Hispanic", "Non-Black/Non-Hispanic")))
 ``` 
 
-When `group_type` is `variable` you can use the `margins` argument to define how percentages are calculated and shown in the resulting table:
+When `group_type` is `variable` you can use the `margins` argument to define how percentages are calculated and shown in the resulting table.
 
 ```{r}
 # Default: percentages across each variable sum to one
@@ -377,8 +389,7 @@ For example, the `stem_social_psych` dataset includes a set of variables respond
 select_group_tbl(data = stem_social_psych, 
                  var_stem = "belong_belong",
                  group = "_w\\d",
-                 group_type = "pattern",
-                 pivot = "longer")
+                 group_type = "pattern")
 ``` 
 
 Use the `group_name` argument to assign a descriptive name to the column containing the matched pattern values.
@@ -388,11 +399,10 @@ select_group_tbl(data = stem_social_psych,
                  var_stem = "belong_belong",
                  group = "_w\\d",
                  group_type = "pattern",
-                 group_name = "wave",
-                 pivot = "longer")
+                 group_name = "wave")
 ``` 
 
-You can use the `var_labels` argument to include variable labels in your summary table to make the variable names easier to interpret:
+You can use the `var_labels` argument to include variable labels in your summary table to make the variable names easier to interpret.
 
 ```{r}
 select_group_tbl(data = stem_social_psych, 
@@ -415,8 +425,7 @@ select_group_tbl(data = stem_social_psych,
                  var_stem = "belong_belong",
                  group = "_w\\d",
                  group_type = "pattern",
-                 group_name = "wave",
-                 pivot = "longer")
+                 group_name = "wave")
 
 # Counts only
 select_group_tbl(data = stem_social_psych, 
@@ -424,7 +433,6 @@ select_group_tbl(data = stem_social_psych,
                  group = "_w\\d",
                  group_type = "pattern",
                  group_name = "wave",
-                 pivot = "longer",
                  only = "count")
 
 # Percents only
@@ -433,7 +441,6 @@ select_group_tbl(data = stem_social_psych,
                  group = "_w\\d",
                  group_type = "pattern",
                  group_name = "wave",
-                 pivot = "longer",
                  only = "percent")
 ```
 
@@ -447,7 +454,7 @@ With the `mean_tbl()` function, you can summarize a series of continuous variabl
 mean_tbl(data = sdoh, var_stem = "HHC_PCT")
 ``` 
 
-Like the other functions in this package, you can use the `ignore` argument to specify which values to exclude from all variables associated with the provided variable stem.
+Like the other functions in the package, you can use the `ignore` argument to specify which values to exclude from all variables associated with the provided variable stem.
 
 ```{r}
 mean_tbl(data = sdoh, 
@@ -455,7 +462,7 @@ mean_tbl(data = sdoh,
          ignore = 0)
 ``` 
 
-You can also specify how missing values are removed:
+You can also specify how missing values are removed, using the `na_removal` argument.
 
 ```{r}
 # Default listwise removal
@@ -512,7 +519,7 @@ mean_tbl(data = sdoh,
 
 With the `mean_group_tbl()` function, you can produce a summary table for a series of continuous variables sharing the same variable stem, grouped either by another variable in your dataset or by matching a pattern in the variable names.
 
-For example, we often want to present summary statistics for responses by demographic variables like region, gender, age, or race:
+For example, we often want to present summary statistics for responses by demographic variables like region, gender, age, or race.
 
 ```{r}
 mean_group_tbl(data = sdoh, 
@@ -521,7 +528,7 @@ mean_group_tbl(data = sdoh,
                group_type = "variable")
 ``` 
 
-As with `select_group_tbl()`, you can specify which values to exclude and whether to omit missing values. Be sure to use the `var_stem` argument you provide to determine which values to exclude for variables sharing the same stem.
+As with `select_group_tbl()`, you can specify which values to exclude and whether to omit missing values. Be sure to use the same string provided to the `var_stem` argument to determine which values to exclude for variables sharing the same stem. You can exclude specific values from the grouping variable by using its name as the key to identify which values to omit.
 
 ```{r}
 # Default listwise removal
@@ -538,7 +545,7 @@ mean_group_tbl(data = sdoh,
                ignore = c(HHC_PCT = 0, REGION = "Northeast"))
 ``` 
 
-Use a list if you want to exclude several values from the same `var_stem` or `group` variable:
+Use a list if you want to exclude several values from the same `var_stem` or `group` variable.
 
 ```{r}
 mean_group_tbl(data = sdoh, 
