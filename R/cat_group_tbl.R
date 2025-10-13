@@ -82,9 +82,13 @@ cat_group_tbl <- function(data,
   
   data_sub <- df[c(row_name, col_name)]
   
-  labelled_vars <- c(row_name, col_name)[c(checks$row_dtype$dtype, checks$col_dtype$dtype) == "haven_labelled"]
+  dtype_vec <- c(checks$row_dtype$dtype, checks$col_dtype$dtype)
+  var_vec <- c(row_name, col_name)
+  labelled_vars <- var_vec[dtype_vec == "haven_labelled"]
+  
   if (length(labelled_vars) > 0) {
-    data_sub[labelled_vars] <- lapply(labelled_vars, function(v) convert_labelled_to_chr(data_sub[[v]]))
+    data_sub[labelled_vars] <- 
+      lapply(labelled_vars, function(v) convert_labelled_to_chr(data_sub[[v]]))
   }
   
   ignore_result <-
@@ -96,21 +100,19 @@ cat_group_tbl <- function(data,
   ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <-
-      data_sub |>
-      dplyr::mutate(dplyr::across(
-        .cols = dplyr::all_of(names(ignore_map)),
-        .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
-      ))
+    cols_to_modify <- names(ignore_map)
+    data_sub[cols_to_modify] <- lapply(cols_to_modify, function(col) {
+      replace_with_na(data_sub[[col]], ignore_map[[col]])
+    })
   }
   
-  vars_to_filter <- c()
-  if (checks$na_row$na.rm) vars_to_filter <- c(vars_to_filter, row_name)
-  if (checks$na_col$na.rm) vars_to_filter <- c(vars_to_filter, col_name)
+  vars_to_filter <- 
+    c(if (checks$na_row$na.rm) row_name, if (checks$na_col$na.rm) col_name)
   
-  for (var in vars_to_filter) {
-    data_sub <- data_sub |>
-      dplyr::filter(!is.na(.data[[var]]))
+  if (!is.null(vars_to_filter)) {
+    for (var in vars_to_filter) {
+      data_sub <- data_sub[!is.na(data_sub[[var]]), ]
+    }
   }
   
   cat_group_tabl <-
@@ -139,7 +141,7 @@ cat_group_tbl <- function(data,
       only_type = only_type(checks$table_type)
     )
   
-  return(cat_group_tabl)
+  return(tibble::as_tibble(cat_group_tabl))
 }
 
 #' @keywords internal
@@ -150,11 +152,8 @@ summarize_cat_group <- function(df,
   margin_col <- if (margins == "rows") row_var else col_var
   
   grouped_df <- 
-    df |>
-    dplyr::group_by(.data[[row_var]], .data[[col_var]]) |>
-    dplyr::summarize(count = dplyr::n()) |>
-    dplyr::ungroup()
-  
+    df |> dplyr::count(.data[[row_var]], .data[[col_var]], name = "count")
+
   if (margins %in% c("rows", "columns")) {
     grouped_df <- 
       grouped_df |>

@@ -133,12 +133,7 @@ test_that("Expected output", {
       na.rm.col_var = TRUE,
       margins = "columns"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = dplyr::all_of(c("count", "percent")),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
 
   expected <-
     tibble::tibble(
@@ -163,12 +158,8 @@ test_that("Expected output with ignore values", {
       ignore = c(race = "Non-Black,Non-Hispanic", gender = 1),
       margins = "columns"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = dplyr::all_of(c("count", "percent")),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
+  
   
   expected <-
     tibble::tibble(
@@ -193,12 +184,7 @@ test_that("Expected output with different 'only' types", {
       only = "percent",
       margins = "columns"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected1 <-
     tibble::tibble(
@@ -240,12 +226,7 @@ test_that("Expected output with different 'margin' types", {
       only = "percent",
       margins = "columns"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected1 <-
     tibble::tibble(
@@ -262,12 +243,7 @@ test_that("Expected output with different 'margin' types", {
       only = "percent",
       margins = "rows"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected2 <-
     tibble::tibble(
@@ -285,12 +261,7 @@ test_that("Expected output with different 'margin' types", {
       only = "percent",
       margins = "all"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected3 <-
     tibble::tibble(

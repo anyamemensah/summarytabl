@@ -192,12 +192,8 @@ test_that("Expected output with differnt 'only' types", {
       data = stem_social_psych,
       var_stem = "belong_belong",
       only = c("mean", "max")) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "mean",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(mean = round(mean, digits = 3))
+  
   
   expected3 <-
     tibble::tibble(

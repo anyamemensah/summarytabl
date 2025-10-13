@@ -396,12 +396,8 @@ test_that("Expected output with different 'only' types", {
       group = "is_male",
       only = c("mean", "min")
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "mean",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(mean = round(mean, digits = 3))
+  
   
   expected1 <-
     tibble::tibble(
@@ -418,12 +414,8 @@ test_that("Expected output with different 'only' types", {
       group = "is_male",
       only = c("sd", "max")
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "sd",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(sd = round(sd, digits = 3))
+  
   
   expected2 <-
     tibble::tibble(
@@ -440,12 +432,8 @@ test_that("Expected output with different 'only' types", {
       group = "is_male",
       only = c("mean", "nobs")
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = c(mean),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(mean = round(mean, digits = 3))
+  
   
   expected3 <-
     tibble::tibble(

@@ -152,12 +152,7 @@ test_that("Expected output longer format", {
       margins = "rows"
     ) |>
     head() |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
 
   expected <-
     tibble::tibble(
@@ -192,8 +187,10 @@ test_that("Expected output wider format", {
       count_sex_1 = c(55, 325, 440),
       count_sex_2 = c(54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
-                                .fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
+      .fns = as.integer)
+      )
   
   expect_equal(observed, expected)
 })
@@ -228,8 +225,10 @@ test_that("Expected output wider format with variable labels", {
       count_sex_1 = c(55, 325, 440),
       count_sex_2 = c(54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
-                                .fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("values", "count_sex_1", "count_sex_2")),
+      .fns = as.integer)
+      )
   
   expect_equal(observed, expected)
 })
@@ -266,8 +265,10 @@ test_that("Expected output wider for with 'ignore' values", {
       values = rep(2:3L, times = 3),
       count_sex_1 = c(41, 26, 42, 25, 59, 8),
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1")),
-                                .fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("values", "count_sex_1")),
+      .fns = as.integer
+      ))
   
   expect_equal(observed, expected)
 })
@@ -283,12 +284,8 @@ test_that("Expected output with remove_group_non_alnum", {
       group_type = "pattern",
       remove_group_non_alnum = FALSE
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    ) |> head()
+    head() |>
+    dplyr::mutate(percent = round(percent, digits = 3))
     
   expected1 <-
     tibble::tibble(
@@ -308,12 +305,8 @@ test_that("Expected output with remove_group_non_alnum", {
       group_type = "pattern",
       remove_group_non_alnum = TRUE
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    ) |> head()
+    head() |>
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected2 <-
     tibble::tibble(
@@ -363,8 +356,10 @@ test_that("Error and expected output with ignore_stem_case", {
       count_sex_1 = c(55, 325),
       count_sex_2 = c(54,364)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values", "count_sex_1","count_sex_2")),
-                                .fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("values", "count_sex_1","count_sex_2")),
+      .fns = as.integer)
+      )
   
   expect_equal(observed, expected)
 })
@@ -407,8 +402,10 @@ test_that("Error and expected output with ignore_group_case", {
       count_sex_1 = c(55, 325),
       count_sex_2 = c(54,364)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values","count_sex_1", "count_sex_2")),
-                                .fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("values","count_sex_1", "count_sex_2")),
+      .fns = as.integer)
+      )
   
   expect_equal(observed, expected)
 })
@@ -431,7 +428,10 @@ test_that("Expected output with different 'only' types", {
       values = rep(1:3, times = 2),
       count = c(55, 325, 440, 54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "values")),.fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("sex", "values")),
+      .fns = as.integer)
+      )
   
   observed2 <-
     select_group_tbl(
@@ -442,12 +442,8 @@ test_that("Expected output with different 'only' types", {
       margins = "rows"
     ) |>
     head() |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = dplyr::all_of("percent"),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
+  
   
   expected2 <-
     tibble::tibble(
@@ -456,7 +452,10 @@ test_that("Expected output with different 'only' types", {
       values = rep(1:3, each = 2),
       percent = c(0.505, 0.495, 0.472, 0.528, 0.544, 0.456)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("sex", "values")),.fns = as.integer))
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::all_of(c("sex", "values")),
+      .fns = as.integer)
+      )
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
@@ -481,7 +480,7 @@ test_that("Expected output with specified group name", {
       values = rep(1:3, times = 2),
       count = c(55, 325, 440, 54, 364, 369)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = "values",.fns = as.integer))
+    dplyr::mutate(values = as.integer(values))
   
   observed2 <-
     select_group_tbl(
@@ -493,12 +492,8 @@ test_that("Expected output with specified group name", {
       only = "percent"
     ) |>
     head() |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = "percent",
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
+  
   
   expected2 <-
     tibble::tibble(
@@ -507,7 +502,8 @@ test_that("Expected output with specified group name", {
       values = rep(1:3, times = 2),
       percent = c(0.068, 0.429, 0.503, 0.090, 0.464, 0.446)
     ) |>
-    dplyr::mutate(dplyr::across(.cols = dplyr::all_of(c("values")),.fns = as.integer))
+    dplyr::mutate(values = as.integer(values))
+  
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)

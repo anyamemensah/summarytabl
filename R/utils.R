@@ -1,4 +1,17 @@
 #### Utility functions used in 'summarytabl'
+# Function to replace ignore values with NAs
+replace_with_na <- function(x, ignore_vals) {
+  if (is.factor(x)) {
+    x <- as.character(x)
+    x[x %in% ignore_vals] <- NA
+    factor(x, levels = levels(x))
+  } else {
+    x[x %in% ignore_vals] <- NA
+  }
+  return(x)
+}
+
+
 # Function that removes unrequested 'only' columns from 'data'
 drop_only_cols <- function(data, only, only_type) {
   if (all(only %in% only_type)) {

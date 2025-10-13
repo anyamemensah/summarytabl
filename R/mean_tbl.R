@@ -85,12 +85,10 @@ mean_tbl <- function(data,
   ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <- 
-      data_sub |>
-      dplyr::mutate(dplyr::across(
-        .cols = dplyr::all_of(names(ignore_map)),
-        .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
-      ))
+    cols_to_modify <- names(ignore_map)
+    data_sub[cols_to_modify] <- lapply(cols_to_modify, function(col) {
+      replace_with_na(data_sub[[col]], ignore_map[[col]])
+    })
   }
   
   if (checks$na_rm$na_removal == "listwise") {
@@ -125,21 +123,24 @@ mean_tbl <- function(data,
       only_type = only_type(checks$table_type)
     )
   
-  return(mean_tabl)
+  return(tibble::as_tibble(mean_tabl))
 }
 
 
 #' @keywords internal
 generate_mean_tabl <- function(data, col, na_removal) {
-  data |>
-    dplyr::filter(if (na_removal == "pairwise") !is.na(.data[[col]]) else TRUE) |>
-    dplyr::summarize(
-      variable = col,
-      mean = mean(.data[[col]], na.rm = TRUE),
-      sd = stats::sd(.data[[col]], na.rm = TRUE),
-      min = min(.data[[col]], na.rm = TRUE),
-      max = max(.data[[col]], na.rm = TRUE),
-      nobs = sum(!is.na(.data[[col]]))
-    ) |>
-    dplyr::ungroup()
+  if (na_removal == "pairwise") {
+    data <- data[!is.na(data[[col]]), ]
+  }
+  
+  result <- data.frame(
+    variable = col,
+    mean = mean(data[[col]], na.rm = TRUE),
+    sd = stats::sd(data[[col]], na.rm = TRUE),
+    min = min(data[[col]], na.rm = TRUE),
+    max = max(data[[col]], na.rm = TRUE),
+    nobs = sum(!is.na(data[[col]]))
+  )
+  
+  return(result)
 }

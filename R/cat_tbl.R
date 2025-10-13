@@ -64,22 +64,16 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub[[var_name]] <-
-      ifelse(data_sub[[var_name]] %in% ignore_map[[var_name]], 
-             NA, 
-             data_sub[[var_name]]
-             )
+    data_sub[[var_name]] <- 
+      replace_with_na(data_sub[[var_name]], ignore_map[[var_name]])
   }
   
   if (checks$na.rm$na.rm) {
-    data_sub <- stats::na.omit(data_sub)
+    data_sub <- data_sub[!is.na(data_sub[[var_name]]), ]
   }
   
   cat_tabl <- 
-    data_sub |>
-    dplyr::group_by(.data[[var_name]]) |>
-    dplyr::summarize(count = dplyr::n()) |>
-    dplyr::ungroup() |>
+    dplyr::count(data_sub, .data[[var_name]], name = "count") |>
     dplyr::mutate(percent = count / sum(count))
   
   cat_tabl <-
@@ -89,5 +83,5 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
       only_type = only_type(checks$table_type)
     )
   
-  return(cat_tabl)
+  return(tibble::as_tibble(cat_tabl))
 }

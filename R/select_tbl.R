@@ -116,12 +116,12 @@ select_tbl <- function(data,
   ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub <-
-      data_sub |>
-      dplyr::mutate(dplyr::across(
-        .cols = dplyr::all_of(names(ignore_map)),
-        .fns = ~ ifelse(. %in% ignore_map[[dplyr::cur_column()]], NA, .)
-      ))
+    cols_to_modify <- names(ignore_map)
+    
+    for (col in cols_to_modify) {
+      data_sub[[col]] <- 
+        replace_with_na(data_sub[[col]], ignore_map[[col]])
+    }
   }
   
   if (checks$na_rm$na_removal == "listwise") {
@@ -167,7 +167,7 @@ select_tbl <- function(data,
       only_type = only_type(checks$table_type)
     )
   
-  return(select_tabl)
+  return(tibble::as_tibble(select_tabl))
 }
 
 #' @keywords internal

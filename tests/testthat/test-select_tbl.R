@@ -243,12 +243,7 @@ test_that("Expected output with different 'only' types", {
       only = "percent"
     ) |> 
     head() |>
-  dplyr::mutate(
-    dplyr::across(
-      .cols = "percent",
-      .fns = ~ round(., digits = 3)
-    )
-  )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected2 <-
     tibble::tibble(

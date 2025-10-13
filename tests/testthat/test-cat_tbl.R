@@ -106,21 +106,17 @@ test_that("Expected output with 'ignore' values", {
       na.rm = TRUE,
       ignore = "Hispanic"
     ) |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = c("percent"),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected <-
     tibble::tibble(
       race = c("Black","Non-Black,Non-Hispanic"),
-      count = c(868, 1477),
+      count = as.integer(c(868, 1477)),
       percent = c(0.37, 0.63)
-    )
-  
+    ) 
+
   expect_equal(observed, expected)
+
 })
 
 
@@ -146,12 +142,7 @@ test_that("Expected output with different 'only' types", {
       na.rm = TRUE,
       only = "percent"
     ) |> 
-    dplyr::mutate(
-      dplyr::across(
-        .cols = c("percent"),
-        .fns = ~ round(., digits = 3)
-      )
-    )
+    dplyr::mutate(percent = round(percent, digits = 3))
   
   expected2 <-
     tibble::tibble(
