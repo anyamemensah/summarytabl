@@ -97,15 +97,8 @@ select_tbl <- function(data,
   checks <- check_select_args(args)
   cols <- checks$var_stem$cols
   df <- checks$data$df
-  dtypes <- checks$var_stem$dtypes
   
   data_sub <- df[cols]
-  
-  for (col in names(dtypes)) {
-    if (dtypes[[col]] == "haven_labelled") {
-      data_sub[[col]] <- convert_labelled_to_chr(data_sub[[col]])
-    }
-  }
   
   ignore_result <-
     extract_ignore_map(

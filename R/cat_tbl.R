@@ -51,10 +51,6 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   
   data_sub <- df[var_name]
   
-  if (checks$dtype$dtype == "haven_labelled") {
-    data_sub[[var_name]] <- convert_labelled_to_chr(data_sub[[var_name]])
-  }
-  
   ignore_result <-
     extract_ignore_map(
       vars = var_name,

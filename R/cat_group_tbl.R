@@ -82,15 +82,6 @@ cat_group_tbl <- function(data,
   
   data_sub <- df[c(row_name, col_name)]
   
-  dtype_vec <- c(checks$row_dtype$dtype, checks$col_dtype$dtype)
-  var_vec <- c(row_name, col_name)
-  labelled_vars <- var_vec[dtype_vec == "haven_labelled"]
-  
-  if (length(labelled_vars) > 0) {
-    data_sub[labelled_vars] <- 
-      lapply(labelled_vars, function(v) convert_labelled_to_chr(data_sub[[v]]))
-  }
-  
   ignore_result <-
     extract_ignore_map(
       vars = c(row_name, col_name),

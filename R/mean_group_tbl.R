@@ -124,13 +124,8 @@ mean_group_tbl <- function(data,
   cols <- checks$var_stem$cols
   df <- checks$data$df
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
-  dtypes <- checks$var_stem$dtypes
-  
+
   data_sub <- df[c(cols, group_var)]
-  
-  if (!is.null(group_var) && dtypes[[group_var]] == "haven_labelled") {
-      data_sub[[group_var]] <- convert_labelled_to_chr(data_sub[[group_var]])
-  }
   
   ignore_result <-
     extract_ignore_map(

@@ -1,5 +1,35 @@
 # Test utils functions
 
+test_that("replace_with_na", {
+  set.seed(0815)
+  factor_x <- 
+    factor(x = sample(c(1:5), size = 10, replace = TRUE),
+           levels = c(1:5),
+           labels = c("one", "two", "three", "four", "five"))
+  chr_x <- nlsy$race[sample(c(1:length(nlsy$race)), size = 10, replace = TRUE)]
+  num_x <- nlsy$birthord[sample(c(1:length(nlsy$birthord)), size = 10, replace = TRUE)]
+  logical_x <- sample(c(TRUE, FALSE), size = 10, replace = TRUE)
+  
+  observed1 <- replace_with_na(factor_x, ignore_vals = c("four","five"))
+  expected1 <- factor(c("two", NA, NA, "two", "two", "two", "three", "two", NA, "two"),
+                      levels = c("one", "two", "three", "four", "five"))
+  
+  observed2 <- replace_with_na(chr_x, ignore_vals = c("Hispanic"))
+  expected2 <- c(NA, "Non-Black,Non-Hispanic", "Non-Black,Non-Hispanic", 
+                 "Non-Black,Non-Hispanic", "Non-Black,Non-Hispanic", NA,
+                 "Black", "Black", NA, NA)
+  
+  observed3 <- replace_with_na(logical_x, ignore_vals = c(TRUE))
+  expected3 <- c(NA, FALSE, FALSE, FALSE, NA, NA, FALSE, NA, FALSE, NA)
+  
+  observed3 <- replace_with_na(num_x, ignore_vals = 2)
+  expected3 <- c(3, 1, 1, 1, NA, NA, 4, 1, 1, 1)
+    
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+})
+
 test_that("drop 'only' columns", {
   cat_1_observed <- 
     cat_tbl(social_psy_data, var = "gender") |>

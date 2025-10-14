@@ -2,9 +2,10 @@
 # Function to replace ignore values with NAs
 replace_with_na <- function(x, ignore_vals) {
   if (is.factor(x)) {
+    original_levels <- levels(x)
     x <- as.character(x)
     x[x %in% ignore_vals] <- NA
-    factor(x, levels = levels(x))
+    x <- factor(x, levels = original_levels)
   } else {
     x[x %in% ignore_vals] <- NA
   }

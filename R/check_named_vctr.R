@@ -147,7 +147,9 @@ check_invalid_values <- function(x) {
 check_invalid_list_values <- function(x) {
 
   has_invalid_names <- is.null(names(x)) || any(trimws(names(x)) == "")
-  has_invalid_values <- is.null(unname(x)) || any(trimws(unname(x)) == "") || any(is.na(unname(x)))
+  has_invalid_values <- 
+    is.null(unname(x)) || any(trimws(unname(x)) == "") || 
+    any(is.na(unname(x))) || any(sapply(unname(x), is.null))
 
   return(has_invalid_names || has_invalid_values)
 }
