@@ -208,15 +208,17 @@ respectively.</p>
 <code><a href="../reference/cat_group_tbl.html">cat_group_tbl()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy</span>,</span>
-<span>              row_var <span class="op">=</span> <span class="st">"gender"</span>,</span>
+<span>              row_var <span class="op">=</span> <span class="st">"race"</span>,</span>
 <span>              col_var <span class="op">=</span> <span class="st">"bthwht"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
-<span><span class="co">##   gender bthwht count percent</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>      0      0  <span style="text-decoration: underline;">1</span>340  0.450 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>      0      1   123  0.041<span style="text-decoration: underline;">3</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>      1      0  <span style="text-decoration: underline;">1</span>409  0.473 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>      1      1   104  0.034<span style="text-decoration: underline;">9</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
+<span><span class="co">##   race                   bthwht count percent</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Black                       0   766  0.257 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> Black                       1   102  0.034<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> Hispanic                    0   589  0.198 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> Hispanic                    1    42  0.014<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> Non-Black,Non-Hispanic      0  <span style="text-decoration: underline;">1</span>394  0.468 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> Non-Black,Non-Hispanic      1    83  0.027<span style="text-decoration: underline;">9</span></span></span></code></pre>
 <p>Like <code><a href="../reference/cat_tbl.html">cat_tbl()</a></code>, you have the option to exclude certain
 values and omit missing values (by row and/or column).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -454,9 +456,9 @@ pairwise removal instead.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">14</span> dep_7         2   507   0.326</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">15</span> dep_8         1   323   0.287</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">16</span> dep_8         2   801   0.713</span></span></code></pre>
-<p>Set the <code>pivot</code> argument to <code>wider</code> to reshape
-the resulting table into the wide format. By default, the summary table
-is presented in the long format.</p>
+<p>By default, the summary table is shown in long format. To convert it
+to wide format, change the <code>pivot</code> argument to
+<code>wider</code>.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default longer format</span></span>
 <span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
@@ -723,9 +725,9 @@ values should be ignored.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3    Black sometimes     138  0.283 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4    Black hardly ever    45  0.092<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
-<p>When <code>group_type</code> is <code>variable</code> you can use the
-<code>margins</code> argument to define how percentages are calculated
-and shown in the resulting table.</p>
+<p>If <code>group_type</code> is set to <code>variable</code> (the
+default), you can use the <code>margins</code> argument to specify how
+percentages are calculated and displayed in the resulting table.</p>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: percentages across each variable sum to one</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>

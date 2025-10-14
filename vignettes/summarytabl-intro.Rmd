@@ -107,7 +107,7 @@ To create a contingency table for two categorical variables, use the `cat_group_
 
 ```{r}
 cat_group_tbl(data = nlsy,
-              row_var = "gender",
+              row_var = "race",
               col_var = "bthwht")
 ```        
 
@@ -226,7 +226,7 @@ select_tbl(data = depressive,
            na_removal = "pairwise")
 ```
 
-Set the `pivot` argument to `wider` to reshape the resulting table into the wide format. By default, the summary table is presented in the long format.
+By default, the summary table is shown in long format. To convert it to wide format, change the `pivot` argument to `wider`.
 
 ```{r}
 
@@ -351,7 +351,7 @@ select_group_tbl(data = dep_recoded,
                  ignore = list(race = c("Hispanic", "Non-Black/Non-Hispanic")))
 ``` 
 
-When `group_type` is `variable` you can use the `margins` argument to define how percentages are calculated and shown in the resulting table.
+If `group_type` is set to `variable` (the default), you can use the `margins` argument to specify how percentages are calculated and displayed in the resulting table.
 
 ```{r}
 # Default: percentages across each variable sum to one
