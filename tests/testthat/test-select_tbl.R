@@ -255,3 +255,33 @@ test_that("Expected output with different 'only' types", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
 })
+
+
+test_that("generate_select_tabl expected output", {
+  observed1 <- 
+    generate_select_tabl(depressive, "dep_1", "pairwise") |>
+    dplyr::mutate(percent = round(percent, digits = 3))
+  expected1 <-
+    tibble::tibble(
+      variable = "dep_1",
+      values = 1:3L,
+      count = as.integer(c(120, 709, 825)),
+      percent = c(0.073, 0.429, 0.499)
+    )
+  
+  observed2 <- 
+    generate_select_tabl(tas, "involved_sports", "pairwise") |>
+    dplyr::mutate(percent = round(percent, digits = 3))
+  expected2 <-
+    tibble::tibble(
+      variable = "involved_sports",
+      values = 0:1L,
+      count = as.integer(c(2114, 412)),
+      percent = c(0.837, 0.163)
+    )
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
+
+

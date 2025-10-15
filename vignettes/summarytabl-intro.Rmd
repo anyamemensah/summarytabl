@@ -93,7 +93,7 @@ cat_tbl(data = nlsy,
         na.rm = TRUE,
         only = "count")
 
-# Percents only
+# Percentages only
 cat_tbl(data = nlsy, 
         var = "race",
         ignore = "Black",
@@ -186,7 +186,7 @@ cat_group_tbl(data = nlsy,
               col_var = "bthwht",
               only = "count")
 
-# Percents only
+# Percentages only
 cat_group_tbl(data = nlsy,
               row_var = "race",
               col_var = "bthwht",
@@ -273,7 +273,7 @@ select_tbl(data = depressive,
            pivot = "wider",
            only = "count")
 
-# Percents only
+# Percentages only
 select_tbl(data = depressive, 
            var_stem = "dep",
            pivot = "wider",
@@ -435,7 +435,7 @@ select_group_tbl(data = stem_social_psych,
                  group_name = "wave",
                  only = "count")
 
-# Percents only
+# Percentages only
 select_group_tbl(data = stem_social_psych, 
                  var_stem = "belong_belong",
                  group = "_w\\d",

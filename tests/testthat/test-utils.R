@@ -312,13 +312,13 @@ test_that("extract_ignore_map expected output", {
   expect_equal(observed4_result$ignore_map, expected4)
 })
 
-test_that("check_string_invalid_chars expected output", {
-  observed1 <- check_string_invalid_chars("here var")
-  observed2 <- check_string_invalid_chars("there$var")
-  observed3 <- check_string_invalid_chars("here#var")
-  observed4 <- check_string_invalid_chars("there-var")
-  observed5 <- check_string_invalid_chars("everywhere_var")
-  observed6 <- check_string_invalid_chars("everywhere.var")
+test_that("string_has_invalid_chars expected output", {
+  observed1 <- string_has_invalid_chars("here var")
+  observed2 <- string_has_invalid_chars("there$var")
+  observed3 <- string_has_invalid_chars("here#var")
+  observed4 <- string_has_invalid_chars("there-var")
+  observed5 <- string_has_invalid_chars("everywhere_var")
+  observed6 <- string_has_invalid_chars("everywhere.var")
   
   expected1 <- TRUE
   expected2 <- TRUE
@@ -335,6 +335,45 @@ test_that("check_string_invalid_chars expected output", {
   expect_equal(observed6, expected6)
 })
 
+
+test_that("check_group_name errors and expected output", {
+  expect_error(
+    check_group_name(NA),
+    paste("The 'group_name' argument contains special characters.",
+          "Column names must only include letters, digits, periods",
+          "\\(\\.\\), or underscores \\(_\\)\\.")
+  )
+  
+  expect_error(
+    check_group_name("group name"),
+    paste("The 'group_name' argument contains special characters.",
+          "Column names must only include letters, digits, periods",
+          "\\(\\.\\), or underscores \\(_\\)\\.")
+  )
+  
+  expect_error(
+    check_group_name("group-name"),
+    paste("The 'group_name' argument contains special characters.",
+          "Column names must only include letters, digits, periods",
+          "\\(\\.\\), or underscores \\(_\\)\\.")
+  )
+  
+  expect_error(
+    check_group_name("group#name"),
+    paste("The 'group_name' argument contains special characters.",
+          "Column names must only include letters, digits, periods",
+          "\\(\\.\\), or underscores \\(_\\)\\.")
+  )
+  
+  observed1 <- check_group_name("group_name")
+  observed2 <- check_group_name("group.name")
+  
+  expected1 <- list(valid = TRUE, group_name = "group_name")
+  expected2 <- list(valid = TRUE, group_name = "group.name")
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
 
 
 test_that("pivot_tbl_wider expected output", {
@@ -604,3 +643,54 @@ test_that("check_na.rm", {
 })
 
 
+test_that("check_var errors and expected output", {
+  set.seed(0803)
+  error_test_data <- 
+    tibble::tibble(
+      `a var` = sample(0:1, size = 10, replace = TRUE),
+      this_var = sample(0:1, size = 10, replace = TRUE)
+    )
+  expect_error(
+    check_var(NA, var_label = "test_var", data = error_test_data),
+    "Invalid 'test_var' argument. 'test_var' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_var(NULL, var_label = "test_var", data = error_test_data),
+    "Invalid 'test_var' argument. 'test_var' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_var("a var", var_label = "test_var", data = error_test_data),
+    paste("The 'test_var' argument contains special characters.",
+          "Column names must only include letters, digits, periods",
+          "\\(\\.\\), or underscores \\(_\\)\\.")
+  )
+  
+  observed1 <- check_var("this_var", var_label = "test_var", data = error_test_data)
+  expected1 <- list(valid = TRUE, var = "this_var", label = "test_var")
+})
+
+
+test_that("check_na_removal errors and expected output", {
+  expect_error(
+    check_na_removal(NA),
+    "Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_na_removal(NULL),
+    "Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_na_removal("sideways"),
+    "Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'."
+  )
+  
+  observed1 <- check_na_removal("listwise")
+  expected1 <- list(valid = TRUE, na_removal = "listwise")
+  
+  observed2 <- check_na_removal("pairwise")
+  expected1 <- list(valid = TRUE, na_removal = "pairwise")
+})

@@ -123,8 +123,7 @@ select_tbl <- function(data,
   
   select_tabl <- 
     purrr::map(cols, ~ generate_select_tabl(data_sub, .x, checks$na_rm$na_removal)) |>
-    purrr::reduce(dplyr::bind_rows) |>
-    dplyr::select(variable, values, count, percent)
+    purrr::reduce(dplyr::bind_rows)
   
   if (checks$pivot$pivot == "wider") {
     select_tabl <- 
@@ -174,5 +173,6 @@ generate_select_tabl <- function(data, col, na_removal) {
       variable = col,
       percent = count / sum(count)
     ) |>
-    dplyr::rename(values = 1)
+    dplyr::rename(values = 1) |>
+    dplyr::select(variable, values, count, percent)
 }

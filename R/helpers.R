@@ -153,7 +153,7 @@ check_select_group_args <- function(args) {
     group_type = function(args)
       args$group_type,
     group_name = function(args)
-      args$group_name,
+      check_group_name(args$group_name),
     escape_group = function(args)
       args$escape_group,
     ignore_group_case = function(args)
@@ -228,7 +228,7 @@ check_mean_group_args <- function(args) {
     group_type = function(args)
       args$group_type,
     group_name = function(args)
-      args$group_name,
+      check_group_name(args$group_name),
     escape_group = function(args)
       args$escape_group,
     ignore_group_case = function(args)

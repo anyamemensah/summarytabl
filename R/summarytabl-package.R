@@ -23,6 +23,7 @@
 #' @importFrom purrr map2
 #' @importFrom purrr reduce
 #' @importFrom rlang .data
+#' @importFrom rlang !!
 #' @importFrom rlang :=
 #' @importFrom rlang new_formula
 #' @importFrom rlang sym

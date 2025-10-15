@@ -174,6 +174,7 @@ select_group_tbl <- function(data,
   cols <- checks$var_stem$cols
   df <- checks$data$df
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
+  group_name <- checks$group_name$group_name
 
   data_sub <- df[c(cols, group_var)]
   
@@ -196,28 +197,21 @@ select_group_tbl <- function(data,
     data_sub <- stats::na.omit(data_sub)
   }
   
-  iterator <-
-    if (checks$group_type == "pattern") {
-      unique(checks$var_stem$cols_no_group)
-    } else {
-      unique(cols)
-    }
-  
   select_group_list <-
     purrr::map(
-      .x = iterator,
+      .x = unique(cols),
       .f = ~ generate_select_group_tabl(data_sub, .x, checks, group_var, na_removal)
     )
   
   select_group_tabl <- dplyr::bind_rows(select_group_list)
   
-  if (!is.null(checks$group_name)) {
+  if (!is.null(group_name)) {
     select_group_tabl <-
-      dplyr::rename(select_group_tabl,
-                    !!rlang::sym(checks$group_name) := dplyr::all_of(ifelse(
-                      checks$group_type == "pattern", "group", group_var
-                    )))
-    group_var <- checks$group_name
+      select_group_tabl |>
+      dplyr::rename(
+        !!rlang::sym(group_name) := ifelse(checks$group_type == "pattern", "group", group_var)
+      )
+    group_var <- group_name
   }
   
   if (checks$pivot$pivot == "wider") {
@@ -284,54 +278,55 @@ generate_select_group_tabl <- function(data,
                                        checks,
                                        group_var = NULL,
                                        na_removal = "pairwise") {
+  sub_dat <- data[c(variable, group_var)]
+  
   if (checks$group_type == "pattern") {
-    current_cols_set <- 
-      grep(pattern = paste0(variable, checks$var_stem$group),
-           x = checks$var_stem$cols,
-           value = TRUE)
-    
-    data |>
-      dplyr::select(dplyr::all_of(current_cols_set)) |>
-      tidyr::pivot_longer(
-        cols = dplyr::all_of(current_cols_set),
-        names_to = "variable",
-        values_to = "values"
-      ) |>
-      dplyr::mutate(
-        group = extract_group_flags(
-          cols = variable,
-          group_flag = checks$var_stem$group,
-          escape_pattern = checks$escape_group,
-          ignore.case = checks$ignore_group_case,
-          remove_non_alum = checks$remove_group_non_alnum
-        )
-      ) |>
-      dplyr::filter(
-        if (checks$na_rm$na_removal == "pairwise")
-          !is.na(.data[["group"]]) & !is.na(.data[["values"]])
-        else TRUE
-      ) |>
-      dplyr::group_by(variable, group, values) |>
-      dplyr::summarize(count = dplyr::n()) |>
-      dplyr::mutate(percent = count / sum(count)) |>
-      dplyr::ungroup() |> 
-      dplyr::arrange(variable)
-  } else {
-    temp_data <- data |>
-      dplyr::select(dplyr::all_of(c(variable, group_var))) |>
-      dplyr::filter(
-        if (na_removal == "pairwise")
-          !is.na(.data[[group_var]]) & !is.na(.data[[variable]])
-        else TRUE
+    group_pattern <- 
+      extract_group_flags(
+        cols = variable,
+        group_flag = checks$var_stem$group,
+        escape_pattern = checks$escape_group,
+        ignore.case = checks$ignore_group_case,
+        remove_non_alum = checks$remove_group_non_alnum
       )
     
-    summarize_select_group(
-      data = temp_data,
-      var_col = variable,
-      group_col = group_var,
-      margins = checks$margins$margins
-    )
+    sub_dat <- sub_dat |> dplyr::mutate(group = group_pattern)
+    group_var <- "group"
   }
+  
+  temp_data <- 
+    sub_dat |>
+    dplyr::select(dplyr::all_of(c(variable, group_var))) |>
+    dplyr::filter(
+      if (na_removal == "pairwise") {
+        !is.na(.data[[variable]]) & !is.na(.data[[group_var]])
+      } else {
+        TRUE
+      })
+  
+  if (checks$group_type == "variable") {
+    temp_data <- 
+      summarize_select_group(
+        data = temp_data,
+        var_col = variable,
+        group_col = group_var,
+        margins = checks$margins$margins
+      )
+  } else {
+    temp_data <- 
+      temp_data |>
+      dplyr::group_by(.data[[group_var]], .data[[variable]]) |>
+      dplyr::summarize(count = dplyr::n()) |>
+      dplyr::ungroup() |>
+      dplyr::mutate(percent = count / sum(count)) |>
+      dplyr::arrange(.data[[group_var]], .data[[variable]]) |>
+      dplyr::mutate(variable = variable) |>
+      dplyr::rename(values = !!rlang::sym(variable)) |>
+      dplyr::relocate(variable) |>
+      dplyr::arrange(variable)
+  }
+  
+  return(temp_data)
 }
 #'
 #' @keywords internal
@@ -351,7 +346,7 @@ summarize_select_group <- function(data, var_col, group_col, margins) {
       dplyr::mutate(percent = count / sum(count)) |>
       dplyr::ungroup() |>
       dplyr::arrange(.data[[margin_col]])
-  } else if (margins == "all") {
+  } else {
     total <- sum(grouped_data$count)
     grouped_data <- 
       grouped_data |>

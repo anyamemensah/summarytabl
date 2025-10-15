@@ -124,6 +124,7 @@ mean_group_tbl <- function(data,
   cols <- checks$var_stem$cols
   df <- checks$data$df
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
+  group_name <- checks$group_name$group_name
   
   data_sub <- df[c(cols, group_var)]
   
@@ -146,26 +147,20 @@ mean_group_tbl <- function(data,
     data_sub <- stats::na.omit(data_sub)
   }
   
-  iterator <-
-    if (checks$group_type == "pattern") {
-      unique(checks$var_stem$cols_no_group)
-    } else {
-      unique(cols)
-    }
-  
   mean_group_list <-
     purrr::map(
-      .x = iterator,
+      .x = unique(cols),
       .f = ~ generate_mean_group_tabl(data_sub, .x, checks, group_var, na_removal)
     )
   
   mean_group_tabl <- dplyr::bind_rows(mean_group_list)
   
-  if (length(checks$group_name) > 0) {
+  if (!is.null(group_name)) {
     mean_group_tabl <-
-      dplyr::rename(mean_group_tabl,
-                    !!rlang::sym(checks$group_name) := dplyr::all_of(ifelse(
-                      checks$group_type == "pattern", "group", group_var)))
+      mean_group_tabl |>
+      dplyr::rename(
+        !!rlang::sym(group_name) := ifelse(checks$group_type == "pattern", "group", group_var)
+      )
   }
   
   var_labels <- checks$var_stem$var_labels
@@ -193,7 +188,6 @@ mean_group_tbl <- function(data,
   
   return(tibble::as_tibble(mean_group_tabl))
 }
-
 #'
 #' @keywords internal
 generate_mean_group_tabl <- function(data,
@@ -201,71 +195,41 @@ generate_mean_group_tabl <- function(data,
                                      checks,
                                      group_var = NULL,
                                      na_removal = "pairwise") {
+  sub_dat <- data[c(variable, group_var)]
+  
   if (checks$group_type == "pattern") {
-    current_cols_set <- 
-      grep(
-        pattern = paste0(variable, checks$var_stem$group),
-        x = checks$var_stem$cols,
-        value = TRUE)
-    
-    data |>
-      dplyr::select(dplyr::all_of(current_cols_set)) |>
-      tidyr::pivot_longer(
-        cols = dplyr::all_of(current_cols_set),
-        names_to = "variable",
-        values_to = "values"
-      ) |>
-      dplyr::mutate(
-        group = extract_group_flags(
-          cols = variable,
-          group_flag = checks$var_stem$group,
-          escape_pattern = checks$escape_group,
-          ignore.case = checks$ignore_group_case,
-          remove_non_alum = checks$remove_group_non_alnum
-        )
-      ) |>
-      dplyr::filter(
-        if (checks$na_rm$na_removal == "pairwise")
-          !is.na(.data[["group"]]) & !is.na(.data[["values"]])
-        else TRUE
-      ) |>
-      dplyr::group_by(variable, group) |>
-      dplyr::summarize(
-        mean = mean(values, na.rm = TRUE),
-        sd = stats::sd(values, na.rm = TRUE),
-        min = min(values, na.rm = TRUE),
-        max = max(values, na.rm = TRUE),
-        nobs = sum(!is.na(values)),
-      ) |>
-      dplyr::ungroup()
-  } else {
-    temp_data <- data |>
-      dplyr::select(dplyr::all_of(c(variable, group_var))) |>
-      dplyr::filter(
-        if (na_removal == "pairwise")
-          !is.na(.data[[group_var]]) & !is.na(.data[[variable]])
-        else TRUE
+    group_pattern <- 
+      extract_group_flags(
+        cols = variable,
+        group_flag = checks$var_stem$group,
+        escape_pattern = checks$escape_group,
+        ignore.case = checks$ignore_group_case,
+        remove_non_alum = checks$remove_group_non_alnum
       )
     
-    summarize_mean_group(df = temp_data, 
-                         var_col = variable, 
-                         group_col = group_var)
+    sub_dat <- sub_dat |> dplyr::mutate(group = group_pattern)
+    group_var <- "group"
   }
-}
-#'
-#' @keywords internal
-summarize_mean_group <- function(df, var_col, group_col) {
-  df |>
-    dplyr::group_by(.data[[group_col]]) |>
+  
+  temp_data <- 
+    sub_dat |>
+    dplyr::select(dplyr::all_of(c(variable, group_var))) |>
+    dplyr::filter(
+      if (na_removal == "pairwise") {
+        !is.na(.data[[variable]]) & !is.na(.data[[group_var]])
+      } else {
+        TRUE
+      }) |>
+    dplyr::group_by(.data[[group_var]]) |>
     dplyr::summarize(
-      variable = var_col,
-      mean = mean(.data[[var_col]], na.rm = TRUE),
-      sd = stats::sd(.data[[var_col]], na.rm = TRUE),
-      min = min(.data[[var_col]], na.rm = TRUE),
-      max = max(.data[[var_col]], na.rm = TRUE),
-      nobs = sum(!is.na(.data[[var_col]]))
-    ) |>
+      variable = variable,
+      mean = mean(.data[[variable]], na.rm = TRUE),
+      sd = stats::sd(.data[[variable]], na.rm = TRUE),
+      min = min(.data[[variable]], na.rm = TRUE),
+      max = max(.data[[variable]], na.rm = TRUE),
+      nobs = sum(!is.na(.data[[variable]]))) |>
     dplyr::ungroup() |>
-    dplyr::mutate(!!group_col := .data[[group_col]]) |>
-    dplyr::relocate(!!group_col, .after = variable)
+    dplyr::relocate(!!rlang::sym(group_var), .after = variable)
+  
+  return(temp_data)
 }

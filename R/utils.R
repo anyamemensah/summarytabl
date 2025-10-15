@@ -313,7 +313,7 @@ check_var <- function(var_name, var_label, data) {
     stop(sprintf("The '%s' argument is not a column in 'data'.", var_label)) 
   } 
   
-  if (check_string_invalid_chars(var_name)) {
+  if (string_has_invalid_chars(var_name)) {
     stop(sprintf(paste("The '%s' argument contains special characters.",
                        "Column names must only include letters, digits, periods (.),",
                        "or underscores (_)."), var_label)) 
@@ -338,7 +338,7 @@ check_var_stem <- function(data,
                  var_label, var_label)) 
   } 
   
-  if (check_string_invalid_chars(var_stem)) {
+  if (string_has_invalid_chars(var_stem)) {
     stop(sprintf(paste("The '%s' argument contains special characters.",
                        "Column names must only include letters, digits, periods (.),",
                        "or underscores (_)."), var_label)) 
@@ -353,7 +353,7 @@ check_var_stem <- function(data,
     stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
   }
   
-  if (any(sapply(cols, check_string_invalid_chars))) {
+  if (any(sapply(cols, string_has_invalid_chars))) {
     stop(sprintf(paste("One or more columns returned using the variable stem '%s'",
                        "contain special characters. Column names must only include",
                        "letters, digits, periods (.), or underscores (_)."), var_stem)) 
@@ -401,7 +401,7 @@ check_group_var_stem <- function(data = data,
                  var_label, var_label)) 
   } 
   
-  if (check_string_invalid_chars(var_stem)) {
+  if (string_has_invalid_chars(var_stem)) {
     stop(sprintf(paste("The '%s' argument contains special characters.",
                        "Column names must only include letters, digits, periods (.),",
                        "or underscores (_)."), var_label)) 
@@ -416,7 +416,7 @@ check_group_var_stem <- function(data = data,
     stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
   }
   
-  if (any(sapply(cols, check_string_invalid_chars))) {
+  if (any(sapply(cols, string_has_invalid_chars))) {
     stop(sprintf(paste("One or more columns returned using the variable stem '%s'",
                        "contain special characters. Column names must only include",
                        "letters, digits, periods (.), or underscores (_)."), var_stem)) 
@@ -445,7 +445,7 @@ check_group_var_stem <- function(data = data,
                  "or invalid characters."))
     }
     
-    if (check_string_invalid_chars(group_col)) {
+    if (string_has_invalid_chars(group_col)) {
       stop(paste("The 'group' argument contains special characters.",
                  "Column names must only include letters, digits, periods (.),",
                  "or underscores (_).")) 
@@ -477,7 +477,6 @@ check_group_var_stem <- function(data = data,
       var_stem = var_stem,
       cols = cols,
       var_labels = var_labels,
-      cols_no_group = if (group_type == "pattern") cols_no_group,
       group = group,
       dtypes = c(dtypes, if (group_type != "pattern") grp_dtype)
     )
@@ -505,11 +504,9 @@ check_multi_col_data_type <- function(dtypes, valid_dtypes, arg_name) {
   
   if (length(invalid_cols) > 0) {
     stop(sprintf(
-      paste(
-        "One or more columns returned using the variable stem '%s'",
-        "contain an unsupported data type: %s.",
-        "Allowed types: %s."
-      ),
+      paste("One or more columns returned using the variable stem '%s'",
+            "contain an unsupported data type: %s.",
+            "Allowed types: %s."),
       arg_name,
       paste(invalid_cols, collapse = ", "),
       paste(valid_dtypes, collapse = ", ")
@@ -568,10 +565,27 @@ check_margins <- function(margins) {
 }
 
 
-# Function that checks whether a string, 'x', contains any characters 
-# that are not letters, digits, periods, or underscores 
-check_string_invalid_chars <- function(x) {
+# Function that checks whether a string, 'x', contains any 
+# characters that are not letters, digits, periods, or 
+# underscores; returns TRUE/FALSE
+string_has_invalid_chars <- function(x) {
   grepl(pattern = "[^a-zA-Z0-9._]", x = x)
+}
+
+
+# Function that validates the 'group_name' argument;
+# (It should not contain any characters that are not 
+# letters, digits, periods, or underscores)
+check_group_name <- function(x = NULL) {
+  if (!is.null(x) && length(x) > 0) {
+    has_invalid_chrs <- string_has_invalid_chars(x)
+    
+    if (has_invalid_chrs || is.na(x)) {
+      stop("The 'group_name' argument contains special characters. Column names must only include letters, digits, periods (.), or underscores (_).")
+    }
+  }
+  
+  list(valid = TRUE, group_name = x)
 }
 
 
