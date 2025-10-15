@@ -122,9 +122,10 @@ mean_group_tbl <- function(data,
   
   checks <- check_mean_group_args(args)
   cols <- checks$var_stem$cols
-  df <- checks$data$df
+  col_labels_checked <- checks$var_stem$var_labels
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
-  group_name <- checks$group_name$group_name
+  group_name_checked <- checks$group_name$group_name
+  df <- checks$data$df
   
   data_sub <- df[c(cols, group_var)]
   
@@ -155,24 +156,22 @@ mean_group_tbl <- function(data,
   
   mean_group_tabl <- dplyr::bind_rows(mean_group_list)
   
-  if (!is.null(group_name)) {
+  if (!is.null(group_name_checked)) {
     mean_group_tabl <-
       mean_group_tabl |>
       dplyr::rename(
-        !!rlang::sym(group_name) := ifelse(checks$group_type == "pattern", "group", group_var)
+        !!rlang::sym(group_name_checked) := ifelse(checks$group_type == "pattern", "group", group_var)
       )
   }
   
-  var_labels <- checks$var_stem$var_labels
-  
-  if (!is.null(var_labels)) {
+  if (!is.null(col_labels_checked)) {
     mean_group_tabl <-
       mean_group_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
         !!!tbl_key(
-          values_from = names(var_labels),
-          values_to = unname(var_labels)
+          values_from = names(col_labels_checked),
+          values_to = unname(col_labels_checked)
         ),
         .default = variable
       )) |>

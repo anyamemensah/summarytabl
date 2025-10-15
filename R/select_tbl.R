@@ -96,6 +96,7 @@ select_tbl <- function(data,
   
   checks <- check_select_args(args)
   cols <- checks$var_stem$cols
+  col_labels_checked <- checks$var_stem$var_labels
   df <- checks$data$df
   
   data_sub <- df[cols]
@@ -136,16 +137,14 @@ select_tbl <- function(data,
       )
   }
   
-  var_labels <- checks$var_stem$var_labels
-  
-  if (!is.null(var_labels)) {
+  if (!is.null(col_labels_checked)) {
     select_tabl <-
       select_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
         !!!tbl_key(
-          values_from = names(var_labels),
-          values_to = unname(var_labels)
+          values_from = names(col_labels_checked),
+          values_to = unname(col_labels_checked)
         ),
         .default = variable
       )) |>

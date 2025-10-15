@@ -72,6 +72,7 @@ mean_tbl <- function(data,
   
   checks <- check_mean_args(args)
   cols <- checks$var_stem$cols
+  col_labels_checked <- checks$var_stem$var_labels
   df <- checks$data$df
   
   data_sub <- df[cols]
@@ -100,16 +101,14 @@ mean_tbl <- function(data,
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, mean, sd, min, max, nobs)
   
-  var_labels <- checks$var_stem$var_labels
-  
-  if (!is.null(var_labels)) {
+  if (!is.null(col_labels_checked)) {
     mean_tabl <-
       mean_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
         !!!tbl_key(
-          values_from = names(var_labels),
-          values_to = unname(var_labels)
+          values_from = names(col_labels_checked),
+          values_to = unname(col_labels_checked)
         ),
         .default = variable
       )) |>

@@ -78,6 +78,9 @@ cat_group_tbl <- function(data,
   checks <- check_cat_group_args(args)
   row_name <- checks$row_var$var
   col_name <- checks$col_var$var
+  vars_to_filter <- 
+    c(if (checks$na_row$na.rm) row_name, 
+      if (checks$na_col$na.rm) col_name)
   df <- checks$data$df
   
   data_sub <- df[c(row_name, col_name)]
@@ -96,9 +99,6 @@ cat_group_tbl <- function(data,
       replace_with_na(data_sub[[col]], ignore_map[[col]])
     })
   }
-  
-  vars_to_filter <- 
-    c(if (checks$na_row$na.rm) row_name, if (checks$na_col$na.rm) col_name)
   
   if (!is.null(vars_to_filter)) {
     for (var in vars_to_filter) {
