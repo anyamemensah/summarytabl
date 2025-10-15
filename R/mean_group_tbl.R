@@ -125,9 +125,7 @@ mean_group_tbl <- function(data,
   col_labels_checked <- checks$var_stem$var_labels
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
   group_name_checked <- checks$group_name$group_name
-  df <- checks$data$df
-  
-  data_sub <- df[c(cols, group_var)]
+  data_sub <- checks$data$df[c(cols, group_var)]
   
   ignore_result <-
     extract_ignore_map(

@@ -47,9 +47,7 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   
   checks <- check_cat_args(args)
   var_name <- checks$var$var
-  df <- checks$data$df
-  
-  data_sub <- df[var_name]
+  data_sub <- checks$data$df[var_name]
   
   ignore_result <-
     extract_ignore_map(

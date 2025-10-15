@@ -97,9 +97,7 @@ select_tbl <- function(data,
   checks <- check_select_args(args)
   cols <- checks$var_stem$cols
   col_labels_checked <- checks$var_stem$var_labels
-  df <- checks$data$df
-  
-  data_sub <- df[cols]
+  data_sub <- checks$data$df[cols]
   
   ignore_result <-
     extract_ignore_map(

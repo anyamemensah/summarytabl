@@ -81,9 +81,7 @@ cat_group_tbl <- function(data,
   vars_to_filter <- 
     c(if (checks$na_row$na.rm) row_name, 
       if (checks$na_col$na.rm) col_name)
-  df <- checks$data$df
-  
-  data_sub <- df[c(row_name, col_name)]
+  data_sub <- checks$data$df[c(row_name, col_name)]
   
   ignore_result <-
     extract_ignore_map(
@@ -108,7 +106,7 @@ cat_group_tbl <- function(data,
   
   cat_group_tabl <-
     summarize_cat_group(
-      df = data_sub,
+      data = data_sub,
       row_var = row_name,
       col_var = col_name,
       margins = checks$margins$margins
@@ -136,29 +134,29 @@ cat_group_tbl <- function(data,
 }
 
 #' @keywords internal
-summarize_cat_group <- function(df,
+summarize_cat_group <- function(data,
                                 row_var,
                                 col_var,
                                 margins) {
   margin_col <- if (margins == "rows") row_var else col_var
   
-  grouped_df <- 
-    df |> dplyr::count(.data[[row_var]], .data[[col_var]], name = "count")
-
+  grouped_data <- 
+    data |> dplyr::count(.data[[row_var]], .data[[col_var]], name = "count")
+  
   if (margins %in% c("rows", "columns")) {
-    grouped_df <- 
-      grouped_df |>
+    grouped_data <- 
+      grouped_data |>
       dplyr::group_by(.data[[margin_col]]) |>
       dplyr::mutate(percent = count / sum(count)) |>
       dplyr::ungroup() |>
       dplyr::arrange(.data[[margin_col]])
   } else if (margins == "all") {
-    total <- sum(grouped_df$count)
-    grouped_df <- 
-      grouped_df |>
+    total <- sum(grouped_data$count)
+    grouped_data <- 
+      grouped_data |>
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[row_var]], .data[[col_var]])
   }
   
-  return(grouped_df)
+  return(grouped_data)
 }
