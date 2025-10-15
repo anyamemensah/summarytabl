@@ -278,7 +278,7 @@ check_df <- function(data) {
 
 # Function that validates 'na.rm' arguments
 check_na.rm <- function(na.rm, var_label) {
-  if (!is.logical(na.rm) || length(na.rm) != 1) { 
+  if (!is.logical(na.rm) || length(na.rm) != 1 || is.na(na.rm)) { 
     stop(sprintf("Invalid '%s' argument. '%s' must be a logical vector of length one.",
                  var_label, var_label))
   }
@@ -313,6 +313,12 @@ check_var <- function(var_name, var_label, data) {
     stop(sprintf("The '%s' argument is not a column in 'data'.", var_label)) 
   } 
   
+  if (check_string_invalid_chars(var_name)) {
+    stop(sprintf(paste("The '%s' argument contains special characters.",
+                       "Column names must only include letters, digits, periods (.),",
+                       "or underscores (_)."), var_label)) 
+  }
+  
   return(list(valid = TRUE, var = var_name, label = var_label))
 }
 
@@ -332,6 +338,12 @@ check_var_stem <- function(data,
                  var_label, var_label)) 
   } 
   
+  if (check_string_invalid_chars(var_stem)) {
+    stop(sprintf(paste("The '%s' argument contains special characters.",
+                       "Column names must only include letters, digits, periods (.),",
+                       "or underscores (_)."), var_label)) 
+  }
+  
   cols <- find_columns(data = data,
                        var_stem = var_stem,
                        escape = escape_stem,
@@ -339,6 +351,12 @@ check_var_stem <- function(data,
   
   if (!is.character(cols) || length(cols) == 0) {
     stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
+  }
+  
+  if (any(sapply(cols, check_string_invalid_chars))) {
+    stop(sprintf(paste("One or more columns returned using the variable stem '%s'",
+                       "contain special characters. Column names must only include",
+                       "letters, digits, periods (.), or underscores (_)."), var_stem)) 
   }
   
   col_dtypes <- stats::setNames(lapply(cols, function(x) get_data_type(data[[x]])), cols)
@@ -383,6 +401,12 @@ check_group_var_stem <- function(data = data,
                  var_label, var_label)) 
   } 
   
+  if (check_string_invalid_chars(var_stem)) {
+    stop(sprintf(paste("The '%s' argument contains special characters.",
+                       "Column names must only include letters, digits, periods (.),",
+                       "or underscores (_)."), var_label)) 
+  }
+  
   cols <- find_columns(data = data,
                        var_stem = var_stem,
                        escape = escape_stem,
@@ -390,6 +414,12 @@ check_group_var_stem <- function(data = data,
   
   if (!is.character(cols) || length(cols) == 0) {
     stop(paste0(sprintf("No columns were found with the variable stem: %s", var_stem),"."))
+  }
+  
+  if (any(sapply(cols, check_string_invalid_chars))) {
+    stop(sprintf(paste("One or more columns returned using the variable stem '%s'",
+                       "contain special characters. Column names must only include",
+                       "letters, digits, periods (.), or underscores (_)."), var_stem)) 
   }
   
   if (group_type == "pattern") {
@@ -410,11 +440,15 @@ check_group_var_stem <- function(data = data,
                       value = TRUE)
     
     if (!is.character(group_col) || length(group_col) != 1) {
-      stop(
-        paste("Invalid 'group' argument. The value provided to 'group' is", 
-              "not a column in 'data'. Check for typos, spelling mistakes,",
-              "or invalid characters.")
-      )
+      stop(paste("Invalid 'group' argument. The value provided to 'group' is", 
+                 "not a column in 'data'. Check for typos, spelling mistakes,",
+                 "or invalid characters."))
+    }
+    
+    if (check_string_invalid_chars(group_col)) {
+      stop(paste("The 'group' argument contains special characters.",
+                 "Column names must only include letters, digits, periods (.),",
+                 "or underscores (_).")) 
     }
     
     group <- group_col
@@ -533,3 +567,28 @@ check_margins <- function(margins) {
   return(list(valid = TRUE, margins = margins))
 }
 
+
+# Function that checks whether a string, 'x', contains any characters 
+# that are not letters, digits, periods, or underscores 
+check_string_invalid_chars <- function(x) {
+  grepl(pattern = "[^a-zA-Z0-9._]", x = x)
+}
+
+
+# Function for pivoting summary table to the 'wider' format 
+pivot_tbl_wider <- function(data,
+                            id_cols,
+                            names_from,
+                            names_glue,
+                            values_from) {
+  wider_tbl <-
+    data |>
+    tidyr::pivot_wider (
+      id_cols = dplyr::all_of(id_cols),
+      names_from = dplyr::all_of(names_from),
+      names_glue = names_glue,
+      values_from = dplyr::all_of(values_from)
+    )
+  
+  return(wider_tbl)
+}

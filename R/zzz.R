@@ -1,2 +1,2 @@
-utils::globalVariables(c("variable", "values", "sd", "nobs",
+utils::globalVariables(c("variable", "values", "sd", "nobs", "group",
                          "percent","count", "variable_label"))

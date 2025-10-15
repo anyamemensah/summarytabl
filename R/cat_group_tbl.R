@@ -116,8 +116,8 @@ cat_group_tbl <- function(data,
   
   if (checks$pivot$pivot == "wider") {
     cat_group_tabl <-
-      cat_group_tabl |>
-      tidyr::pivot_wider(
+      pivot_tbl_wider(
+        data = cat_group_tabl,
         id_cols = row_name,
         names_from = col_name,
         names_glue = paste0("{.value}_", col_name, "_{", col_name, "}"),

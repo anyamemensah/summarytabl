@@ -494,7 +494,6 @@ test_that("Expected output with specified group name", {
     head() |>
     dplyr::mutate(percent = round(percent, digits = 3))
   
-  
   expected2 <-
     tibble::tibble(
       variable = rep(c("dep_1","dep_2"), each = 3),

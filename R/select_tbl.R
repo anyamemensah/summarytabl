@@ -127,12 +127,12 @@ select_tbl <- function(data,
     dplyr::select(variable, values, count, percent)
   
   if (checks$pivot$pivot == "wider") {
-    select_tabl <-
-      select_tabl |>
-      tidyr::pivot_wider(
-        id_cols = variable,
-        names_from = values,
-        names_glue = "{.value}_value_{values}",
+    select_tabl <- 
+      pivot_tbl_wider(
+        data = select_tabl,
+        id_cols = "variable",
+        names_from = "values",
+        names_glue = paste0("{.value}_value_{values}"),
         values_from = c("count", "percent")
       )
   }

@@ -12,6 +12,7 @@
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
 #' @importFrom dplyr mutate
+#' @importFrom dplyr n
 #' @importFrom dplyr relocate
 #' @importFrom dplyr rename
 #' @importFrom dplyr select

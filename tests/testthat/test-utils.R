@@ -253,7 +253,7 @@ test_that("convert labelled vector to character vector", {
 
 
 
-test_that("check_ignore_struct", {
+test_that("check_ignore_struct expected output", {
   observed1 <- check_ignore_struct(NULL, "cat", FALSE)
   observed2 <- check_ignore_struct(NULL, "mean", FALSE)
   observed3 <- check_ignore_struct(NULL, "select", FALSE)
@@ -272,7 +272,7 @@ test_that("check_ignore_struct", {
 })
 
 
-test_that("extract_ignore_map", {
+test_that("extract_ignore_map expected output", {
   observed1_result <-
     extract_ignore_map(
       vars = c("var1", "group1"),
@@ -312,5 +312,295 @@ test_that("extract_ignore_map", {
   expect_equal(observed4_result$ignore_map, expected4)
 })
 
+test_that("check_string_invalid_chars expected output", {
+  observed1 <- check_string_invalid_chars("here var")
+  observed2 <- check_string_invalid_chars("there$var")
+  observed3 <- check_string_invalid_chars("here#var")
+  observed4 <- check_string_invalid_chars("there-var")
+  observed5 <- check_string_invalid_chars("everywhere_var")
+  observed6 <- check_string_invalid_chars("everywhere.var")
+  
+  expected1 <- TRUE
+  expected2 <- TRUE
+  expected3 <- TRUE
+  expected4 <- TRUE
+  expected5 <- FALSE
+  expected6 <- FALSE
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+  expect_equal(observed4, expected4)
+  expect_equal(observed5, expected5)
+  expect_equal(observed6, expected6)
+})
+
+
+
+test_that("pivot_tbl_wider expected output", {
+  data_wider_test1 <- 
+    tibble::tibble(
+      var_1 = c("group_1", "group_1", "group_2", "group_2"),
+      var_2 = c("cat_1", "cat_2", "cat_1", "cat_2"),
+      count = as.integer(c(10, 20, 30, 40)),
+      percent = c(0.10, 0.20, 0.30, 0.40)
+    )
+  
+  data_wider_test2 <- 
+    tibble::tibble(
+      variable = c("varStem_1", "varStem_1", "varStem_2", "varStem_2"),
+      values = c("selected", "unselected", "selected", "unselected"),
+      count = as.integer(c(100, 200, 300, 400)),
+      percent = c(100/300, 200/300, 300/700, 400/700)
+    )
+  
+  data_wider_test3 <- 
+    tibble::tibble(
+      variable = rep(c("var_a", "var_b"), each = 2),
+      group = rep(c("a", "b"), each = 2),
+      values = rep(c(0L, 1L), times = 2),
+      count = c(10L, 10L, 12L, 8L),
+      percent = c(0.5, 0.5, 0.6, 0.4)
+    )
+  
+  data_wider_test4 <- 
+    tibble::tibble(
+      variable = rep(c("var_a", "var_b"), each = 4),
+      group = rep(rep(c("control", "trial"), each = 2), times = 2),
+      values = rep(c(0L, 1L), times = 4),
+      count = c(6L, 6L, 4L, 4L, 8L, 4L, 4L, 4L),
+      percent = c(0.3, 0.3, 0.2, 0.2, 0.4, 0.2, 0.2, 0.2)
+    )
+  
+  observed1 <- 
+    pivot_tbl_wider(data_wider_test1,
+                    "var_1",
+                    "var_2",
+                    "{.value}_var_2_{var_2}",
+                    c("count", "percent"))
+  
+  expected1 <-
+    tibble::tibble(
+      var_1 = c("group_1", "group_2"),
+      count_var_2_cat_1 = as.integer(c(10, 30)),
+      count_var_2_cat_2 = as.integer(c(20, 40)),
+      percent_var_2_cat_1 = c(0.10, 0.30),
+      percent_var_2_cat_2 = c(0.20, 0.40)
+    )
+  
+  observed2 <- 
+    pivot_tbl_wider(data_wider_test2,
+                    "variable",
+                    "values",
+                    "{.value}_value_{values}",
+                    c("count", "percent"))
+  
+  expected2 <-
+    tibble::tibble(
+      variable = c("varStem_1", "varStem_2"),
+      count_value_selected = as.integer(c(100, 300)),
+      count_value_unselected = as.integer(c(200, 400)),
+      percent_value_selected = c(100/300, 300/700),
+      percent_value_unselected = c(200/300, 400/700)
+    )
+  
+  observed3 <- 
+    pivot_tbl_wider(data_wider_test3,
+                    "variable",
+                    "values",
+                    "{.value}_value_{values}",
+                    c("count", "percent"))
+
+  expected3 <-
+    tibble::tibble(
+      variable = c("var_a", "var_b"),
+      count_value_0 = as.integer(c(10, 12)),
+      count_value_1 = as.integer(c(10, 8)),
+      percent_value_0 = c(0.5, 0.6),
+      percent_value_1 = c(0.5, 0.4)
+    )
+  
+  observed4 <- 
+    pivot_tbl_wider(data_wider_test4,
+                    c("variable", "values"),
+                    "group",
+                    paste0("{.value}_group_{group}"),
+                    c("count", "percent"))
+  
+  expected4 <-
+    tibble::tibble(
+      variable = rep(c("var_a", "var_b"), each = 2),
+      values = rep(0:1L, times = 2),
+      count_group_control = as.integer(c(6,6,8,4)),
+      count_group_trial = as.integer(4),
+      percent_group_control = c(0.3, 0.3, 0.4, 0.2),
+      percent_group_trial = c(0.2, 0.2, 0.2, 0.2)
+    )
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+  expect_equal(observed4, expected4)
+})
+
+
+test_that("check_pivot", {
+  expect_error(
+    check_pivot(1),
+    "Invalid 'pivot' argument. 'pivot' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_pivot('sideways'),
+    "Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'."
+  )
+  
+  observed1 <- check_pivot("wider")
+  expected1 <- list(valid = TRUE, pivot = "wider")
+  
+  observed2 <- check_pivot("longer")
+  expected2 <- list(valid = TRUE, pivot = "longer")
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
+
+test_that("check_margins", {
+  expect_error(
+    check_margins(1),
+    "Invalid 'margins' argument. 'margins' must be a character vector of length one."
+  )
+  
+  expect_error(
+    check_margins('margins'),
+    "Invalid 'margins' argument. 'margins' must be one of 'rows', 'columns', 'all'."
+  )
+  
+  observed1 <- check_margins("all")
+  expected1 <- list(valid = TRUE, margins = "all")
+  
+  observed2 <- check_margins("columns")
+  expected2 <- list(valid = TRUE, margins = "columns")
+  
+  observed3 <- check_margins("rows")
+  expected3 <- list(valid = TRUE, margins = "rows")
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+})
+
+
+test_that("check_only", {
+  expect_error(
+    check_only(1, "select"),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
+  )
+  
+  expect_error(
+    check_only(1, "cat"),
+    "Invalid 'only' argument. 'only' must be any of: count, percent."
+  )
+  
+  expect_error(
+    check_only(1, "mean"),
+    "Invalid 'only' argument. 'only' must be any of: mean, sd, min, max, nobs."
+  )
+  
+  observed1 <- check_only(NULL, "select")
+  expected1 <- list(valid = TRUE, only = c("count", "percent"))
+  
+  observed2 <- check_only(NULL, "cat")
+  expected2 <- list(valid = TRUE, only = c("count", "percent"))
+  
+  observed3 <- check_only(NULL, "mean")
+  expected3 <- list(valid = TRUE, only = c("mean", "sd", "min", "max", "nobs"))
+  
+  observed4 <- check_only("count", "select")
+  expected4 <- list(valid = TRUE, only = "count")
+  
+  observed5 <- check_only("percent", "select")
+  expected5 <- list(valid = TRUE, only = "percent")
+  
+  observed6 <- check_only("count", "cat")
+  expected6 <- list(valid = TRUE, only = "count")
+  
+  observed7 <- check_only("percent", "cat")
+  expected7 <- list(valid = TRUE, only = "percent")
+  
+  observed8 <- check_only("mean", "mean")
+  expected8 <- list(valid = TRUE, only = "mean")
+  
+  observed9 <- check_only(c("mean", "nobs"), "mean")
+  expected9 <- list(valid = TRUE, only = c("mean", "nobs"))
+  
+  observed10 <- check_only(c("mean", "sd", "nobs"), "mean")
+  expected10 <- list(valid = TRUE, only = c("mean", "sd", "nobs"))
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+  expect_equal(observed3, expected3)
+  expect_equal(observed4, expected4)
+  expect_equal(observed5, expected5)
+  expect_equal(observed6, expected6)
+  expect_equal(observed7, expected7)
+  expect_equal(observed8, expected8)
+  expect_equal(observed9, expected9)
+  expect_equal(observed10, expected10)
+})
+
+
+test_that("check_na.rm", {
+  expect_error(
+    check_na.rm(1, "this_var"),
+    "Invalid 'this_var' argument. 'this_var' must be a logical vector of length one."
+  )
+  
+  expect_error(
+    check_na.rm(NULL, "this_var"),
+    "Invalid 'this_var' argument. 'this_var' must be a logical vector of length one."
+  )
+  
+  expect_error(
+    check_na.rm(NA, "this_var"),
+    "Invalid 'this_var' argument. 'this_var' must be a logical vector of length one."
+  )
+  
+  observed1 <- check_na.rm(TRUE, "this_label")
+  expected1 <- list(valid = TRUE, na.rm =  TRUE)
+  
+  observed2 <- check_na.rm(FALSE, "that_label")
+  expected2 <- list(valid = TRUE, na.rm =  FALSE)
+
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
+
+
+test_that("check_na.rm", {
+  expect_error(
+    check_df(NULL),
+    "The 'data' argument is not a data frame."
+  )
+  
+  expect_error(
+    check_df(data.frame()),
+    "The 'data' argument is empty."
+  )
+  
+  expect_error(
+    check_df(tibble::tibble()),
+    "The 'data' argument is empty."
+  )
+  
+  observed1 <- check_df(tibble::tibble(a = 1, b = 2))
+  expected1 <- list(valid = TRUE, df =  tibble::tibble(a = 1, b = 2))
+  
+  observed2 <- check_df(data.frame(vara = 1, varb = 2))
+  expected2 <- list(valid = TRUE, df =  data.frame(vara = 1, varb = 2))
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
+})
 
 

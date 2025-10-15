@@ -174,8 +174,7 @@ select_group_tbl <- function(data,
   cols <- checks$var_stem$cols
   df <- checks$data$df
   group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
-  # dtypes <- checks$var_stem$dtypes
-  
+
   data_sub <- df[c(cols, group_var)]
   
   ignore_result <-
@@ -197,70 +196,20 @@ select_group_tbl <- function(data,
     data_sub <- stats::na.omit(data_sub)
   }
   
-  if (checks$group_type == "pattern") {
-    select_group_list <- 
-      purrr::map(
-        unique(checks$var_stem$cols_no_group),
-        function(current_cols) {
-          current_cols_set <- grep(
-            pattern = paste0(current_cols, checks$var_stem$group),
-            x = checks$var_stem$cols,
-            value = TRUE)
-          
-          data_sub |>
-            dplyr::select(dplyr::all_of(current_cols_set)) |>
-            tidyr::pivot_longer(
-              cols = dplyr::all_of(current_cols_set),
-              names_to = "variable",
-              values_to = "values"
-            ) |>
-            dplyr::mutate(
-              group = extract_group_flags(
-                cols = variable,
-                group_flag = checks$var_stem$group,
-                escape_pattern = checks$escape_group,
-                ignore.case = checks$ignore_group_case,
-                remove_non_alum = checks$remove_group_non_alnum
-              )
-            ) |>
-            dplyr::filter(
-              if (checks$na_rm$na_removal == "pairwise")
-                !is.na(.data[["group"]]) & !is.na(.data[["values"]])
-              else TRUE
-            ) |>
-            dplyr::group_by(variable, group, values) |>
-            dplyr::summarize(count = dplyr::n()) |>
-            dplyr::mutate(percent = count / sum(count)) |>
-            dplyr::ungroup() |>
-            dplyr::arrange(variable)
-        }
-      )
-    
-    select_group_tabl <- dplyr::bind_rows(select_group_list)
-  } else {
-    select_group_list <- 
-      purrr::map(
-        unique(cols),
-        function(current_col) {
-          temp_data <- 
-            data_sub |>
-            dplyr::select(dplyr::all_of(c(current_col, group_var))) |>
-            dplyr::filter(
-              if (na_removal == "pairwise")
-                !is.na(.data[[group_var]]) & !is.na(.data[[current_col]])
-              else TRUE
-            )
-          
-          summarize_select_group(
-            df = temp_data,
-            var_col = current_col,
-            group_col = group_var,
-            margins = checks$margins$margins
-          )
-        })
-    
-    select_group_tabl <- dplyr::bind_rows(select_group_list)
-  }
+  iterator <-
+    if (checks$group_type == "pattern") {
+      unique(checks$var_stem$cols_no_group)
+    } else {
+      unique(cols)
+    }
+  
+  select_group_list <-
+    purrr::map(
+      .x = iterator,
+      .f = ~ generate_select_group_tabl(data_sub, .x, checks, group_var, na_removal)
+    )
+  
+  select_group_tabl <- dplyr::bind_rows(select_group_list)
   
   if (!is.null(checks$group_name)) {
     select_group_tabl <-
@@ -272,25 +221,35 @@ select_group_tbl <- function(data,
   }
   
   if (checks$pivot$pivot == "wider") {
-    if (checks$group_type == "pattern") {
-      select_group_tabl <-
-        select_group_tabl |>
-        tidyr::pivot_wider(
-          id_cols = dplyr::all_of(c("variable", group_var)),
-          names_from = values,
-          names_glue = "{.value}_value_{values}",
-          values_from = c("count", "percent")
-        )
-    } else {
-      select_group_tabl <-
-        select_group_tabl |>
-        tidyr::pivot_wider(
-          id_cols = dplyr::all_of(c("variable", "values")),
-          names_from = dplyr::all_of(group_var),
-          names_glue = paste0("{.value}_", group_var, "_{", group_var, "}"),
-          values_from = c("count", "percent")
-        )
-    }
+    id_cols <- 
+      if (checks$group_type == "pattern") {
+        c("variable", group_var)
+      } else {
+        c("variable", "values")
+      }
+    
+    names_from <- 
+      if (checks$group_type == "pattern") {
+        "values"
+      } else {
+        group_var
+      }
+    
+    names_glue <- 
+      if (checks$group_type == "pattern") {
+        paste0("{.value}_value_{values}")
+      } else {
+        paste0("{.value}_", group_var, "_{", group_var, "}")
+      }
+    
+    select_group_tabl <- 
+      pivot_tbl_wider(
+        data = select_group_tabl,
+        id_cols = id_cols,
+        names_from = names_from,
+        names_glue = names_glue,
+        values_from = c("count", "percent")
+      )
   }
   
   var_labels <- checks$var_stem$var_labels
@@ -320,31 +279,87 @@ select_group_tbl <- function(data,
 }
 
 #' @keywords internal
-summarize_select_group <- function(df, var_col, group_col, margins) {
+generate_select_group_tabl <- function(data,
+                                       variable,
+                                       checks,
+                                       group_var = NULL,
+                                       na_removal = "pairwise") {
+  if (checks$group_type == "pattern") {
+    current_cols_set <- 
+      grep(pattern = paste0(variable, checks$var_stem$group),
+           x = checks$var_stem$cols,
+           value = TRUE)
+    
+    data |>
+      dplyr::select(dplyr::all_of(current_cols_set)) |>
+      tidyr::pivot_longer(
+        cols = dplyr::all_of(current_cols_set),
+        names_to = "variable",
+        values_to = "values"
+      ) |>
+      dplyr::mutate(
+        group = extract_group_flags(
+          cols = variable,
+          group_flag = checks$var_stem$group,
+          escape_pattern = checks$escape_group,
+          ignore.case = checks$ignore_group_case,
+          remove_non_alum = checks$remove_group_non_alnum
+        )
+      ) |>
+      dplyr::filter(
+        if (checks$na_rm$na_removal == "pairwise")
+          !is.na(.data[["group"]]) & !is.na(.data[["values"]])
+        else TRUE
+      ) |>
+      dplyr::group_by(variable, group, values) |>
+      dplyr::summarize(count = dplyr::n()) |>
+      dplyr::mutate(percent = count / sum(count)) |>
+      dplyr::ungroup() |> 
+      dplyr::arrange(variable)
+  } else {
+    temp_data <- data |>
+      dplyr::select(dplyr::all_of(c(variable, group_var))) |>
+      dplyr::filter(
+        if (na_removal == "pairwise")
+          !is.na(.data[[group_var]]) & !is.na(.data[[variable]])
+        else TRUE
+      )
+    
+    summarize_select_group(
+      data = temp_data,
+      var_col = variable,
+      group_col = group_var,
+      margins = checks$margins$margins
+    )
+  }
+}
+#'
+#' @keywords internal
+summarize_select_group <- function(data, var_col, group_col, margins) {
   margin_col <- if (margins == "rows") var_col else group_col
   
-  grouped_df <- 
-    df |>
+  grouped_data <- 
+    data |>
     dplyr::group_by(.data[[group_col]], .data[[var_col]]) |>
     dplyr::summarize(count = dplyr::n()) |>
     dplyr::ungroup()
   
   if (margins %in% c("rows", "columns")) {
-    grouped_df <- 
-      grouped_df |>
+    grouped_data <- 
+      grouped_data |>
       dplyr::group_by(.data[[margin_col]]) |>
       dplyr::mutate(percent = count / sum(count)) |>
       dplyr::ungroup() |>
       dplyr::arrange(.data[[margin_col]])
   } else if (margins == "all") {
-    total <- sum(grouped_df$count)
-    grouped_df <- 
-      grouped_df |>
+    total <- sum(grouped_data$count)
+    grouped_data <- 
+      grouped_data |>
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[group_col]], .data[[var_col]])
   }
   
-  grouped_df |>
+  grouped_data |>
     dplyr::mutate(variable = var_col) |>
     dplyr::rename(values = !!rlang::sym(var_col)) |>
     dplyr::relocate(variable) |>
