@@ -199,7 +199,7 @@ select_group_tbl <- function(data,
   select_group_list <-
     purrr::map(
       .x = unique(cols),
-      .f = ~ generate_select_group_tabl(data_sub, .x, checks, group_var, na_removal)
+      .f = ~ generate_select_group_tabl(data_sub, .x, checks, group_var)
     )
   
   select_group_tabl <- dplyr::bind_rows(select_group_list)
@@ -273,8 +273,7 @@ select_group_tbl <- function(data,
 generate_select_group_tabl <- function(data,
                                        variable,
                                        checks,
-                                       group_var = NULL,
-                                       na_removal = "pairwise") {
+                                       group_var) {
   sub_dat <- data[c(variable, group_var)]
   
   if (checks$group_type == "pattern") {
@@ -295,7 +294,7 @@ generate_select_group_tabl <- function(data,
     sub_dat |>
     dplyr::select(dplyr::all_of(c(variable, group_var))) |>
     dplyr::filter(
-      if (na_removal == "pairwise") {
+      if (checks$na_rm$na_removal == "pairwise") {
         !is.na(.data[[variable]]) & !is.na(.data[[group_var]])
       } else {
         TRUE
