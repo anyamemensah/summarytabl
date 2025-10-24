@@ -1,8 +1,10 @@
-#' @title STEM Social Psychological (Generated) Data
+#' @title STEM Social Psychological (Simulated) Data
 #'
-#' @description These data were generated to produce social psychological data applicable
-#' to a subset of college students participating in a Science, Technology, Engineering, and
-#' Mathematics (STEM) intervention program.
+#' @description Simulated data designed to reflect social psychological responses 
+#' among college students. These data were generated to model attitudes, perceptions, 
+#' and experiences of students participating in a Science, Technology, Engineering, 
+#' and Mathematics (STEM) intervention program. The dataset aims to represent real-
+#' world psychological factors relevant to STEM education contexts.
 #'
 #' @format A data.frame with 786 rows and 37 columns:
 #' \describe{

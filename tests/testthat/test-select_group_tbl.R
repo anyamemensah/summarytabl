@@ -22,7 +22,17 @@ test_that("Invalid 'data' argument", {
 })
 
 
-test_that("Invalid 'var_stem' argument and No 'cols' found", {
+test_that("Invalid 'var_stem' argument and No matching columns", {
+  expect_error(
+    select_group_tbl(
+      data = depressive,
+      var_stem = NA,
+      group = "sex",
+      group_type = "variable"
+    ),
+    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of at least length one."
+  )
+
   expect_error(
     select_group_tbl(
       data = depressive,
@@ -30,17 +40,7 @@ test_that("Invalid 'var_stem' argument and No 'cols' found", {
       group = "sex",
       group_type = "variable"
     ),
-    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of length one."
-  )
-
-  expect_error(
-    select_group_tbl(
-      data = depressive,
-      var_stem = "depress",
-      group = "sex",
-      group_type = "variable"
-    ),
-    "No columns were found with the variable stem: depress."
+    "No matching columns found for the following variable stems: gender."
   )
 })
 
@@ -114,20 +114,20 @@ test_that("Invalid 'only' argument", {
       group_type = "variable",
       only = NA
     ),
-    "Invalid 'only' argument. 'only' must be any of: count, percent."
+    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
   )
 })
 
-test_that("Invalid 'group'/'group_type' argument", {
+test_that("Invalid 'group'/'group_type' combo", {
   expect_error(
     select_group_tbl(data = depressive, 
-                   var_stem = "dep",
-                   group = "_\\d",
-                   group_type = "variable",
-                   group_name = "item_number"),
-    paste("Invalid 'group' argument. The value provided to 'group' is", 
-          "not a column in 'data'. Check for typos, spelling mistakes,",
-          "or invalid characters.")
+                     var_stem = "dep",
+                     group = "_\\d",
+                     group_type = "variable",
+                     group_name = "item_number"),
+    paste("The 'group' argument contains invalid characters.",
+          "Column names must only include letters, digits,",
+          "periods \\(.\\), or underscores \\(_\\).")
   )
   
   expect_error(
@@ -335,7 +335,7 @@ test_that("Error and expected output with ignore_stem_case", {
       pivot = "wider",
       only = "count"
     ),
-    "No columns were found with the variable stem: DEP."
+    "No matching columns found for the following variable stems: DEP."
   )
   
   observed <-
@@ -367,7 +367,6 @@ test_that("Error and expected output with ignore_stem_case", {
 
 
 test_that("Error and expected output with ignore_group_case", {
-  
   expect_error(
     select_group_tbl(
       data = depressive,
@@ -379,8 +378,7 @@ test_that("Error and expected output with ignore_group_case", {
       only = "count"
     ),
     paste("Invalid 'group' argument. The value provided to 'group' is", 
-          "not a column in 'data'. Check for typos, spelling mistakes,",
-          "or invalid characters.")
+          "not a column in 'data'. Check for typos, spelling mistakes, or invalid characters.")
   )
   
   observed <-
@@ -506,4 +504,76 @@ test_that("Expected output with specified group name", {
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
+})
+
+
+test_that("Expected output with multiple names, group is pattern (digits), and ignore values (pairwise deletion)", {
+  observed <-
+    select_group_tbl(
+      data = depressive,
+      var_stem = c("dep_1", "dep_5"),
+      group = "\\d",
+      group_type = "pattern",
+      var_input = "name",
+      na_removal = "pairwise",
+      only = "count",
+      ignore = c(dep_1 = 3, dep_5 = 2))
+  
+  expected <-
+    tibble::tibble(
+      variable = rep(c("dep_1", "dep_5"), each = 2),
+      group = as.character(c(1,1,5,5)),
+      values = as.integer(c(1,2,1,3)),
+      count = as.integer(c(120, 709, 206, 871))
+    )
+  
+  expect_equal(observed, expected)
+})
+
+
+test_that("Expected output with multiple variable stems, group is a variable, and ignore values (pairwise deletion)", {
+  observed <-
+    select_group_tbl(
+      data = social_psy_data,
+      var_stem = c("belong", "identity"),
+      group = "gender",
+      na_removal = "pairwise",
+      only = "count",
+      ignore = list(belong = c(1,2,3), identity = c(3, 4,5),
+                    gender = c(4,5,6))) |>
+    tail()
+  
+  expected <-
+    tibble::tibble(
+      variable = "identity_4",
+      gender = rep(1:3, each = 2),
+      values = as.integer(rep(1:2, times = 3)),
+      count = as.integer(c(323, 1041, 1027,2014, 5, 11))
+    )
+  
+  expect_equal(observed, expected)
+})
+
+
+test_that("Expected output with multiple variable names, group is variable, and ignore values (pairwise deletion)", {
+  observed <-
+    select_group_tbl(
+      data = social_psy_data,
+      var_stem = c("belong_1", "selfEfficacy_1"),
+      group = "gender",
+      na_removal = "pairwise",
+      only = "count",
+      ignore = list(belong_1 = c(1,2,3), selfEfficacy_1 = c(3, 4,5),
+                    gender = c(4,5,6)))
+  
+  expected <-
+    tibble::tibble(
+      variable = rep(c("belong_1", "selfEfficacy_1"), each = 6),
+      gender = rep(rep(1:3, each = 2), times = 2),
+      values = c(rep(4:5, times = 3), rep(1:2, times = 3)),
+      count = as.integer(c(1136, 560,2115,2442, 18, 9,
+                           79, 238, 62, 251, 2, 6))
+    )
+  
+  expect_equal(observed, expected)
 })

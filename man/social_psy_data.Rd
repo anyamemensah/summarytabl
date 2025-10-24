@@ -3,7 +3,7 @@
 \docType{data}
 \name{social_psy_data}
 \alias{social_psy_data}
-\title{Social Psychological (Generated) Data}
+\title{Social Psychological (Simulated) Data}
 \format{
 A data.frame with 10,200 rows and 17 columns:
 \describe{
@@ -47,7 +47,11 @@ citizen with permanent residency,3=Non-U.S. citizen with temporary visa,4=Other)
 social_psy_data
 }
 \description{
-These data were generated to produce social psychological
-data applicable to real-world contexts.
+Simulated data capturing social psychological responses in
+a real-world college setting. This dataset represents college students'
+feelings, attitudes, and perceptions related to their experiences in
+STEM degree programs. It was designed to reflect key psychological
+factors that influence student engagement, motivation, and persistence
+in STEM fields.
 }
 \keyword{datasets}

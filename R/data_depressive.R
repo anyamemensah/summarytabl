@@ -1,18 +1,16 @@
 #' @title Depressive Symptoms Data
 #'
-#' @description These data are a subset from the National Longitudinal Survey of Youth
-#' (NLSY) 1979 Children and Young Adults. The dataset includes information about
-#' depressive symptoms in children and young adults. The dataset has 11,551
-#' observations and 12 variables.
+#' @description Subset of data from the National Longitudinal Survey of Youth 
+#' (NLSY) 1979 Children and Young Adults. This dataset includes survey responses 
+#' about feelings and behaviors linked to depressive symptoms in children and 
+#' young adults. For more information about the National Longitudinal Survey of 
+#' Youth, visit: \href{https://www.nlsinfo.org/}{https://www.nlsinfo.org/}.
 #'
-#' For more information about the National Longitudinal Survey of Youth,
-#' visit https://www.nlsinfo.org/.
-#'
-#' @format A data.frame with 11,551 rows and 12 columns:
+#' @format A data frame with 11,551 rows and 12 columns:
 #' \describe{
 #' \item{cid}{Child identification number)}
 #' \item{race}{race of child (1 = Hispanic, 2 = Black, 3 = Non-Black,Non-Hispanic)}
-#' \item{gender}{gender of child (1 = male, 2 = female)}
+#' \item{sex}{sex of child (1 = male, 2 = female)}
 #' \item{yob}{year of child's bith}
 #' \item{dep_1}{how often child feels sad and blue (1 = often, 2 = sometimes,
 #' 3 = hardly ever)}

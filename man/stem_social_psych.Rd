@@ -3,7 +3,7 @@
 \docType{data}
 \name{stem_social_psych}
 \alias{stem_social_psych}
-\title{STEM Social Psychological (Generated) Data}
+\title{STEM Social Psychological (Simulated) Data}
 \format{
 A data.frame with 786 rows and 37 columns:
 \describe{
@@ -98,8 +98,10 @@ Indigenous, Hispanic/Latino, or Mixed Race (1)}
 stem_social_psych
 }
 \description{
-These data were generated to produce social psychological data applicable
-to a subset of college students participating in a Science, Technology, Engineering, and
-Mathematics (STEM) intervention program.
+Simulated data designed to reflect social psychological responses
+among college students. These data were generated to model attitudes, perceptions,
+and experiences of students participating in a Science, Technology, Engineering,
+and Mathematics (STEM) intervention program. The dataset aims to represent real-
+world psychological factors relevant to STEM education contexts.
 }
 \keyword{datasets}

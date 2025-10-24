@@ -1,18 +1,18 @@
 #' @title Summarize two categorical variables
 #'
-#' @description `cat_group_tbl()` summarizes nominal or categorical variables by a 
-#' grouping variable, returning frequency counts and percentages. It supports long 
-#' or wide output formats, handles missing data, and allows percentage calculations 
-#' across rows, columns, or the full table.
+#' @description `cat_group_tbl()` summarizes nominal or categorical 
+#' variables by a grouping variable, returning frequency counts and 
+#' percentages.
 #'
 #' @param data A data frame.
-#' @param row_var A character string of the name of a variable in `data` containing 
-#' categorical data. This is the primary categorical variable.
-#' @param col_var A character string of the name of a variable in `data` containing 
-#' categorical data. This is the secondary categorical variable.
-#' @param margins A character string that determines how percentage values are 
-#' calculated; whether they sum to one across rows, columns, or the entire table 
-#' (i.e., all). Defaults to `all`, but can also be set to `rows` or `columns`.
+#' @param row_var A character string of the name of a variable in `data` 
+#' containing categorical data. This is the primary categorical variable.
+#' @param col_var A character string of the name of a variable in `data` 
+#' containing categorical data. This is the secondary categorical variable.
+#' @param margins A character string that determines how percentage values 
+#' are calculated; whether they sum to one across rows, columns, or the 
+#' entire table (i.e., all). Defaults to `all`, but can also be set to 
+#' `rows` or `columns`.
 #' @param na.rm.row_var A logical value indicating whether missing values for 
 #' `row_var` should be removed before calculations. Default is `FALSE`.
 #' @param na.rm.col_var A logical value indicating whether missing values for 
@@ -20,8 +20,8 @@
 #' @param pivot A character string that determines the format of the table. By 
 #' default, `longer` returns the data in the long format. To return the data in 
 #' the `wide` format, specify `wider`.
-#' @param only A character string or vector of character strings of the types of 
-#' summary data to return. Default is `NULL`, which returns both counts and 
+#' @param only A character string or vector of character strings of the types 
+#' of summary data to return. Default is `NULL`, which returns both counts and 
 #' percentages. To return only counts or percentages, use `count` or `percent`, 
 #' respectively.
 #' @param ignore An optional named vector or list that defines values to exclude 
@@ -29,8 +29,8 @@
 #' To exclude multiple values from `row_var` or `col_var`, provide them as a named 
 #' list.
 #' 
-#' @returns A tibble showing relative frequencies and/or percentages of `row_var` 
-#' by `col_var`.
+#' @returns A tibble showing the count and percentage of each category in `row_var` 
+#' by each category in `col_var`.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -74,19 +74,26 @@ cat_group_tbl <- function(data,
     only = only,
     ignore = ignore
   )
-  
   checks <- check_cat_group_args(args)
-  row_name <- checks$row_var$var
-  col_name <- checks$col_var$var
+  check_row_name <- checks$row_var$var
+  check_col_name <- checks$col_var$var
+  check_ignore <- checks$ignore
+  check_row_na.rm <- checks$na_row$na.rm
+  check_col_na.rm <- checks$na_col$na.rm
+  check_only <- checks$only$only
+  check_table_type <- checks$table_type$table_type
+  check_pivot <- checks$pivot$pivot
+  check_margins <- checks$margins$margins
   vars_to_filter <- 
-    c(if (checks$na_row$na.rm) row_name, 
-      if (checks$na_col$na.rm) col_name)
-  data_sub <- checks$data$df[c(row_name, col_name)]
+    c(if (check_row_na.rm) check_row_name, 
+      if (check_col_na.rm) check_col_name)
+  
+  data_sub <- checks$data$df[c(check_row_name, check_col_name)]
   
   ignore_result <-
     extract_ignore_map(
-      vars = c(row_name, col_name),
-      ignore = checks$ignore,
+      vars = c(check_row_name, check_col_name),
+      ignore = check_ignore,
       var_stem_map = NULL
     )
   ignore_map <- ignore_result$ignore_map
@@ -107,18 +114,18 @@ cat_group_tbl <- function(data,
   cat_group_tabl <-
     summarize_cat_group(
       data = data_sub,
-      row_var = row_name,
-      col_var = col_name,
-      margins = checks$margins$margins
+      row_var = check_row_name,
+      col_var = check_col_name,
+      margins = check_margins
     )
   
-  if (checks$pivot$pivot == "wider") {
+  if (check_pivot == "wider") {
     cat_group_tabl <-
       pivot_tbl_wider(
         data = cat_group_tabl,
-        id_cols = row_name,
-        names_from = col_name,
-        names_glue = paste0("{.value}_", col_name, "_{", col_name, "}"),
+        id_cols = check_row_name,
+        names_from = check_col_name,
+        names_glue = paste0("{.value}_", check_col_name, "_{", check_col_name, "}"),
         values_from = c("count", "percent")
       )
   }
@@ -126,8 +133,8 @@ cat_group_tbl <- function(data,
   cat_group_tabl <-
     drop_only_cols(
       data = cat_group_tabl,
-      only = checks$only$only,
-      only_type = only_type(checks$table_type)
+      only = check_only,
+      only_type = only_type(check_table_type)
     )
   
   return(tibble::as_tibble(cat_group_tabl))

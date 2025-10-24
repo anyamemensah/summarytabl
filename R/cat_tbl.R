@@ -1,21 +1,21 @@
 #' @title Summarize a categorical variable
 #'
-#' @description `cat_tbl()` summarizes nominal or categorical variables, returning 
-#' frequency counts and percentages. counts and percentages. Missing values can be 
-#' excluded from the final table
+#' @description `cat_tbl()` summarizes nominal or categorical variables, 
+#' returning frequency counts and percentages. counts and percentages.
 #'
 #' @param data A data frame.
-#' @param var A character string of the name of a variable in `data` containing 
-#' categorical data.
+#' @param var A character string of the name of a variable in `data` 
+#' containing categorical data.
 #' @param na.rm A logical value indicating whether missing values should be 
 #' removed before calculations. Default is `FALSE`.
-#' @param only A character string or vector of character strings of the types of 
-#' summary data to return. Default is `NULL`, which returns both counts and percentages. 
-#' To return only counts or percentages, use `count` or `percent`, respectively.
+#' @param only A character string or vector of character strings of the types 
+#' of summary data to return. Default is `NULL`, which returns both counts and 
+#' percentages. To return only counts or percentages, use `count` or `percent`, 
+#' respectively.
 #' @param ignore An optional vector that contains values to exclude from `var`. 
 #' Default is `NULL`, which retains all values.
 #'
-#' @returns A tibble showing the relative frequencies and/or percentages of `var`.
+#' @returns A tibble showing the count and percentage of each category in `var`
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -46,35 +46,39 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   )
   
   checks <- check_cat_args(args)
-  var_name <- checks$var$var
-  data_sub <- checks$data$df[var_name]
-  
+  check_var_name <- checks$var$var
+  check_ignore <- checks$ignore$ignore
+  check_na.rm <- checks$na.rm$na.rm
+  check_only <- checks$only$only
+  check_table_type <- checks$table_type$table_type
+  data_sub <- checks$data$df[check_var_name]
+
   ignore_result <-
     extract_ignore_map(
-      vars = var_name,
-      ignore = checks$ignore$ignore,
+      vars = check_var_name,
+      ignore = check_ignore,
       var_stem_map = NULL
     )
   ignore_map <- ignore_result$ignore_map
   
   if (!is.null(ignore_map)) {
-    data_sub[[var_name]] <- 
-      replace_with_na(data_sub[[var_name]], ignore_map[[var_name]])
+    data_sub[[check_var_name]] <- 
+      replace_with_na(data_sub[[check_var_name]], ignore_map[[check_var_name]])
   }
   
-  if (checks$na.rm$na.rm) {
-    data_sub <- data_sub[!is.na(data_sub[[var_name]]), ]
+  if (check_na.rm) {
+    data_sub <- data_sub[!is.na(data_sub[[check_var_name]]), ]
   }
   
   cat_tabl <- 
-    dplyr::count(data_sub, .data[[var_name]], name = "count") |>
+    dplyr::count(data_sub, .data[[check_var_name]], name = "count") |>
     dplyr::mutate(percent = count / sum(count))
   
   cat_tabl <-
     drop_only_cols(
       data = cat_tabl,
-      only = checks$only$only,
-      only_type = only_type(checks$table_type)
+      only = check_only,
+      only_type = only_type(check_table_type)
     )
   
   return(tibble::as_tibble(cat_tabl))

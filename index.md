@@ -22,9 +22,10 @@ For the latest updates, install the development version of the package from GitH
 remotes::install_github("anyamemensah/summarytabl", build_vignettes = TRUE)
 ```
 
+
 ## Learn more
 
-For more information on how to use the package, please refer to the [Introduction to summarytabl](articles/summarytabl-intro.html) article.
+For more information on how to use the package, please read the [Introduction to summarytabl](articles/summarytabl-intro.html) article.
 
 ## Support us
 

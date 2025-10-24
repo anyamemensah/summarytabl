@@ -25,7 +25,7 @@ test_that("Invalid 'var_stem' argument and No 'cols' found", {
       data = depressive,
       var_stem = c("dep", "gender")
     ),
-    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of length one."
+    "No matching columns found for the following variable stems: gender."
   )
 
   expect_error(
@@ -33,7 +33,7 @@ test_that("Invalid 'var_stem' argument and No 'cols' found", {
       data = depressive,
       var_stem = "depress"
     ),
-    "No columns were found with the variable stem: depress."
+    "No matching columns found for the following variable stems: depress."
   )
 })
 
@@ -53,7 +53,7 @@ test_that("Invalid 'only' argument", {
       var_stem = "dep",
       only = NA
     ),
-    "Invalid 'only' argument. 'only' must be any of: count, percent."
+    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
   )
 })
 
@@ -114,7 +114,7 @@ test_that("Invalid 'only' argument", {
       var_stem = "dep",
       only = NA
     ),
-    "Invalid 'only' argument. 'only' must be any of: count, percent."
+    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
   )
 })
 
@@ -176,7 +176,7 @@ test_that("Expected output with 'ignore' values", {
       data = depressive,
       var_stem = "dep",
       only = "count",
-      ignore = 1
+      ignore = c(dep = 1)
     ) |> head()
   
   expected <-
@@ -190,7 +190,7 @@ test_that("Expected output with 'ignore' values", {
 })
 
 
-test_that("Expected output with ignore_stem_case and 'ignore' values", {
+test_that("Error and expected output with ignore_stem_case and 'ignore' values", {
   expect_error(
     select_tbl(
       data = depressive,
@@ -198,7 +198,7 @@ test_that("Expected output with ignore_stem_case and 'ignore' values", {
       pivot = "wider",
       only = "count"
     ),
-    "No columns were found with the variable stem: DEP."
+    "No matching columns found for the following variable stems: DEP."
   )
   
   observed <-
@@ -207,7 +207,7 @@ test_that("Expected output with ignore_stem_case and 'ignore' values", {
       var_stem = "DEP",
       ignore_stem_case = TRUE,
       only = "count",
-      ignore = 1
+      ignore = c(DEP = 1)
     ) |> head()
   
   expected <-
@@ -220,6 +220,47 @@ test_that("Expected output with ignore_stem_case and 'ignore' values", {
   expect_equal(observed, expected)
 })
 
+
+test_that("Expected output with multiple names and ignore values (pairwise deletion)", {
+  observed <-
+      select_tbl(
+      data = depressive,
+      var_stem = c("dep_1", "dep_5"),
+      var_input = "name",
+      na_removal = "pairwise",
+      only = "count",
+      ignore = c(dep_1 = 3, dep_5 = 2))
+  
+  expected <-
+    tibble::tibble(
+      variable = rep(c("dep_1", "dep_5"), each = 2),
+      values = as.integer(c(1,2,1,3)),
+      count = as.integer(c(120, 709, 206, 871))
+    )
+  
+  expect_equal(observed, expected)
+})
+
+
+test_that("Expected output with multiple variable stems and ignore values (pairwise deletion)", {
+  observed <-
+    select_tbl(
+      data = social_psy_data,
+      var_stem = c("belong", "identity"),
+      na_removal = "pairwise",
+      only = "count",
+      ignore = list(belong = c(1,2,3), identity = c(3, 4,5))) |>
+    tail()
+  
+  expected <-
+    tibble::tibble(
+      variable = rep(c("identity_2", "identity_3", "identity_4"), each = 2),
+      values = as.integer(rep(1:2, times = 3)),
+      count = as.integer(c(465, 1025, 51, 133, 1474, 3333))
+    )
+  
+  expect_equal(observed, expected)
+})
 
 test_that("Expected output with different 'only' types", {
   observed1 <-
@@ -284,4 +325,17 @@ test_that("generate_select_tabl expected output", {
   expect_equal(observed2, expected2)
 })
 
-
+test_that("warning message about pivotting", {
+expect_warning(
+  select_tbl(
+    data = social_psy_data,
+    var_stem = c("belong", "identity"),
+    na_removal = "pairwise",
+    only = "count",
+    pivot = "wider",
+    ignore = list(belong = c(1,2,3), identity = c(3,4,5))),
+  paste("Some variables have different values, so pivoting to", 
+        "the 'wider' format has been disabled. The table will be",
+        "displayed in the 'long' format instead. To override this",
+        "behavior and force pivoting, set `force_pivot = TRUE`."))
+})

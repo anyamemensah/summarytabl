@@ -1,11 +1,8 @@
 #' @title 2020 Social Determinants of Health (SDOH) Data
 #'
-#' @description These data are a subset from the 2020 Social Determinants of 
-#' Health (SDOH) Database. The data contains 3,229 observations and 29
-#' variables.
-#'
-#' For more information about the 2020 SDOH Database,
-#' visit https://www.ahrq.gov/sdoh/data-analytics/sdoh-data.html#download.
+#' @description Subset of data from the 2020 Social Determinants of 
+#' Health (SDOH) Database. For more information about the 2020 SDOH Database,
+#' visit: \href{https://www.ahrq.gov/sdoh/data-analytics/sdoh-data.html#download}{https://www.ahrq.gov/sdoh/data-analytics/sdoh-data.html#download}.
 #'
 #' @format A tibble with 3,229 rows and 29 columns:
 #' \describe{

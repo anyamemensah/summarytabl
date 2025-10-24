@@ -2,68 +2,82 @@
 #'
 #' @description `select_group_tbl()` displays frequency counts and percentages 
 #' (i.e., count and percent) for multiple response variables, including binary 
-#' variables (such as Unselected/Selected) and ordinal variables (such as responses 
-#' ranging from strongly disagree to strongly agree), that share a common variable 
-#' stem, grouped either by another variable in your dataset or by a matched pattern in 
-#' the variable names. A variable 'stem' is a shared naming pattern across related 
-#' variables, often representing repeated measures of the same concept or a series of 
-#' items measuring a single construct. Missing data are excluded using `listwise` 
-#' deletion by default.
+#' variables (such as Unselected/Selected) and ordinal variables (such as 
+#' responses ranging from strongly disagree to strongly agree), that share a 
+#' common variable stem, grouped either by another variable in your dataset or 
+#' by a matched pattern in the variable names. A variable 'stem' is a shared 
+#' naming pattern across related variables, often representing repeated measures 
+#' of the same concept or a series of items measuring a single construct. Missing 
+#' data are excluded using `listwise` deletion by default.
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a 
-#' variable in `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. 
-#' Default is `FALSE`.
+#' @param var_stem A character vector containing at least one element, each 
+#' representing either a variable stem or a full variable name found in `data`.
+#' @param var_input A character string specifying whether the values supplied 
+#' to `var_stem` should be treated as variable stems (`stem`) or as complete 
+#' variable names (`name`). By default, this is set to `stem`, so the function 
+#' searches for variables that begin with each stem provided. Setting this 
+#' argument to `name` directs the function to look for variables that exactly 
+#' match the provided names.
+#' @param regex_stem A logical value indicating whether to use Perl-compatible 
+#' regular expressions when searching for variable stems. Default is `FALSE`.
 #' @param ignore_stem_case A logical value indicating whether the search for 
 #' columns matching the supplied `var_stem` is case-insensitive. Default is 
 #' `FALSE`.
-#' @param group A character string representing a variable name or a pattern used 
-#' to search for variables in `data`.
-#' @param group_type A character string that defines how the `group` argument should 
-#' be interpreted. Should be one of `pattern` or `variable`. Defaults to `variable`, 
-#' which searches for a matching variable name in `data`.
-#' @param group_name An optional character string used to rename the `group` column 
-#' in the final table When `group_type` is set to `variable`, the column name defaults 
-#' to the matched variable name from `data`. When set to `pattern`, the default column 
-#' name is `group`.
+#' @param group A character string representing a variable name or a pattern 
+#' used to search for variables in `data`.
+#' @param group_type A character string that defines how the `group` argument 
+#' should be interpreted. Should be one of `pattern` or `variable`. Defaults to 
+#' `variable`, which searches for a matching variable name in `data`.
+#' @param group_name An optional character string used to rename the `group` 
+#' column in the final table When `group_type` is set to `variable`, the column 
+#' name defaults to the matched variable name from `data`. When set to `pattern`, 
+#' the default column name is `group`.
 #' @param margins A character string that determines how percentage values are 
-#' calculated; whether they sum to one across rows, columns, or the entire variable 
-#' (i.e., all). Defaults to `all`, but can also be set to `rows` or `columns`. Note: 
-#' This argument only affects the final table when `group_type` is `variable`.
-#' @param escape_group A logical value indicating whether to escape string supplied 
-#' to `group`.
+#' calculated; whether they sum to one across rows, columns, or the entire 
+#' variable (i.e., all). Defaults to `all`, but can also be set to `rows` or 
+#' `columns`. Note: This argument only affects the final table when `group_type` 
+#' is `variable`.
+#' @param regex_group A logical value indicating whether to use Perl-compatible 
+#' regular expressions when searching for `group` variables or matching variable 
+#' name patterns. Default is `FALSE`.
 #' @param ignore_group_case A logical value specifying whether the search for a 
 #' grouping variable (if `group_type` is `variable`) or for variables matching a 
 #' pattern (if `group_type` is `pattern`) should be case-insensitive. Default is 
 #' `FALSE`. Set to `TRUE` to ignore case. 
-#' @param remove_group_non_alnum A logical value indicating whether to remove all 
-#' non-alphanumeric characters (i.e., anything that is not a letter or number) from 
-#' `group`. Default is `TRUE`.
+#' @param remove_group_non_alnum A logical value indicating whether to remove 
+#' all non-alphanumeric characters (i.e., anything that is not a letter or number) 
+#' from `group`. Default is `TRUE`.
 #' @param na_removal A character string that specifies the method for handling 
 #' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
 #' @param pivot A character string that determines the format of the table. By 
-#' default, `longer` returns the data in the long format. To return the data in the 
-#' `wide` format, specify `wider`.
+#' default, `longer` returns the data in the long format. To return the data in 
+#' the `wide` format, specify `wider`.
 #' @param only A character string or vector of character strings of the types of 
 #' summary data to return. Default is `NULL`, which returns both counts and 
 #' percentages. To return only counts or percentages, use `count` or `percent`, 
 #' respectively.
-#' @param var_labels An optional named character vector or list used to assign 
-#' custom labels to variable names. Each element should be named and correspond to 
-#' a variable in the returned table. If any element is unnamed or references a variable 
-#' not returned in the table, all labels will be ignored and the table will be printed 
-#' without them.
-#' @param ignore An optional named vector or list that defines values to exclude from 
-#' variables matching the specified variable stem and, if applicable, a grouping variable 
-#' in `data`. If set to `NULL` (default), all values are retained. To exclude values from 
-#' variables identified by `var_stem`, use the stem name as the key. To exclude multiple 
-#' values from `var_stem` variables or a grouping variable, provide them as a named list.
+#' @param var_labels An optional named character vector or list used to assign
+#' custom labels to variable names. Each element must be named and correspond 
+#' to a variable included in the returned table. If `var_input` is set to `stem`, 
+#' and any element is either unnamed or refers to a variable not present in the 
+#' table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional named vector or list indicating values to exclude 
+#' from variables matching specified stems (or names), and, if applicable, from a 
+#' grouping variable in `data`. Defaults to `NULL`, indicating that all values are 
+#' retained. To specify exclusions for variables identified by `var_stem`, use the 
+#' corresponding stems or variable names as names in the vector or list. To exclude 
+#' multiple values from these variables or a grouping variable, supply them as a 
+#' named list.
+#' @param force_pivot A logical value that enables pivoting to the 'wider' format 
+#' even when variables have inconsistent value sets. By default, this is set to 
+#' `FALSE` to prevent reshaping errors when values differ across variables in the 
+#' returned table. Set to `TRUE` to override this safeguard and pivot to the 
+#' 'wider' format regardless of value inconsistencies.
 #'
-#' @returns A tibble showing the relative frequencies and/or percentages of multiple 
-#' response variables sharing a common variable stem. The statistics are grouped either 
-#' by a specified grouping variable within the dataset or by a matched pattern in the 
-#' variable names.
+#' @returns A tibble displaying the count and percentage for each category in 
+#' a multi-response variable, grouped either by a specified variable in the 
+#' dataset or by matching patterns in variable names.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -135,53 +149,68 @@
 select_group_tbl <- function(data,
                              var_stem,
                              group,
-                             escape_stem = FALSE,
+                             var_input = "stem",
+                             regex_stem = FALSE,
                              ignore_stem_case = FALSE,
                              group_type = "variable",
                              group_name = NULL,
                              margins = "all",
-                             escape_group = FALSE,
+                             regex_group = FALSE,
                              ignore_group_case = FALSE,
                              remove_group_non_alnum = TRUE,
                              na_removal = "listwise",
                              pivot = "longer",
                              only = NULL,
                              var_labels = NULL,
-                             ignore = NULL) {
+                             ignore = NULL,
+                             force_pivot = FALSE) {
   args <- list(
     data = data,
     table_type = "select",
     group_func = TRUE,
     var_stem = var_stem,
     var_label = "var_stem",
-    escape_stem = escape_stem,
+    var_input = var_input,
+    valid_var_type = "valid_var_types",
+    regex_stem = regex_stem,
     ignore_stem_case = ignore_stem_case,
     group_var = group,
     group_type = group_type,
+    valid_grp_type = "valid_grp_types",
     group_name = group_name,
     margins = margins,
-    escape_group = escape_group,
+    regex_group = regex_group,
     ignore_group_case = ignore_group_case,
     remove_group_non_alnum = remove_group_non_alnum,
     na_removal = na_removal,
     pivot = pivot,
     only = only,
     var_labels = var_labels,
-    ignore = ignore
+    ignore = ignore,
+    force_pivot = force_pivot
   )
   
   checks <- check_select_group_args(args)
-  cols <- checks$var_stem$cols
-  col_labels_checked <- checks$var_stem$var_labels
-  group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
-  group_name_checked <- checks$group_name$group_name
-  data_sub <- checks$data$df[c(cols, group_var)]
+  check_stems <- checks$var_stem
+  check_cols <- checks$cols
+  check_col_labels <- checks$col_labels
+  check_group_var <- if (checks$group_type == "variable") checks$group_var else NULL
+  check_group_name <- checks$group_name
+  check_group_type <- checks$group_type
+  check_stem_map <- checks$var_stem_map
+  check_ignore <- checks$ignore
+  check_na_removal <- checks$na_removal
+  check_pivot <- checks$pivot
+  check_only <- checks$only
+  check_force_pivot <- checks$force_pivot
+  check_table_type <- checks$table_type
+  data_sub <- checks$df[c(check_group_var, check_cols)]
   
   ignore_result <-
     extract_ignore_map(
-      vars = c(checks$var_stem$var_stem, group_var),
-      ignore = checks$ignore,
-      var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+      vars = c(check_stems, check_group_var),
+      ignore = check_ignore,
+      var_stem_map = check_stem_map
     )
   ignore_map <- ignore_result$ignore_map
   
@@ -192,47 +221,48 @@ select_group_tbl <- function(data,
     })
   }
   
-  if (checks$na_rm$na_removal == "listwise") {
+  if (check_na_removal == "listwise") {
     data_sub <- stats::na.omit(data_sub)
   }
   
-  select_group_list <-
+  select_group_tabl <-
     purrr::map(
-      .x = unique(cols),
-      .f = ~ generate_select_group_tabl(data_sub, .x, checks, group_var)
-    )
-  
-  select_group_tabl <- dplyr::bind_rows(select_group_list)
-  
-  if (!is.null(group_name_checked)) {
+      .x = unique(check_cols),
+      .f = ~ generate_select_group_tabl(data_sub, .x, checks, check_group_var)
+    ) |>
+    purrr::reduce(dplyr::bind_rows)
+
+  if (!is.null(check_group_name)) {
     select_group_tabl <-
       select_group_tabl |>
       dplyr::rename(
-        !!rlang::sym(group_name_checked) := ifelse(checks$group_type == "pattern", "group", group_var)
+        !!rlang::sym(check_group_name) := ifelse(check_group_type == "pattern", "group", check_group_var)
       )
-    group_var <- group_name_checked
+    check_group_var <- check_group_name
   }
   
-  if (checks$pivot$pivot == "wider") {
+  if (check_pivot == "wider" && 
+      override_pivot(select_group_tabl, "variable", 
+                     "values", check_force_pivot)) {
     id_cols <- 
-      if (checks$group_type == "pattern") {
-        c("variable", group_var)
+      if (check_group_type == "pattern") {
+        c("variable", check_group_var)
       } else {
         c("variable", "values")
       }
     
     names_from <- 
-      if (checks$group_type == "pattern") {
+      if (check_group_type == "pattern") {
         "values"
       } else {
-        group_var
+        check_group_var
       }
     
     names_glue <- 
-      if (checks$group_type == "pattern") {
+      if (check_group_type == "pattern") {
         paste0("{.value}_value_{values}")
       } else {
-        paste0("{.value}_", group_var, "_{", group_var, "}")
+        paste0("{.value}_", check_group_var, "_{", check_group_var, "}")
       }
     
     select_group_tabl <- 
@@ -245,14 +275,14 @@ select_group_tbl <- function(data,
       )
   }
   
-  if (!is.null(col_labels_checked)) {
+  if (!is.null(check_col_labels)) {
     select_group_tabl <-
       select_group_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
-        !!!tbl_key(
-          values_from = names(col_labels_checked),
-          values_to = unname(col_labels_checked)
+        !!!generate_tbl_key(
+          values_from = names(check_col_labels),
+          values_to = unname(check_col_labels)
         ),
         .default = variable
       )) |>
@@ -262,10 +292,10 @@ select_group_tbl <- function(data,
   select_group_tabl <-
     drop_only_cols(
       data = select_group_tabl,
-      only = checks$only$only,
+      only = checks$only,
       only_type = only_type(checks$table_type)
     )
-  
+
   return(tibble::as_tibble(select_group_tabl))
 }
 
@@ -280,8 +310,8 @@ generate_select_group_tabl <- function(data,
     group_pattern <- 
       extract_group_flags(
         cols = variable,
-        group_flag = checks$var_stem$group,
-        escape_pattern = checks$escape_group,
+        pattern = checks$group_var,
+        perl = checks$regex_group,
         ignore.case = checks$ignore_group_case,
         remove_non_alum = checks$remove_group_non_alnum
       )
@@ -294,7 +324,7 @@ generate_select_group_tabl <- function(data,
     sub_dat |>
     dplyr::select(dplyr::all_of(c(variable, group_var))) |>
     dplyr::filter(
-      if (checks$na_rm$na_removal == "pairwise") {
+      if (checks$na_removal == "pairwise") {
         !is.na(.data[[variable]]) & !is.na(.data[[group_var]])
       } else {
         TRUE
@@ -306,7 +336,7 @@ generate_select_group_tabl <- function(data,
         data = temp_data,
         var_col = variable,
         group_col = group_var,
-        margins = checks$margins$margins
+        margins = checks$margins
       )
   } else {
     temp_data <- 
