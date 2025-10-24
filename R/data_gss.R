@@ -1,7 +1,8 @@
 #' @title General Social Survey (GSS) 2022 Data
 #'
-#' @description These data are a subset from the General Social Survey 2022 Individual
-#' Year Data Sets.For more information, visit: https://gss.norc.org/us/en/gss/get-the-data/spss.html.
+#' @description Subset of data from the General Social Survey 2022 Individual
+#' Year Data Sets. For more information, visit: 
+#' \href{https://gss.norc.org/us/en/gss/get-the-data/spss.html}{https://gss.norc.org/us/en/gss/get-the-data/spss.html}.
 #'
 #' @format A tibble with 4,149 rows and 40 columns:
 #' \describe{
@@ -13,7 +14,7 @@
 #' \item{hispanic}{Respondent's Hispanic, Latino, or Spanish origins}
 #' \item{race}{Respondent's race}
 #' \item{marital}{Respondent's marital status}
-#' \item{agekdbrn}{Age at birth of first child: AGEKDBRN}
+#' \item{agekdbrn}{Age at birth of first child}
 #' \item{educ}{Highest year of school completed}
 #' \item{relig}{Religious affiliation}
 #' \item{wrkstat}{Labor force status }

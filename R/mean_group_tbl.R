@@ -1,56 +1,71 @@
-#' Summarize continuous variables by group or pattern
+#' @title Summarize multiple response variables by group or pattern
 #'
-#' @description `mean_group_tbl()` calculates descriptive statistics (mean, standard 
-#' deviation, minimum, maximum, and number of non-missing observations) for interval 
-#' and ratio-level variables that share a common prefix (variable stem), grouped 
-#' either by another variable in your dataset or by a matched pattern in the variable 
-#' names. A variable 'stem' is a shared naming pattern across related variables, often 
-#' representing repeated measures of the same concept or a series of items measuring 
-#' a single construct. By default, missing data are excluded using `listwise` deletion.
+#' @description `select_group_tbl()` displays frequency counts and 
+#' percentages (i.e., count and percent) for multiple response variables, 
+#' including binary variables (such as Unselected/Selected) and ordinal 
+#' variables (such as responses ranging from strongly disagree to strongly 
+#' agree), that share a common variable stem, grouped either by another 
+#' variable in your dataset or by a matched pattern in the variable names. 
+#' A variable 'stem' is a shared naming pattern across related variables, 
+#' often representing repeated measures of the same concept or a series of 
+#' items measuring a single construct. Missing data are excluded using 
+#' `listwise` deletion by default.
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a variable 
-#' in `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default 
-#' is `FALSE`.
-#' @param ignore_stem_case A logical value indicating whether the search for columns 
-#' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param group A character string representing a variable name or a pattern used to 
-#' search for variables in `data`.
-#' @param group_type A character string that defines how the `group` argument should be
-#' interpreted. Should be one of `pattern` or `variable`. Defaults to `variable`, which 
-#' searches for a matching variable name in `data`.
-#' @param group_name An optional character string used to rename the `group` column in 
-#' the final table. When `group_type` is set to `variable`, the column name defaults to 
-#' the matched variable name from `data.` When set to `pattern`, the default column name 
-#' is `group`.
-#' @param escape_group A logical value indicating whether to escape string supplied to 
-#' `group`.
-#' @param ignore_group_case A logical value specifying whether the search for a grouping 
-#' variable (if `group_type` is `variable`) or for variables matching a pattern (if 
-#' `group_type` is `pattern`) should be case-insensitive. Default is `FALSE`. Set to 
-#' `TRUE` to ignore case. 
-#' @param remove_group_non_alnum A logical value indicating whether to remove all non-
-#' alphanumeric characters (i.e., anything that is not a letter or number) from `group`. 
-#' Default is `TRUE`.
-#' @param na_removal A character string that specifies the method for handling missing 
-#' values: `pairwise` or `listwise`. Defaults to `listwise`.
-#' @param only A character string or vector of character strings specifying which summary 
-#' statistics to return. Defaults to NULL, which includes mean (mean), standard deviation 
-#' (sd), minimum (min), maximum (max), and count of non-missing values (nobs).
-#' @param var_labels An optional named character vector or list used to assign custom 
-#' labels to variable names. Each element should be named and correspond to a variable in 
-#' the returned table. If any element is unnamed or references a variable not returned in 
-#' the table, all labels will be ignored and the table will be printed without them.
-#' @param ignore An optional named vector or list that defines values to exclude from 
-#' variables matching the specified variable stem and, if applicable, a grouping variable 
-#' in `data`. If set to `NULL` (default), all values are retained. To exclude values from 
-#' variables identified by `var_stem`, use the stem name as the key. To exclude multiple 
-#' values from `var_stem` variables or a grouping variable, provide them as a named list.
+#' @param var_stem A character vector containing at least one element, each 
+#' representing either a variable stem or a full variable name found in `data`.
+#' @param var_input A character string specifying whether the values supplied 
+#' to `var_stem` should be treated as variable stems (`stem`) or as complete 
+#' variable names (`name`). By default, this is set to `stem`, so the function 
+#' searches for variables that begin with each stem provided. Setting this 
+#' argument to `name` directs the function to look for variables that exactly 
+#' match the provided names.
+#' @param regex_stem A logical value indicating whether to use Perl-compatible 
+#' regular expressions when searching for variable stems. Default is `FALSE`.
+#' @param ignore_stem_case A logical value indicating whether the search for 
+#' columns matching the supplied `var_stem` is case-insensitive. Default is 
+#' `FALSE`.
+#' @param group A character string representing a variable name or a pattern 
+#' used to search for variables in `data`.
+#' @param group_type A character string that defines how the `group` argument 
+#' should be interpreted. Should be one of `pattern` or `variable`. Defaults 
+#' to `variable`, which searches for a matching variable name in `data`.
+#' @param group_name An optional character string used to rename the `group` 
+#' column in the final table When `group_type` is set to `variable`, the column 
+#' name defaults to the matched variable name from `data`. When set to `pattern`, 
+#' the default column name is `group`.
+#' @param regex_group A logical value indicating whether to use Perl-compatible 
+#' regular expressions when searching for `group` variables or matching variable 
+#' name patterns. Default is `FALSE`.
+#' @param ignore_group_case A logical value specifying whether the search for a 
+#' grouping variable (if `group_type` is `variable`) or for variables matching a 
+#' pattern (if `group_type` is `pattern`) should be case-insensitive. Default is 
+#' `FALSE`. Set to `TRUE` to ignore case. 
+#' @param remove_group_non_alnum A logical value indicating whether to remove 
+#' all non-alphanumeric characters (i.e., anything that is not a letter or 
+#' number) from `group`. Default is `TRUE`.
+#' @param na_removal A character string that specifies the method for handling 
+#' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param only A character string or vector of character strings of the types of 
+#' summary data to return. Default is `NULL`, which returns both counts and 
+#' percentages. To return only counts or percentages, use `count` or `percent`, 
+#' respectively.
+#' @param var_labels An optional named character vector or list used to assign
+#' custom labels to variable names. Each element must be named and correspond 
+#' to a variable included in the returned table. If `var_input` is set to `stem`, 
+#' and any element is either unnamed or refers to a variable not present in the 
+#' table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional named vector or list indicating values to exclude 
+#' from variables matching specified stems (or names), and, if applicable, from 
+#' a grouping variable in `data`. Defaults to `NULL`, indicating that all values 
+#' are retained. To specify exclusions for variables identified by `var_stem`, 
+#' use the corresponding stems or variable names as names in the vector or list. 
+#' To exclude multiple values from these variables or a grouping variable, supply 
+#' them as a named list.
 #'
-#' @returns A tibble presenting summary statistics for continuous variables that share a 
-#' common stem in their names. The statistics are grouped either by a specified grouping 
-#' variable within the dataset or by a matched pattern in the variable names.
+#' @returns A tibble showing summary statistics for continuous variables, grouped 
+#' either by a specified variable in the dataset or by matching patterns in variable 
+#' names.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -81,19 +96,19 @@
 #'                var_stem = "symptoms",
 #'                group = ".t\\d",
 #'                group_type = "pattern",
-#'                escape_group = TRUE,
 #'                na_removal = "listwise",
 #'                ignore = c(symptoms = -999))
-#'                
+#'
 #' @export
 mean_group_tbl <- function(data,
                            var_stem,
                            group,
-                           escape_stem = FALSE,
+                           var_input = "stem",
+                           regex_stem = FALSE,
                            ignore_stem_case = FALSE,
                            group_type = "variable",
                            group_name = NULL,
-                           escape_group = FALSE,
+                           regex_group = FALSE,
                            ignore_group_case = FALSE,
                            remove_group_non_alnum = TRUE,
                            na_removal = "listwise",
@@ -106,12 +121,15 @@ mean_group_tbl <- function(data,
     group_func = TRUE,
     var_stem = var_stem,
     var_label = "var_stem",
-    escape_stem = escape_stem,
+    var_input = var_input,
+    valid_var_type = "valid_var_types",
+    regex_stem = regex_stem,
     ignore_stem_case = ignore_stem_case,
     group_var = group,
     group_type = group_type,
+    valid_grp_type = "valid_grp_types",
     group_name = group_name,
-    escape_group = escape_group,
+    regex_group = regex_group,
     ignore_group_case = ignore_group_case,
     remove_group_non_alnum = remove_group_non_alnum,
     na_removal = na_removal,
@@ -121,17 +139,20 @@ mean_group_tbl <- function(data,
   )
   
   checks <- check_mean_group_args(args)
-  cols <- checks$var_stem$cols
-  col_labels_checked <- checks$var_stem$var_labels
-  group_var <- if (checks$group_type == "variable") checks$var_stem$group else NULL
-  group_name_checked <- checks$group_name$group_name
-  data_sub <- checks$data$df[c(cols, group_var)]
+  check_stems <- checks$var_stem
+  check_cols <- checks$cols
+  check_col_labels <- checks$col_labels
+  check_group_var <- if (checks$group_type == "variable") checks$group_var else NULL
+  check_group_name <- checks$group_name
+  check_stem_map <- checks$var_stem_map
+  check_ignore <- checks$ignore
+  data_sub <- checks$df[c(check_group_var, check_cols)]
   
   ignore_result <-
     extract_ignore_map(
-      vars = c(checks$var_stem$var_stem, group_var),
-      ignore = checks$ignore,
-      var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+      vars = c(check_stems, check_group_var),
+      ignore = check_ignore,
+      var_stem_map = check_stem_map
     )
   ignore_map <- ignore_result$ignore_map
   
@@ -142,34 +163,33 @@ mean_group_tbl <- function(data,
     })
   }
   
-  if (checks$na_rm$na_removal == "listwise") {
+  if (checks$na_removal == "listwise") {
     data_sub <- stats::na.omit(data_sub)
   }
   
-  mean_group_list <-
+  mean_group_tabl <-
     purrr::map(
-      .x = unique(cols),
-      .f = ~ generate_mean_group_tabl(data_sub, .x, checks, group_var)
-    )
+      .x = unique(check_cols),
+      .f = ~ generate_mean_group_tabl(data_sub, .x, checks, check_group_var)
+    ) |>
+    purrr::reduce(dplyr::bind_rows)
   
-  mean_group_tabl <- dplyr::bind_rows(mean_group_list)
-  
-  if (!is.null(group_name_checked)) {
+  if (!is.null(check_group_name)) {
     mean_group_tabl <-
       mean_group_tabl |>
       dplyr::rename(
-        !!rlang::sym(group_name_checked) := ifelse(checks$group_type == "pattern", "group", group_var)
+        !!rlang::sym(check_group_name) := ifelse(checks$group_type == "pattern", "group", check_group_var)
       )
   }
   
-  if (!is.null(col_labels_checked)) {
+  if (!is.null(check_col_labels)) {
     mean_group_tabl <-
       mean_group_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
-        !!!tbl_key(
-          values_from = names(col_labels_checked),
-          values_to = unname(col_labels_checked)
+        !!!generate_tbl_key(
+          values_from = names(check_col_labels),
+          values_to = unname(check_col_labels)
         ),
         .default = variable
       )) |>
@@ -179,7 +199,7 @@ mean_group_tbl <- function(data,
   mean_group_tabl <- 
     drop_only_cols(
       data = mean_group_tabl,
-      only = checks$only$only,
+      only = checks$only,
       only_type = only_type(checks$table_type)
     )
   
@@ -197,8 +217,8 @@ generate_mean_group_tabl <- function(data,
     group_pattern <- 
       extract_group_flags(
         cols = variable,
-        group_flag = checks$var_stem$group,
-        escape_pattern = checks$escape_group,
+        pattern = checks$group_var,
+        perl = checks$regex_group,
         ignore.case = checks$ignore_group_case,
         remove_non_alum = checks$remove_group_non_alnum
       )
@@ -211,7 +231,7 @@ generate_mean_group_tabl <- function(data,
     sub_dat |>
     dplyr::select(dplyr::all_of(c(variable, group_var))) |>
     dplyr::filter(
-      if (checks$na_rm$na_removal == "pairwise") {
+      if (checks$na_removal == "pairwise") {
         !is.na(.data[[variable]]) & !is.na(.data[[group_var]])
       } else {
         TRUE

@@ -1,33 +1,47 @@
 #' @title Summarize continuous variables
 #'
-#' @description `mean_tbl()` calculates summary statistics (i.e., mean, standard 
-#' deviation, minimum, maximum, and count of non-missing values) for interval and 
-#' ratio-level variables that share a common prefix (i.e., variable stem). A variable 
-#' 'stem' is a shared naming pattern across related variables, often representing 
-#' repeated measures of the same concept or a series of items measuring a single 
-#' construct. Missing data are excluded using `listwise` deletion by default.
+#' @description `mean_tbl()` calculates summary statistics (i.e., mean, 
+#' standard deviation, minimum, maximum, and count of non-missing values) 
+#' for interval and ratio-level variables that share a common prefix (i.e., 
+#' variable stem). A variable 'stem' is a shared naming pattern across 
+#' related variables, often representing repeated measures of the same 
+#' concept or a series of items measuring a single construct. Missing data 
+#' are excluded using `listwise` deletion by default.
 #'
 #' @param data A data frame.
-#' @param var_stem A character string of a variable stem or the full name of a variable 
+#' @param var_stem A character vector containing at least one element, 
+#' each representing either a variable stem or a full variable name found 
 #' in `data`.
-#' @param escape_stem A logical value indicating whether to escape `var_stem`. Default 
-#' is `FALSE`.
-#' @param ignore_stem_case A logical value indicating whether the search for columns 
-#' matching the supplied `var_stem` is case-insensitive. Default is `FALSE`.
-#' @param na_removal A character string that specifies the method for handling missing 
-#' values: `pairwise` or `listwise`. Defaults to `listwise`.
-#' @param only A character string or vector of character strings specifying which summary 
-#' statistics to return. Defaults to NULL, which includes mean (mean), standard deviation 
-#' (sd), minimum (min), maximum (max), and count of non-missing values (nobs).
-#' @param var_labels An optional named character vector or list used to assign custom 
-#' labels to variable names. Each element should be named and correspond to a variable in 
-#' the returned table. If any element is unnamed or references a variable not returned in 
-#' the table, all labels will be ignored and the table will be printed without them.
-#' @param ignore An optional vector of values to exclude from variables identified by 
-#' `var_stem`. Defaults to `NULL`, which retains all values.
+#' @param var_input A character string specifying whether the values supplied 
+#' to `var_stem` should be treated as variable stems (`stem`) or as complete 
+#' variable names (`name`). By default, this is set to `stem`, so the function 
+#' searches for variables that begin with each stem provided. Setting this 
+#' argument to `name` directs the function to look for variables that exactly 
+#' match the provided names.
+#' @param regex_stem A logical value indicating whether to use Perl-compatible 
+#' regular expressions when searching for variable stems. Default is `FALSE`.
+#' @param ignore_stem_case A logical value indicating whether the search for 
+#' columns matching the supplied `var_stem` is case-insensitive. Default is 
+#' `FALSE`.
+#' @param na_removal A character string that specifies the method for handling 
+#' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param only A character string or vector of character strings specifying 
+#' which summary statistics to return. Defaults to NULL, which includes mean 
+#' (mean), standard deviation (sd), minimum (min), maximum (max), and count 
+#' of non-missing values (nobs).
+#' @param var_labels An optional named character vector or list used to assign
+#' custom labels to variable names. Each element must be named and correspond 
+#' to a variable included in the returned table. If `var_input` is set to `stem`, 
+#' and any element is either unnamed or refers to a variable not present in the 
+#' table, all labels will be ignored and the table will be printed without them.
+#' @param ignore An optional named vector or list indicating values to exclude 
+#' from variables matching specified stems (or names). Defaults to `NULL`, 
+#' indicating that all values are retained. To specify exclusions for variables 
+#' identified by `var_stem`, use the corresponding stems or variable names as 
+#' names in the vector or list. To exclude multiple values from these variables, 
+#' supply them as a named list.
 #'
-#' @returns A tibble showing summary statistics for continuous variables sharing a common 
-#' variable stem.
+#' @returns A tibble showing summary statistics for continuous variables.
 #'
 #' @author Ama Nyame-Mensah
 #'
@@ -50,7 +64,8 @@
 #' @export
 mean_tbl <- function(data,
                      var_stem,
-                     escape_stem = FALSE,
+                     var_input = "stem",
+                     regex_stem = FALSE,
                      ignore_stem_case = FALSE,
                      na_removal = "listwise",
                      only = NULL,
@@ -62,7 +77,9 @@ mean_tbl <- function(data,
     group_func = FALSE,
     var_stem = var_stem,
     var_label = "var_stem",
-    escape_stem = escape_stem,
+    var_input = var_input,
+    valid_var_type = "valid_var_types",
+    regex_stem = regex_stem,
     ignore_stem_case = ignore_stem_case,
     na_removal = na_removal,
     only = only,
@@ -71,15 +88,21 @@ mean_tbl <- function(data,
   )
   
   checks <- check_mean_args(args)
-  cols <- checks$var_stem$cols
-  col_labels_checked <- checks$var_stem$var_labels
-  data_sub <- checks$data$df[cols]
+  check_stems <- checks$var_stem
+  check_cols <- checks$cols
+  check_col_labels <- checks$col_labels
+  check_stem_map <- checks$var_stem_map
+  check_ignore <- checks$ignore
+  check_na_removal <- checks$na_removal
+  check_only <- checks$only
+  check_table_type <- checks$table_type
+  data_sub <- checks$df[check_cols]
   
   ignore_result <-
     extract_ignore_map(
-      vars = c(checks$var_stem$var_stem),
-      ignore = checks$ignore$ignore,
-      var_stem_map = stats::setNames(cols, rep(checks$var_stem$var_stem, length(cols)))
+      vars = check_stems,
+      ignore = check_ignore,
+      var_stem_map = check_stem_map
     )
   ignore_map <- ignore_result$ignore_map
   
@@ -90,25 +113,25 @@ mean_tbl <- function(data,
     })
   }
   
-  if (checks$na_rm$na_removal == "listwise") {
+  if (check_na_removal == "listwise") {
     data_sub <- stats::na.omit(data_sub)
   }
   
   mean_tabl <- 
-    purrr::map(cols, ~ generate_mean_tabl(data_sub, .x, checks$na_rm$na_removal)) |>
+    purrr::map(check_cols, ~ generate_mean_tabl(data_sub, .x, check_na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
     dplyr::select(variable, mean, sd, min, max, nobs)
   
-  if (!is.null(col_labels_checked)) {
+  if (!is.null(check_col_labels)) {
     mean_tabl <-
       mean_tabl |>
       dplyr::mutate(variable_label = dplyr::case_match(
         variable,
-        !!!tbl_key(
-          values_from = names(col_labels_checked),
-          values_to = unname(col_labels_checked)
+        !!!generate_tbl_key(
+          values_from = names(check_col_labels),
+          values_to = unname(check_col_labels)
         ),
-        .default = variable
+        .default = NA_character_
       )) |>
       dplyr::relocate(variable_label, .after = variable)
   }
@@ -116,8 +139,8 @@ mean_tbl <- function(data,
   mean_tabl <- 
     drop_only_cols(
       data = mean_tabl,
-      only = checks$only$only,
-      only_type = only_type(checks$table_type)
+      only = check_only,
+      only_type = only_type(check_table_type)
     )
   
   return(tibble::as_tibble(mean_tabl))

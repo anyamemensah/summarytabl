@@ -89,7 +89,7 @@ test_that("Invalid 'only' argument", {
       na.rm.col_var = TRUE,
       only = NA
     ),
-    "Invalid 'only' argument. 'only' must be any of: count, percent."
+    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
   )
 })
 

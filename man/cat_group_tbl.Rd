@@ -19,15 +19,16 @@ cat_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{row_var}{A character string of the name of a variable in \code{data} containing
-categorical data. This is the primary categorical variable.}
+\item{row_var}{A character string of the name of a variable in \code{data}
+containing categorical data. This is the primary categorical variable.}
 
-\item{col_var}{A character string of the name of a variable in \code{data} containing
-categorical data. This is the secondary categorical variable.}
+\item{col_var}{A character string of the name of a variable in \code{data}
+containing categorical data. This is the secondary categorical variable.}
 
-\item{margins}{A character string that determines how percentage values are
-calculated; whether they sum to one across rows, columns, or the entire table
-(i.e., all). Defaults to \code{all}, but can also be set to \code{rows} or \code{columns}.}
+\item{margins}{A character string that determines how percentage values
+are calculated; whether they sum to one across rows, columns, or the
+entire table (i.e., all). Defaults to \code{all}, but can also be set to
+\code{rows} or \code{columns}.}
 
 \item{na.rm.row_var}{A logical value indicating whether missing values for
 \code{row_var} should be removed before calculations. Default is \code{FALSE}.}
@@ -39,8 +40,8 @@ calculated; whether they sum to one across rows, columns, or the entire table
 default, \code{longer} returns the data in the long format. To return the data in
 the \code{wide} format, specify \code{wider}.}
 
-\item{only}{A character string or vector of character strings of the types of
-summary data to return. Default is \code{NULL}, which returns both counts and
+\item{only}{A character string or vector of character strings of the types
+of summary data to return. Default is \code{NULL}, which returns both counts and
 percentages. To return only counts or percentages, use \code{count} or \code{percent},
 respectively.}
 
@@ -50,14 +51,13 @@ To exclude multiple values from \code{row_var} or \code{col_var}, provide them a
 list.}
 }
 \value{
-A tibble showing relative frequencies and/or percentages of \code{row_var}
-by \code{col_var}.
+A tibble showing the count and percentage of each category in \code{row_var}
+by each category in \code{col_var}.
 }
 \description{
-\code{cat_group_tbl()} summarizes nominal or categorical variables by a
-grouping variable, returning frequency counts and percentages. It supports long
-or wide output formats, handles missing data, and allows percentage calculations
-across rows, columns, or the full table.
+\code{cat_group_tbl()} summarizes nominal or categorical
+variables by a grouping variable, returning frequency counts and
+percentages.
 }
 \examples{
 cat_group_tbl(data = nlsy,

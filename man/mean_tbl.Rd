@@ -7,7 +7,8 @@
 mean_tbl(
   data,
   var_stem,
-  escape_stem = FALSE,
+  var_input = "stem",
+  regex_stem = FALSE,
   ignore_stem_case = FALSE,
   na_removal = "listwise",
   only = NULL,
@@ -18,41 +19,56 @@ mean_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character string of a variable stem or the full name of a variable
+\item{var_stem}{A character vector containing at least one element,
+each representing either a variable stem or a full variable name found
 in \code{data}.}
 
-\item{escape_stem}{A logical value indicating whether to escape \code{var_stem}. Default
-is \code{FALSE}.}
+\item{var_input}{A character string specifying whether the values supplied
+to \code{var_stem} should be treated as variable stems (\code{stem}) or as complete
+variable names (\code{name}). By default, this is set to \code{stem}, so the function
+searches for variables that begin with each stem provided. Setting this
+argument to \code{name} directs the function to look for variables that exactly
+match the provided names.}
 
-\item{ignore_stem_case}{A logical value indicating whether the search for columns
-matching the supplied \code{var_stem} is case-insensitive. Default is \code{FALSE}.}
+\item{regex_stem}{A logical value indicating whether to use Perl-compatible
+regular expressions when searching for variable stems. Default is \code{FALSE}.}
 
-\item{na_removal}{A character string that specifies the method for handling missing
-values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
+\item{ignore_stem_case}{A logical value indicating whether the search for
+columns matching the supplied \code{var_stem} is case-insensitive. Default is
+\code{FALSE}.}
 
-\item{only}{A character string or vector of character strings specifying which summary
-statistics to return. Defaults to NULL, which includes mean (mean), standard deviation
-(sd), minimum (min), maximum (max), and count of non-missing values (nobs).}
+\item{na_removal}{A character string that specifies the method for handling
+missing values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
 
-\item{var_labels}{An optional named character vector or list used to assign custom
-labels to variable names. Each element should be named and correspond to a variable in
-the returned table. If any element is unnamed or references a variable not returned in
-the table, all labels will be ignored and the table will be printed without them.}
+\item{only}{A character string or vector of character strings specifying
+which summary statistics to return. Defaults to NULL, which includes mean
+(mean), standard deviation (sd), minimum (min), maximum (max), and count
+of non-missing values (nobs).}
 
-\item{ignore}{An optional vector of values to exclude from variables identified by
-\code{var_stem}. Defaults to \code{NULL}, which retains all values.}
+\item{var_labels}{An optional named character vector or list used to assign
+custom labels to variable names. Each element must be named and correspond
+to a variable included in the returned table. If \code{var_input} is set to \code{stem},
+and any element is either unnamed or refers to a variable not present in the
+table, all labels will be ignored and the table will be printed without them.}
+
+\item{ignore}{An optional named vector or list indicating values to exclude
+from variables matching specified stems (or names). Defaults to \code{NULL},
+indicating that all values are retained. To specify exclusions for variables
+identified by \code{var_stem}, use the corresponding stems or variable names as
+names in the vector or list. To exclude multiple values from these variables,
+supply them as a named list.}
 }
 \value{
-A tibble showing summary statistics for continuous variables sharing a common
-variable stem.
+A tibble showing summary statistics for continuous variables.
 }
 \description{
-\code{mean_tbl()} calculates summary statistics (i.e., mean, standard
-deviation, minimum, maximum, and count of non-missing values) for interval and
-ratio-level variables that share a common prefix (i.e., variable stem). A variable
-'stem' is a shared naming pattern across related variables, often representing
-repeated measures of the same concept or a series of items measuring a single
-construct. Missing data are excluded using \code{listwise} deletion by default.
+\code{mean_tbl()} calculates summary statistics (i.e., mean,
+standard deviation, minimum, maximum, and count of non-missing values)
+for interval and ratio-level variables that share a common prefix (i.e.,
+variable stem). A variable 'stem' is a shared naming pattern across
+related variables, often representing repeated measures of the same
+concept or a series of items measuring a single construct. Missing data
+are excluded using \code{listwise} deletion by default.
 }
 \examples{
 sdoh_child_ages <- 

@@ -1,12 +1,13 @@
 #' @title Panel Study of Income Dynamics (PSID) Transition into
 #' Adulthood Supplement (TAS) Data
 #'
-#' @description These data are a subset from the Panel Study of Income Dynamics
-#' (PSID) Transition into Adulthood Supplement. The data contains 2,526 
-#' observations and 8 variables.
-#'
-#' For more information about the Panel Study of Income Dynamics, visit
-#' https://psidonline.isr.umich.edu/CDS/default.aspx.
+#' @description Subset of data from the Panel Study of Income Dynamics (PSID) 
+#' Transition into Adulthood Supplement. This dataset includes information 
+#' from young adults about how they spend their free time, including participation 
+#' in organized activities such as clubs, sports or athletic teams, social-action 
+#' groups, and other structured extracurricular engagements. For more information 
+#' about the Panel Study of Income Dynamics, visit:
+#' \href{https://psidonline.isr.umich.edu/CDS/default.aspx}{https://psidonline.isr.umich.edu/CDS/default.aspx}.
 #'
 #' @format A tibble with 2,526 rows and 8 columns:
 #' \describe{
