@@ -4,9 +4,9 @@ This minor release (v0.2.0) includes several updates to the existing `summarytab
 
 ### Changes from v0.1.0
 
-* Reorganized primary and supporting functions by isolating helper and utility (input vs. output) logic, and introduced input validation tailored to each variable-type-specific function.
-* Updated and expanded documentation, including clearer function and argument descriptions, improved examples, and a revised vignette.
-* Introduced additional unit tests to improve test coverage.
+* Reorganized internal structure by separating helper and utility functions.
+* Added input validation for each variable-type-specific function.
+* Expanded documentation and examples, revised vignette, and added unit tests.
 * New or updated features: 
   - datasets
     * `sdoh`: A subset of the 2020 Social Determinants of Health Database.
