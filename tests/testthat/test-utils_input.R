@@ -306,8 +306,9 @@ test_that("check 'var_input' argument", {
 test_that("check 'group' argument", {
   data_test <- 
     data.frame(
-      group_var_1 = c(1,2,3),
-      group_var_2 = c(1,2,3)
+      group_var = c(1,2,3),
+      group_var = c(1,2,3),
+      check.names = FALSE
     )
   
   observed1 <- check_group_var(group_var = "RACE", group_type = "variable", 
@@ -345,7 +346,7 @@ test_that("check 'group' argument", {
                     col_names = names(data_test), ignore_case = FALSE, 
                     use_regex = FALSE),
     sprintf("Invalid 'group' argument. Multiple columns in 'data' matched the 'group' argument: %s.",
-            paste(c("group_var_1", "group_var_2"), collapse = ", "))
+            paste(c("group_var", "group_var"), collapse = ", "))
   )
   
   expect_error(
