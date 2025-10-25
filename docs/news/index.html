@@ -39,13 +39,23 @@
 <h2 class="pkg-version" data-toc-text="0.2.0" id="summarytabl-020">summarytabl 0.2.0<a class="anchor" aria-label="anchor" href="#summarytabl-020"></a></h2>
 <div class="section level3">
 <h3 id="minor-improvements-0-2-0">Minor improvements<a class="anchor" aria-label="anchor" href="#minor-improvements-0-2-0"></a></h3>
-<ol style="list-style-type: decimal"><li>
-<code><a href="../reference/cat_group_tbl.html">cat_group_tbl()</a></code> now includes a new <code>margins</code> argument. It allows users to choose how percentages are calculated: by <code>rows</code>, <code>columns</code>, or the entire table (<code>all</code>, which is the default).</li>
-</ol><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="section level4">
+<h4 id="new-datasets-0-2-0">New datasets<a class="anchor" aria-label="anchor" href="#new-datasets-0-2-0"></a></h4>
+<ul><li>
+<code>sdoh</code>: A subset of the 2020 Social Determinants of Health Database.</li>
+<li>
+<code>gss</code>: A subset of the 2022 General Social Survey.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-by-function-0-2-0">Updates by function<a class="anchor" aria-label="anchor" href="#updates-by-function-0-2-0"></a></h4>
+<div class="section level5">
+<h5 id="cat_group_tbl-0-2-0"><code>cat_group_tbl()</code><a class="anchor" aria-label="anchor" href="#cat_group_tbl-0-2-0"></a></h5>
+<p>Users can now specify how percentages are calculated in the output table using the <code>margins</code> argument. This provides greater flexibility in defining whether percentages are based on row totals, column totals, or overall totals.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nlsy_sub</span> <span class="op">&lt;-</span> </span>
-<span><span class="va">nlsy</span> <span class="op">|&gt;</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">nlsy</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">gender</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"male"</span>, <span class="st">"female"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Default: All</span></span>
@@ -55,9 +65,9 @@
 <span>              pivot <span class="op">=</span> <span class="st">"wider"</span>,</span>
 <span>              only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
 <span><span class="co"># gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`</span></span>
-<span><span class="co"># &lt;chr&gt;               &lt;dbl&gt;                 &lt;dbl&gt;                                 &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 female              0.146               0.102                                 0.243</span></span>
-<span><span class="co"># 2 male                0.146               0.110                                 0.253</span></span>
+<span><span class="co"># &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 female  0.146   0.102   0.243</span></span>
+<span><span class="co"># 2 male    0.146   0.110   0.253</span></span>
 <span></span>
 <span><span class="co"># Margins: Columnwise</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy_sub</span>,</span>
@@ -67,9 +77,9 @@
 <span>              margins <span class="op">=</span> <span class="st">"columns"</span>,</span>
 <span>              only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
 <span><span class="co"># gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`</span></span>
-<span><span class="co"># &lt;chr&gt;               &lt;dbl&gt;                 &lt;dbl&gt;                                 &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 female             0.5                  0.483                                 0.490</span></span>
-<span><span class="co"># 2 male               0.5                  0.517                                 0.510</span></span>
+<span><span class="co"># &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 female 0.50.483   0.490</span></span>
+<span><span class="co"># 2 male   0.50.517   0.510</span></span>
 <span></span>
 <span><span class="co"># Margins: Rowwise</span></span>
 <span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy_sub</span>,</span>
@@ -79,12 +89,121 @@
 <span>              margins <span class="op">=</span> <span class="st">"rows"</span>,</span>
 <span>              only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
 <span><span class="co"># gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`</span></span>
-<span><span class="co"># &lt;chr&gt;               &lt;dbl&gt;                 &lt;dbl&gt;                                 &lt;dbl&gt;</span></span>
-<span><span class="co"># 1 female            0.297                 0.208                                 0.495</span></span>
-<span><span class="co"># 2 male              0.287                 0.215                                 0.498</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal"><li>
-<code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> now includes a new <code>margins</code> argument. It allows users to choose how percentages are calculated: by <code>rows</code>, <code>columns</code>, or the entire variable (<code>all</code>, which is the default).</li>
-</ol><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<span><span class="co"># &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 female0.297     0.208   0.495</span></span>
+<span><span class="co"># 2 male  0.287     0.215   0.498</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="select_tbl-0-2-0"><code>select_tbl()</code><a class="anchor" aria-label="anchor" href="#select_tbl-0-2-0"></a></h5>
+<p><code><a href="../reference/select_tbl.html">select_tbl()</a></code> now supports selecting variables either by stem or by full variable name. Both single and multiple values are accepted.</p>
+<p>Set <code>var_input = "stem"</code> (default) when searching for variables using stems.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, var_stem <span class="op">=</span> <span class="st">"dep"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 24 × 4</span></span>
+<span><span class="co"># variable values count percent</span></span>
+<span><span class="co"># &lt;chr&gt;     &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1       1   109  0.0678</span></span>
+<span><span class="co"># 2 dep_1       2   689  0.429 </span></span>
+<span><span class="co"># 3 dep_1       3   809  0.503 </span></span>
+<span><span class="co"># 4 dep_2       1   144  0.0896</span></span>
+<span><span class="co"># 5 dep_2       2   746  0.464 </span></span>
+<span><span class="co"># 6 dep_2       3   717  0.446 </span></span></code></pre></div>
+<p>Set <code>var_input = "name"</code> when searching for variables using their name.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
+<span>           var_stem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dep_1"</span>, <span class="st">"dep_4"</span>, <span class="st">"dep_6"</span><span class="op">)</span>,</span>
+<span>           var_input <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 9 × 4</span></span>
+<span><span class="co"># variable values count percent</span></span>
+<span><span class="co"># &lt;chr&gt;     &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1       1   117  0.0714</span></span>
+<span><span class="co"># 2 dep_1       2   703  0.429 </span></span>
+<span><span class="co"># 3 dep_1       3   818  0.499 </span></span>
+<span><span class="co"># 4 dep_4       1   608  0.371 </span></span>
+<span><span class="co"># 5 dep_4       2   854  0.521 </span></span>
+<span><span class="co"># 6 dep_4       3   176  0.107 </span></span>
+<span><span class="co"># 7 dep_6       1   398  0.243 </span></span>
+<span><span class="co"># 8 dep_6       2   872  0.532 </span></span>
+<span><span class="co"># 9 dep_6       3   368  0.225 </span></span></code></pre></div>
+<p>Users must now use a named vector or list to specify which values should be excluded for each variable, or for variables associated with a given stem.</p>
+<p>Previous usage: value <code>3</code> is not excluded from analysis</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, var_stem <span class="op">=</span> <span class="st">"dep"</span>, ignore <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 24 × 4</span></span>
+<span><span class="co"># variable values count percent</span></span>
+<span><span class="co"># &lt;chr&gt;     &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1       1   109  0.0678</span></span>
+<span><span class="co"># 2 dep_1       2   689  0.429 </span></span>
+<span><span class="co"># 3 dep_1       3   809  0.503 </span></span>
+<span><span class="co"># 4 dep_2       1   144  0.0896</span></span>
+<span><span class="co"># 5 dep_2       2   746  0.464 </span></span>
+<span><span class="co"># 6 dep_2       3   717  0.446 </span></span>
+<span><span class="co"># 7 dep_3       1  1162  0.723 </span></span>
+<span><span class="co"># 8 dep_3       2   392  0.244 </span></span>
+<span><span class="co"># 9 dep_3       3    53  0.0330</span></span>
+<span><span class="co"># 10 dep_4      1   601  0.374 </span></span></code></pre></div>
+<p>Updated usage: value <code>3</code> is successfully excluded from analysis</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>,</span>
+<span>           var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
+<span>           ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>dep <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 16 × 4</span></span>
+<span><span class="co"># variable values count percent</span></span>
+<span><span class="co"># &lt;chr&gt;     &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1       1    37   0.167</span></span>
+<span><span class="co"># 2 dep_1       2   185   0.833</span></span>
+<span><span class="co"># 3 dep_2       1    47   0.212</span></span>
+<span><span class="co"># 4 dep_2       2   175   0.788</span></span>
+<span><span class="co"># 5 dep_3       1   133   0.599</span></span>
+<span><span class="co"># 6 dep_3       2    89   0.401</span></span>
+<span><span class="co"># 7 dep_4       1   108   0.486</span></span>
+<span><span class="co"># 8 dep_4       2   114   0.514</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="select_group_tbl-0-2-0"><code>select_group_tbl()</code><a class="anchor" aria-label="anchor" href="#select_group_tbl-0-2-0"></a></h5>
+<p><code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> now supports selecting variables either by stem or by full variable name. Both single and multiple values are accepted.</p>
+<p>Set <code>var_input = "stem"</code> (default) when searching for variables using stems.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, var_stem <span class="op">=</span> <span class="st">"dep"</span>, group <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 48 × 5</span></span>
+<span><span class="co">#   variable   sex values count percent</span></span>
+<span><span class="co">#   &lt;chr&gt;    &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1        1      1    55  0.0342</span></span>
+<span><span class="co"># 2 dep_1        1      2   325  0.202 </span></span>
+<span><span class="co"># 3 dep_1        1      3   440  0.274 </span></span>
+<span><span class="co"># 4 dep_1        2      1    54  0.0336</span></span>
+<span><span class="co"># 5 dep_1        2      2   364  0.227 </span></span>
+<span><span class="co"># 6 dep_1        2      3   369  0.230 </span></span>
+<span><span class="co"># 7 dep_2        1      1    82  0.0510</span></span></code></pre></div>
+<p>Set <code>var_input = "name"</code> when searching for variables using their name.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
+<span>                 var_stem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dep_1"</span>, <span class="st">"dep_4"</span>, <span class="st">"dep_6"</span><span class="op">)</span>,</span>
+<span>                 var_input <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>                 group <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 18 × 5</span></span>
+<span><span class="co"># variable   sex values count percent</span></span>
+<span><span class="co"># &lt;chr&gt;    &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 dep_1        1      1    58  0.0354</span></span>
+<span><span class="co"># 2 dep_1        1      2   332  0.203 </span></span>
+<span><span class="co"># 3 dep_1        1      3   443  0.270 </span></span>
+<span><span class="co"># 4 dep_1        2      1    59  0.0360</span></span>
+<span><span class="co"># 5 dep_1        2      2   371  0.226 </span></span>
+<span><span class="co"># 6 dep_1        2      3   375  0.229 </span></span>
+<span><span class="co"># 7 dep_4        1      1   300  0.183 </span></span>
+<span><span class="co"># 8 dep_4        1      2   436  0.266 </span></span>
+<span><span class="co"># 9 dep_4        1      3    97  0.0592</span></span>
+<span><span class="co"># 10 dep_4       2      1   308  0.188 </span></span>
+<span><span class="co"># 11 dep_4       2      2   418  0.255 </span></span>
+<span><span class="co"># 12 dep_4       2      3    79  0.0482</span></span></code></pre></div>
+<p>Users can now specify how percentages are calculated in the output table using the <code>margins</code> argument. This provides greater flexibility in defining whether percentages are based on row totals, column totals, or overall variable totals.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tas_recoded</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">tas</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
@@ -107,6 +226,7 @@
 <span>                 na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
 <span>                 pivot <span class="op">=</span> <span class="st">"wider"</span>,</span>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># variable                  values     percent_sex_female percent_sex_male</span></span>
 <span><span class="co"># &lt;chr&gt;                     &lt;chr&gt;                   &lt;dbl&gt;            &lt;dbl&gt;</span></span>
 <span><span class="co"># 1 involved_arts           selected               0.0839           0.0740</span></span>
@@ -121,6 +241,7 @@
 <span>                 pivot <span class="op">=</span> <span class="st">"wider"</span>,</span>
 <span>                 margins <span class="op">=</span> <span class="st">"columns"</span>,</span>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># variable                  values     percent_sex_female percent_sex_male</span></span>
 <span><span class="co"># &lt;chr&gt;                     &lt;chr&gt;                   &lt;dbl&gt;            &lt;dbl&gt;</span></span>
 <span><span class="co"># 1 involved_arts           selected               0.175            0.142 </span></span>
@@ -135,21 +256,112 @@
 <span>                 pivot <span class="op">=</span> <span class="st">"wider"</span>,</span>
 <span>                 margins <span class="op">=</span> <span class="st">"rows"</span>,</span>
 <span>                 only <span class="op">=</span> <span class="st">"percent"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># variable                  values     percent_sex_female percent_sex_male</span></span>
 <span><span class="co"># &lt;chr&gt;                     &lt;chr&gt;                   &lt;dbl&gt;            &lt;dbl&gt;</span></span>
 <span><span class="co"># 1 involved_arts           selected                0.531            0.469</span></span>
 <span><span class="co"># 2 involved_arts           unselected              0.469            0.531</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
-<ol style="list-style-type: decimal"><li>Two new datasets were added to the package.
-<ul><li>
-<code>sdoh</code>: A subset of the <code>2020 Social Determinants of Health Database</code>.</li>
-<li>
-<code>gss</code>: A subset of the <code>2022 General Social Survey</code>.</li>
-</ul></li>
-<li>A new hex sticker logo was created for the package.</li>
-</ol></div>
+<div class="section level5">
+<h5 id="mean_tbl-0-2-0"><code>mean_tbl()</code><a class="anchor" aria-label="anchor" href="#mean_tbl-0-2-0"></a></h5>
+<p><code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> now supports selecting variables either by stem or by full variable name. Both single and multiple values are accepted.</p>
+<p>Set <code>var_input = "stem"</code> (default) when searching for variables using stems.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 6 × 6</span></span>
+<span><span class="co"># variable                    mean    sd   min   max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 HHC_PCT_HHA_NURSING       58.2  49.3     0   100  3227</span></span>
+<span><span class="co"># 2 HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  3227</span></span>
+<span><span class="co"># 3 HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  3227</span></span>
+<span><span class="co"># 4 HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  3227</span></span>
+<span><span class="co"># 5 HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  3227</span></span>
+<span><span class="co"># 6 HHC_PCT_HHA_AIDE          55.1  48.6     0   100  3227</span></span></code></pre></div>
+<p>Set <code>var_input = "name"</code> when searching for variables using their name.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
+<span>         var_stem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HHC_PCT_HHA_NURSING"</span>, <span class="st">"HHC_PCT_HHA_AIDE"</span><span class="op">)</span>,</span>
+<span>         var_input <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 2 × 6</span></span>
+<span><span class="co"># variable              mean    sd   min   max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                 &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 HHC_PCT_HHA_NURSING  58.2  49.3     0   100  3227</span></span>
+<span><span class="co"># 2 HHC_PCT_HHA_AIDE     55.1  48.6     0   100  3227</span></span></code></pre></div>
+<p>Users must now use a named vector or list to specify which values should be excluded for each variable, or for variables associated with a given stem.</p>
+<p>Previous usage: value <code>0</code> is not excluded from analysis</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>, ignore <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 6 × 6</span></span>
+<span><span class="co"># variable                    mean    sd   min   max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 HHC_PCT_HHA_NURSING       58.2  49.3     0   100  3227</span></span>
+<span><span class="co"># 2 HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  3227</span></span>
+<span><span class="co"># 3 HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  3227</span></span>
+<span><span class="co"># 4 HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  3227</span></span>
+<span><span class="co"># 5 HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  3227</span></span>
+<span><span class="co"># 6 HHC_PCT_HHA_AIDE          55.1  48.6     0   100  3227 </span></span></code></pre></div>
+<p>Updated usage: value <code>0</code> is successfully excluded from analysis</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>,</span>
+<span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
+<span>         ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>HHC_PCT <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 6 × 6</span></span>
+<span><span class="co"># variable                  mean    sd    min   max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 HHC_PCT_HHA_NURSING      100    0    100      100  1454</span></span>
+<span><span class="co"># 2 HHC_PCT_HHA_PHYS_THERAPY  98.0  7.52  25      100  1454</span></span>
+<span><span class="co"># 3 HHC_PCT_HHA_OCC_THERAPY   94.9 12.7   25      100  1454</span></span>
+<span><span class="co"># 4 HHC_PCT_HHA_SPEECH        91.9 16.6   20      100  1454</span></span>
+<span><span class="co"># 5 HHC_PCT_HHA_MEDICAL       87.7 20.2    9.09   100  1454</span></span>
+<span><span class="co"># 6 HHC_PCT_HHA_AIDE          96.6  9.75  42.9    100  1454</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="mean_group_tbl-0-2-0"><code>mean_group_tbl()</code><a class="anchor" aria-label="anchor" href="#mean_group_tbl-0-2-0"></a></h5>
+<p><code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> now supports selecting variables either by stem or by full variable name. Both single and multiple values are accepted.</p>
+<p>Set <code>var_input = "stem"</code> (default) when searching for variables using stems.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>,</span>
+<span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
+<span>               group <span class="op">=</span> <span class="st">"REGION"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 24 × 7</span></span>
+<span><span class="co"># variable                  REGION     mean    sd   min   max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                     &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 HHC_PCT_HHA_NURSING      Midwest    57.4  49.5     0   100  1055</span></span>
+<span><span class="co"># 2 HHC_PCT_HHA_NURSING      Northeast  74.2  43.9     0   100   217</span></span>
+<span><span class="co"># 3 HHC_PCT_HHA_NURSING      South      58.8  49.2     0   100  1422</span></span>
+<span><span class="co"># 4 HHC_PCT_HHA_NURSING      West       56    49.7     0   100   450</span></span>
+<span><span class="co"># 5 HHC_PCT_HHA_PHYS_THERAPY Midwest    55.2  48.9     0   100  1055</span></span>
+<span><span class="co"># 6 HHC_PCT_HHA_PHYS_THERAPY Northeast  68.0  43.1     0   100   217</span></span>
+<span><span class="co"># 7 HHC_PCT_HHA_PHYS_THERAPY South      58.4  49.0     0   100  1422</span></span>
+<span><span class="co"># 8 HHC_PCT_HHA_PHYS_THERAPY West       54.5  49.0     0   100   450</span></span>
+<span><span class="co"># 9 HHC_PCT_HHA_OCC_THERAPY  Midwest    52.9  48.7     0   100  1055</span></span>
+<span><span class="co"># 10 HHC_PCT_HHA_OCC_THERAPY Northeast  64.8  42.8     0   100   217</span></span></code></pre></div>
+<p>Set <code>var_input = "name"</code> when searching for variables using their name.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
+<span>               var_stem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ACS_PCT_AGE_0_4"</span>, <span class="st">"HHC_PCT_HHA_MEDICAL"</span><span class="op">)</span>, </span>
+<span>               var_input <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>               group <span class="op">=</span> <span class="st">"REGION"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># # A tibble: 8 × 7</span></span>
+<span><span class="co"># variable              REGION     mean     sd   min    max  nobs</span></span>
+<span><span class="co"># &lt;chr&gt;                 &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co"># 1 ACS_PCT_AGE_0_4     Midwest    5.90  1.13   2.4   12.0   1055</span></span>
+<span><span class="co"># 2 ACS_PCT_AGE_0_4     Northeast  5.04  0.829  0.95   8.12   217</span></span>
+<span><span class="co"># 3 ACS_PCT_AGE_0_4     South      5.76  1.26   0.98  18.4   1422</span></span>
+<span><span class="co"># 4 ACS_PCT_AGE_0_4     West       5.80  1.67   0.23  13.8    449</span></span>
+<span><span class="co"># 5 HHC_PCT_HHA_MEDICAL Midwest   33.0  43.3    0    100     1055</span></span>
+<span><span class="co"># 6 HHC_PCT_HHA_MEDICAL Northeast 62.2  42.6    0    100      217</span></span>
+<span><span class="co"># 7 HHC_PCT_HHA_MEDICAL South     45.7  46.8    0    100     1422</span></span>
+<span><span class="co"># 8 HHC_PCT_HHA_MEDICAL West      46.1  47.6    0    100      449</span></span></code></pre></div>
+</div>
+</div>
+</div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="summarytabl-010">summarytabl 0.1.0<a class="anchor" aria-label="anchor" href="#summarytabl-010"></a></h2><p class="text-muted">CRAN release: 2025-10-06</p>
