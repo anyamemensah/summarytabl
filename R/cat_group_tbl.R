@@ -74,6 +74,7 @@ cat_group_tbl <- function(data,
     only = only,
     ignore = ignore
   )
+  
   checks <- check_cat_group_args(args)
   check_row_name <- checks$row_var$var
   check_col_name <- checks$col_var$var

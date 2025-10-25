@@ -177,9 +177,18 @@ select_tbl(data = depressive,
            na_removal = "pairwise")
 ```
 
+To display the output in a wide format, set `pivot = "wider"`.
+
+```{r}
+select_tbl(data = depressive, 
+           var_stem = "dep",
+           na_removal = "pairwise",
+           pivot = "wider")
+```
+
 It's common practice to group multiple response variables by another variable. This type of descriptive analysis allows for meaningful comparisons across different segments of your dataset. With `select_group_tbl()`, you can create a summary table for multiple response variables, grouped either by another variable in your dataset or by matching a pattern in the variable names. For example, we often want to summarize survey responses by race.
 
-First, let’s recode the `race` variable and the values for each of the eight depressive index variables in the `depressive` dataset, replacing numeric categories with descriptive string labels for easier interpretation.
+First, recode the `race` variable and the values for each of the eight depressive index variables in the `depressive` dataset, replacing numeric categories with descriptive string labels for easier interpretation.
 
 ```{r}
 dep_recoded <- 
@@ -341,7 +350,7 @@ mean_tbl(
 )
 ``` 
 
-Like `mean_tbl()`, you can also specify how missing values are removed, using the `na_removal` argument.
+You can also specify how missing values are removed, using the `na_removal` argument.
 
 ```{r}
 # Default listwise removal
@@ -394,7 +403,7 @@ mean_group_tbl(data = sdoh,
                na_removal = "pairwise",
                ignore = c(HHC_PCT = 0, REGION = "Northeast"))
 
-# Pairwise removal excluding several values from the same var_stem 
+# Pairwise removal excluding several values from the same stem 
 # or group variable.
 mean_group_tbl(data = sdoh, 
                var_stem = "HHC_PCT",
@@ -403,9 +412,11 @@ mean_group_tbl(data = sdoh,
                ignore = list(HHC_PCT = 0, REGION = c("Northeast", "South")))
 ``` 
 
-Another way to use `mean_group_tbl()` is to summarize responses based on a shared pattern, such as survey time points. To enable this feature, set `group_type = "pattern"` and specify the desired pattern in the group argument. For example, imagine a dataset from researchers studying the number of symptoms reported by participants. In this (fictitious) dataset, responses are collected at three time points: "t1" (baseline), "t2" (6-month follow-up), and "t3" (one-year follow-up). Using a pattern-based approach, you can group variables by these time points to generate summary statistics for each phase of data collection.
+Another way to use `mean_group_tbl()` is to summarize responses based on a shared pattern, such as survey time points. To enable this feature, set `group_type = "pattern"` and specify the desired pattern in the group argument. 
 
-In the example below, we first create the `symptoms_data` dataset and then use the `mean_group_tbl()` function to generate summary statistics for variables that begin with the prefix `symptoms` and contain a substring matching the pattern `"_t\\d"`, an underscore followed by the letter "t" and a single digit, indicating different time points. The ignore argument is also used to exclude the value `-999` from the analysis.
+Consider a dataset compiled by researchers examining how many symptoms participants reported they'd had after a long illness. In this (fictitious) dataset, responses are collected at three time points: "t1" (baseline), "t2" (6-month follow-up), and "t3" (one-year follow-up). Using a pattern-based approach, you can group variables by these time points to generate summary statistics for each phase of data collection.
+
+In the example below, we first create the `symptoms_data` dataset and then use the `mean_group_tbl()` function to generate summary statistics for variables that begin with the prefix `symptoms` and contain a substring matching the pattern `"_t\\d"`, an underscore followed by the letter "t" and a single digit, indicating different time points. The `ignore` argument is also used to exclude the value `-999` from the analysis.
 
 ```{r}
 set.seed(0803)

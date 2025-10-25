@@ -384,6 +384,25 @@ switch to pairwise deletion instead, set
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3         3    55  0.033<span style="text-decoration: underline;">3</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4         1   611  0.371 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
+<p>To display the output in a wide format, set
+<code>pivot = "wider"</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
+<span>           var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
+<span>           na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
+<span>           pivot <span class="op">=</span> <span class="st">"wider"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 8 × 7</span></span></span>
+<span><span class="co">##   variable count_value_1 count_value_2 count_value_3 percent_value_1</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> dep_1              120           709           825          0.072<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> dep_2              151           762           728          0.092<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> dep_3             <span style="text-decoration: underline;">1</span>192           406            55          0.721 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> dep_4              611           856           181          0.371 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> dep_5              206           574           871          0.125 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> dep_6              399           879           371          0.242 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">7</span> dep_7             <span style="text-decoration: underline;">1</span>046           507            95          0.635 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">8</span> dep_8              323           801           519          0.197 </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: percent_value_2 &lt;dbl&gt;, percent_value_3 &lt;dbl&gt;</span></span></span></code></pre>
 <p>It’s common practice to group multiple response variables by another
 variable. This type of descriptive analysis allows for meaningful
 comparisons across different segments of your dataset. With
@@ -391,11 +410,11 @@ comparisons across different segments of your dataset. With
 multiple response variables, grouped either by another variable in your
 dataset or by matching a pattern in the variable names. For example, we
 often want to summarize survey responses by race.</p>
-<p>First, let’s recode the <code>race</code> variable and the values for
-each of the eight depressive index variables in the
-<code>depressive</code> dataset, replacing numeric categories with
-descriptive string labels for easier interpretation.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<p>First, recode the <code>race</code> variable and the values for each
+of the eight depressive index variables in the <code>depressive</code>
+dataset, replacing numeric categories with descriptive string labels for
+easier interpretation.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dep_recoded</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">depressive</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
@@ -414,7 +433,7 @@ descriptive string labels for easier interpretation.</p>
 <span>    <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Next, use the <code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> function to summarize
 responses for all eight variables by <code>race</code>:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span><span class="op">)</span></span></code></pre></div>
@@ -436,7 +455,7 @@ responses for all eight variables by <code>race</code>:</p>
 <code>"wider"</code> reshapes the table into a wide format, while using
 <code>"pairwise"</code> for the <code>na_removal</code> argument ensures
 missing values are addressed through pairwise deletion.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span>,</span>
@@ -464,7 +483,7 @@ values from analysis. In the example below, the value <code>often</code>
 is removed from all eight depression index variables, and the
 <code>Non-Black/Non-Hispanic</code> category is excluded from the race
 variable.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"race"</span>,</span>
@@ -494,7 +513,7 @@ variable.</p>
 <p>When <code>group_type</code> is set to <code>variable</code> (the
 default), the <code>margins</code> argument controls how percentages are
 calculated and presented.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: percentages across each variable sum to one</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
@@ -518,7 +537,7 @@ calculated and presented.</p>
 <span><span class="co">## <span style="color: #949494;"># ℹ abbreviated name: ¹​`count_race_Non-Black/Non-Hispanic`</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: percent_race_Black &lt;dbl&gt;, percent_race_Hispanic &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   `percent_race_Non-Black/Non-Hispanic` &lt;dbl&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Rowwise: for each value of the variable, the percentages </span></span>
 <span><span class="co"># across all levels of the grouping variable sum to one</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
@@ -544,7 +563,7 @@ calculated and presented.</p>
 <span><span class="co">## <span style="color: #949494;"># ℹ abbreviated name: ¹​`count_race_Non-Black/Non-Hispanic`</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: percent_race_Black &lt;dbl&gt;, percent_race_Hispanic &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   `percent_race_Non-Black/Non-Hispanic` &lt;dbl&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Columnwise: for each level of the grouping variable, </span></span>
 <span><span class="co"># the percentages across all values of the variable sum </span></span>
 <span><span class="co"># to one.</span></span>
@@ -580,7 +599,7 @@ student responses about their sense of belonging in the STEM community
 at two distinct time points: “w1” and “w2”. You can summarize these
 responses using a pattern-based approach, where the time points (e.g.,
 “w1” and “w2”) serve as grouping variables.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"_w\\d"</span>,</span>
@@ -600,7 +619,7 @@ responses using a pattern-based approach, where the time points (e.g.,
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91  0.337</span></span></code></pre>
 <p>Use the <code>group_name</code> argument to assign a descriptive name
 to the column containing the matched pattern values.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"_w\\d"</span>,</span>
@@ -621,7 +640,7 @@ to the column containing the matched pattern values.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91  0.337</span></span></code></pre>
 <p>You can also include variable labels in your summary table by using
 the <code>var_labels</code> argument.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
 <span>                 group <span class="op">=</span> <span class="st">"_w\\d"</span>,</span>
@@ -646,7 +665,7 @@ the <code>var_labels</code> argument.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 I feel like I belong in STEM… w2         5    91  0.337</span></span></code></pre>
 <p>Finally, use the <code>only</code> argument to choose what
 information to return.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: counts and percentages</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
@@ -666,7 +685,7 @@ information to return.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> belong_belongStem_w2 w2         3    44  0.163 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> belong_belongStem_w2 w2         4   113  0.419 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91  0.337</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Counts only</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
@@ -687,7 +706,7 @@ information to return.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> belong_belongStem_w2 w2         3    44</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> belong_belongStem_w2 w2         4   113</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> belong_belongStem_w2 w2         5    91</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Percentages only</span></span>
 <span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stem_social_psych</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"belong_belong"</span>,</span>
@@ -724,7 +743,7 @@ non-missing observations for each variable.</p>
 characteristics of health care facilities, all of which begin with the
 prefix <code>HHC_PCT</code>. Using the <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> function,
 you can generate summary statistics for these variables:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
 <span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
@@ -740,7 +759,7 @@ subset of those variables, you can specify their names directly in the
 <code>var_stem</code> argument and set <code>var_input = "name"</code>
 to indicate you’re referencing variable names rather than a shared
 stem.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">sdoh</span>,</span>
 <span>  var_stem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HHC_PCT_HHA_PHYS_THERAPY"</span>,</span>
@@ -754,9 +773,9 @@ stem.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
-<p>Like <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code>, you can also specify how missing values
-are removed, using the <code>na_removal</code> argument.</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<p>You can also specify how missing values are removed, using the
+<code>na_removal</code> argument.</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default listwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
@@ -768,7 +787,7 @@ are removed, using the <code>na_removal</code> argument.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
@@ -784,7 +803,7 @@ are removed, using the <code>na_removal</code> argument.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <p>Consider adding variable labels using the <code>var_labels</code>
 argument to help make the variable names easier to interpret.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>         na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
@@ -814,7 +833,7 @@ variables, grouped either by a specific variable in the dataset or by
 matching patterns in variable names. For example, it’s often useful to
 present summary statistics by demographic categories such as region,
 gender, age, or race.</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span>
@@ -838,7 +857,7 @@ handled using the <code>ignore</code> and <code>na_removal</code>
 arguments. To specify values to ignore, use a named vector or list,
 where each name corresponds to a variable stem or specific variable
 name.</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default listwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
@@ -865,7 +884,7 @@ name.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  97.3  8.97  50      100   403</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.1 10.3   42.9    100   681</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4  9.96  50      100   200</span></span></code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
@@ -893,8 +912,8 @@ name.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  98.0  7.85  50      100   588</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.6  9.82  42.9    100   816</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4 10.8   33.3    100   247</span></span></code></pre>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Pairwise removal excluding several values from the same var_stem </span></span>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Pairwise removal excluding several values from the same stem </span></span>
 <span><span class="co"># or group variable.</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
@@ -919,21 +938,23 @@ name.</p>
 <p>Another way to use <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> is to summarize
 responses based on a shared pattern, such as survey time points. To
 enable this feature, set <code>group_type = "pattern"</code> and specify
-the desired pattern in the group argument. For example, imagine a
-dataset from researchers studying the number of symptoms reported by
-participants. In this (fictitious) dataset, responses are collected at
-three time points: “t1” (baseline), “t2” (6-month follow-up), and “t3”
-(one-year follow-up). Using a pattern-based approach, you can group
-variables by these time points to generate summary statistics for each
-phase of data collection.</p>
+the desired pattern in the group argument.</p>
+<p>Consider a dataset compiled by researchers examining how many
+symptoms participants reported they’d had after a long illness. In this
+(fictitious) dataset, responses are collected at three time points: “t1”
+(baseline), “t2” (6-month follow-up), and “t3” (one-year follow-up).
+Using a pattern-based approach, you can group variables by these time
+points to generate summary statistics for each phase of data
+collection.</p>
 <p>In the example below, we first create the <code>symptoms_data</code>
 dataset and then use the <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> function to
 generate summary statistics for variables that begin with the prefix
 <code>symptoms</code> and contain a substring matching the pattern
 <code>"_t\\d"</code>, an underscore followed by the letter “t” and a
-single digit, indicating different time points. The ignore argument is
-also used to exclude the value <code>-999</code> from the analysis.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+single digit, indicating different time points. The <code>ignore</code>
+argument is also used to exclude the value <code>-999</code> from the
+analysis.</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0803</span><span class="op">)</span></span>
 <span><span class="va">symptoms_data</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -958,7 +979,7 @@ also used to exclude the value <code>-999</code> from the analysis.</p>
 grouping values or matched patterns. You can also use the
 <code>var_labels</code> argument to display descriptive labels for each
 variable.</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"symptoms"</span>,</span>
 <span>               group <span class="op">=</span> <span class="st">"_t\\d"</span>,</span>
@@ -976,7 +997,7 @@ variable.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 # of symptoms at one-yea… t3          4.64  3.29     0    10    33</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: all summary statistics returned</span></span>
 <span><span class="co"># (mean, sd, min, max, nobs)</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>
@@ -991,7 +1012,7 @@ variable.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1          4.03  3.14     0    10    33</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2          5.12  3.33     0    10    33</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3          4.64  3.29     0    10    33</span></span></code></pre>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Means and non-missing observations only</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"symptoms"</span>,</span>
@@ -1006,7 +1027,7 @@ variable.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1          4.03    33</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2          5.12    33</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3          4.64    33</span></span></code></pre>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Means and standard deviations only</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"symptoms"</span>,</span>

@@ -144,8 +144,13 @@ mean_group_tbl <- function(data,
   check_col_labels <- checks$col_labels
   check_group_var <- if (checks$group_type == "variable") checks$group_var else NULL
   check_group_name <- checks$group_name
+  check_group_type <- checks$group_type
   check_stem_map <- checks$var_stem_map
   check_ignore <- checks$ignore
+  check_na_removal <- checks$na_removal
+  check_only <- checks$only
+  check_table_type <- checks$table_type
+  
   data_sub <- checks$df[c(check_group_var, check_cols)]
   
   ignore_result <-
@@ -163,7 +168,7 @@ mean_group_tbl <- function(data,
     })
   }
   
-  if (checks$na_removal == "listwise") {
+  if (check_na_removal == "listwise") {
     data_sub <- stats::na.omit(data_sub)
   }
   
@@ -178,7 +183,7 @@ mean_group_tbl <- function(data,
     mean_group_tabl <-
       mean_group_tabl |>
       dplyr::rename(
-        !!rlang::sym(check_group_name) := ifelse(checks$group_type == "pattern", "group", check_group_var)
+        !!rlang::sym(check_group_name) := ifelse(check_group_type == "pattern", "group", check_group_var)
       )
   }
   
@@ -199,8 +204,8 @@ mean_group_tbl <- function(data,
   mean_group_tabl <- 
     drop_only_cols(
       data = mean_group_tabl,
-      only = checks$only,
-      only_type = only_type(checks$table_type)
+      only = check_only,
+      only_type = only_type(check_table_type)
     )
   
   return(tibble::as_tibble(mean_group_tabl))

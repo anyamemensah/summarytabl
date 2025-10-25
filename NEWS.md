@@ -26,6 +26,7 @@ cat_group_tbl(data = nlsy_sub,
               col_var = "race",
               pivot = "wider",
               only = "percent")
+
 # gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
 # <chr>   <dbl>     <dbl>   <dbl>
 # 1 female  0.146   0.102   0.243
@@ -38,6 +39,7 @@ cat_group_tbl(data = nlsy_sub,
               pivot = "wider",
               margins = "columns",
               only = "percent")
+
 # gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
 # <chr>   <dbl>     <dbl>   <dbl>
 # 1 female 0.50.483   0.490
@@ -50,11 +52,13 @@ cat_group_tbl(data = nlsy_sub,
               pivot = "wider",
               margins = "rows",
               only = "percent")
+
 # gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
 # <chr>   <dbl>     <dbl>   <dbl>
 # 1 female0.297     0.208   0.495
 # 2 male  0.287     0.215   0.498
 ```
+
 #### `select_tbl()`
 
 `select_tbl()` now supports selecting variables either by stem or by full variable name. Both single and multiple values are accepted. 
@@ -96,11 +100,13 @@ select_tbl(data = depressive,
 # 9 dep_6       3   368  0.225 
 ```
 
-Users must now use a named vector or list to specify which values should be excluded for each variable, or for variables associated with a given stem.
+Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated to a specific stem.
 
 Previous usage: value `3` is not excluded from analysis
 ```r
-select_tbl(data = depressive, var_stem = "dep", ignore = 3)
+select_tbl(data = depressive,
+           var_stem = "dep",
+           ignore = 3)
 
 # # A tibble: 24 × 4
 # variable values count percent
@@ -144,7 +150,9 @@ select_tbl(data = depressive,
 Set `var_input = "stem"` (default) when searching for variables using stems. 
 
 ```r
-select_group_tbl(data = depressive, var_stem = "dep", group = "sex")
+select_group_tbl(data = depressive,
+                 var_stem = "dep",
+                 group = "sex")
 
 # # A tibble: 48 × 5
 #   variable   sex values count percent
@@ -278,12 +286,14 @@ mean_tbl(data = sdoh,
 # 1 HHC_PCT_HHA_NURSING  58.2  49.3     0   100  3227
 # 2 HHC_PCT_HHA_AIDE     55.1  48.6     0   100  3227
 ```
-Users must now use a named vector or list to specify which values should be excluded for each variable, or for variables associated with a given stem.
+Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated to a specific stem.
 
 Previous usage: value `0` is not excluded from analysis
 
 ```r
-mean_tbl(data = sdoh, var_stem = "HHC_PCT", ignore = 0)
+mean_tbl(data = sdoh,
+         var_stem = "HHC_PCT",
+         ignore = 0)
 
 # # A tibble: 6 × 6
 # variable                    mean    sd   min   max  nobs

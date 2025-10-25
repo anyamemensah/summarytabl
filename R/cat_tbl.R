@@ -51,6 +51,7 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   check_na.rm <- checks$na.rm$na.rm
   check_only <- checks$only$only
   check_table_type <- checks$table_type$table_type
+  
   data_sub <- checks$data$df[check_var_name]
 
   ignore_result <-

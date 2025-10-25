@@ -130,6 +130,7 @@ select_tbl <- function(data,
   check_only <- checks$only
   check_force_pivot <- checks$force_pivot
   check_table_type <- checks$table_type
+  
   data_sub <- checks$df[check_cols]
   
   ignore_result <-

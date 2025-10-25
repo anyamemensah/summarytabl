@@ -204,6 +204,7 @@ select_group_tbl <- function(data,
   check_only <- checks$only
   check_force_pivot <- checks$force_pivot
   check_table_type <- checks$table_type
+  
   data_sub <- checks$df[c(check_group_var, check_cols)]
   
   ignore_result <-
@@ -292,8 +293,8 @@ select_group_tbl <- function(data,
   select_group_tabl <-
     drop_only_cols(
       data = select_group_tabl,
-      only = checks$only,
-      only_type = only_type(checks$table_type)
+      only = check_only,
+      only_type = only_type(check_table_type)
     )
 
   return(tibble::as_tibble(select_group_tabl))

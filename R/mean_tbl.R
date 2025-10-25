@@ -96,6 +96,7 @@ mean_tbl <- function(data,
   check_na_removal <- checks$na_removal
   check_only <- checks$only
   check_table_type <- checks$table_type
+  
   data_sub <- checks$df[check_cols]
   
   ignore_result <-
