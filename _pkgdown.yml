@@ -25,11 +25,15 @@ navbar:
       menu:
         - text: Introduction to summarytabl
           href: articles/summarytabl-intro.html
+    news:
+      text: News
+      menu:
+        - text: Changelog
+          href: news/index.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/anyamemensah/summarytabl
       aria-label: View source code on GitHub
-
 reference:
   - title: Categorical data
     desc: Functions that summarize categorical data.

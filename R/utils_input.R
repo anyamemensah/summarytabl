@@ -211,7 +211,7 @@ check_group_var <- function(group_var, group_type, col_names, ignore_case, use_r
                  "or underscores (_)."))
     }
     
-    group_cols_matched <- grep(pattern = group_var, 
+    group_cols_matched <- grep(pattern = paste0("^", group_var, "$"), 
                                ignore.case = ignore_case, 
                                perl = use_regex,
                                x = col_names, 
