@@ -1,7 +1,6 @@
 template:
-  bootstrap: 5
   bootswatch: litera
-
+  
 url: https://anyamemensah.github.io/summarytabl/
 
 navbar:

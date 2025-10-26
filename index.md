@@ -1,5 +1,4 @@
-
-# summarytabl <img src=man/figures/summarytabl_logo.png alt="summarytabl package logo" width = "200px" align = "right">
+# summarytabl <img src="man/figures/summarytabl_logo.png" align="right" alt="summarytabl package logo" width="200px">
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-project.org/package=summarytabl)
