@@ -1,15 +1,14 @@
 #' @title Summarize multiple response variables by group or pattern
 #'
-#' @description `select_group_tbl()` displays frequency counts and 
-#' percentages (i.e., count and percent) for multiple response variables, 
-#' including binary variables (such as Unselected/Selected) and ordinal 
-#' variables (such as responses ranging from strongly disagree to strongly 
-#' agree), that share a common variable stem, grouped either by another 
-#' variable in your dataset or by a matched pattern in the variable names. 
-#' A variable 'stem' is a shared naming pattern across related variables, 
-#' often representing repeated measures of the same concept or a series of 
-#' items measuring a single construct. Missing data are excluded using 
-#' `listwise` deletion by default.
+#' @description `mean_group_tbl()` calculates summary statistics (i.e., 
+#' mean, standard deviation, minimum, maximum, and count of non-missing 
+#' values) for interval and ratio-level variables that share a common 
+#' variable stem, grouped either by another variable in your dataset or 
+#' by a matched pattern in the variable names. A variable 'stem' is a 
+#' shared naming pattern across related variables, often representing 
+#' repeated measures of the same concept or a series of items measuring 
+#' a single construct. Missing data are excluded using `listwise` deletion 
+#' by default.
 #'
 #' @param data A data frame.
 #' @param var_stem A character vector containing at least one element, each 
