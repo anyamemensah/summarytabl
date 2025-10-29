@@ -69,7 +69,7 @@ extract_group_info <- function(group,
 
 
 # Function that validates the setup of functions requiring 
-# var_stem, and returns the corresponding columns and 
+# 'var_stem', and returns the corresponding columns and 
 # column information (e.g., data types, variable stem 
 # mapping)
 extract_var_stem_info <- function(data,
@@ -114,7 +114,7 @@ extract_var_stem_info <- function(data,
 
 
 # Function that validates the setup of functions requiring both 
-# var_stem and group arguments, and returns the corresponding 
+# 'var_stem' and 'group' arguments, and returns the corresponding 
 # columns, column information (e.g., data types, variable stem 
 # mapping), and group variable information
 extract_group_var_stem_info <- function(data,
@@ -287,7 +287,7 @@ drop_only_cols <- function(data, only, only_type) {
 
 
 # Function that extracts and returns a specific substring 
-# (i.e., group_flag) from a vector of column names
+# (i.e., 'group_flag') from a vector of column names
 extract_group_flags <- function(cols,
                                 pattern,
                                 ignore.case = FALSE,

@@ -21,7 +21,9 @@ mean_tbl(
 
 \item{var_stem}{A character vector containing at least one element,
 each representing either a variable stem or a full variable name found
-in \code{data}.}
+in \code{data}. A variable 'stem' is a shared naming pattern across related
+variables, often representing repeated measures of the same concept or
+a series of items measuring a single construct.}
 
 \item{var_input}{A character string specifying whether the values supplied
 to \code{var_stem} should be treated as variable stems (\code{stem}) or as complete
@@ -64,11 +66,7 @@ A tibble showing summary statistics for continuous variables.
 \description{
 \code{mean_tbl()} calculates summary statistics (i.e., mean,
 standard deviation, minimum, maximum, and count of non-missing values)
-for interval and ratio-level variables that share a common prefix (i.e.,
-variable stem). A variable 'stem' is a shared naming pattern across
-related variables, often representing repeated measures of the same
-concept or a series of items measuring a single construct. Missing data
-are excluded using \code{listwise} deletion by default.
+for continuous (i.e., interval and ratio-level) variables.
 }
 \examples{
 sdoh_child_ages <- 

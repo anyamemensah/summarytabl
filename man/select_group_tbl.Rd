@@ -28,8 +28,11 @@ select_group_tbl(
 \arguments{
 \item{data}{A data frame.}
 
-\item{var_stem}{A character vector containing at least one element, each
-representing either a variable stem or a full variable name found in \code{data}.}
+\item{var_stem}{A character vector containing at least one element,
+each representing either a variable stem or a full variable name found
+in \code{data}. A variable 'stem' is a shared naming pattern across related
+variables, often representing repeated measures of the same concept or
+a series of items measuring a single construct.}
 
 \item{group}{A character string representing a variable name or a pattern
 used to search for variables in \code{data}.}
@@ -117,12 +120,9 @@ dataset or by matching patterns in variable names.
 \code{select_group_tbl()} displays frequency counts and percentages
 (i.e., count and percent) for multiple response variables, including binary
 variables (such as Unselected/Selected) and ordinal variables (such as
-responses ranging from strongly disagree to strongly agree), that share a
-common variable stem, grouped either by another variable in your dataset or
-by a matched pattern in the variable names. A variable 'stem' is a shared
-naming pattern across related variables, often representing repeated measures
-of the same concept or a series of items measuring a single construct. Missing
-data are excluded using \code{listwise} deletion by default.
+responses ranging from strongly disagree to strongly agree), grouped either
+by another variable in your dataset or by a matched pattern in the variable
+names.
 }
 \examples{
 select_group_tbl(data = stem_social_psych,

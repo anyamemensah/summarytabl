@@ -18,12 +18,12 @@ specifying the names to be matched.}
 Either the original object, \code{x}, or the \code{default} value.
 }
 \description{
-This function assesses whether named lists and vectors have
-invalid values (like \code{NULL} or \code{NA}), invalid names (such as missing or
-empty names), confirms that the count of valid names matches the count of
-provided values, and verifies that the valid names obtained from the named
-object align with the supplied names. If any checks fail, the \code{default}
-value is returned.
+This function checks whether named lists and vectors contain
+invalid values (like \code{NULL} or \code{NA}), have invalid names (such as missing
+or empty names), ensures the number of valid names matches the number of
+supplied values, and confirms that valid names from the object correspond
+to the provided names. If any of these checks fail, the function returns
+the \code{default} value.
 }
 \examples{
 

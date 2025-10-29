@@ -23,7 +23,9 @@ select_tbl(
 
 \item{var_stem}{A character vector containing at least one element,
 each representing either a variable stem or a full variable name
-found in \code{data}.}
+found in \code{data}. A variable 'stem' is a shared naming pattern across
+related variables, often representing repeated measures of the same
+concept or a series of items measuring a single construct.}
 
 \item{var_input}{A character string specifying whether the values
 supplied to \code{var_stem} should be treated as variable stems (\code{stem}) or
@@ -78,11 +80,7 @@ multi-response variable.
 \code{select_tbl()} displays frequency counts and percentages
 (i.e., count and percent) for multiple response variables, including
 binary variables (such as Unselected/Selected) and ordinal variables
-(such as responses ranging from strongly disagree to strongly agree),
-that share a common variable stem. A variable 'stem' is a shared naming
-pattern across related variables, often representing repeated measures
-of the same concept or a series of items measuring a single construct.
-Missing data are excluded using \code{listwise} deletion by default.
+(such as responses ranging from strongly disagree to strongly agree).
 }
 \examples{
 select_tbl(data = tas,

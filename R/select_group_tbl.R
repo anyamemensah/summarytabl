@@ -3,16 +3,16 @@
 #' @description `select_group_tbl()` displays frequency counts and percentages 
 #' (i.e., count and percent) for multiple response variables, including binary 
 #' variables (such as Unselected/Selected) and ordinal variables (such as 
-#' responses ranging from strongly disagree to strongly agree), that share a 
-#' common variable stem, grouped either by another variable in your dataset or 
-#' by a matched pattern in the variable names. A variable 'stem' is a shared 
-#' naming pattern across related variables, often representing repeated measures 
-#' of the same concept or a series of items measuring a single construct. Missing 
-#' data are excluded using `listwise` deletion by default.
+#' responses ranging from strongly disagree to strongly agree), grouped either 
+#' by another variable in your dataset or by a matched pattern in the variable 
+#' names. 
 #'
 #' @param data A data frame.
-#' @param var_stem A character vector containing at least one element, each 
-#' representing either a variable stem or a full variable name found in `data`.
+#' @param var_stem A character vector containing at least one element, 
+#' each representing either a variable stem or a full variable name found 
+#' in `data`. A variable 'stem' is a shared naming pattern across related 
+#' variables, often representing repeated measures of the same concept or 
+#' a series of items measuring a single construct.
 #' @param var_input A character string specifying whether the values supplied 
 #' to `var_stem` should be treated as variable stems (`stem`) or as complete 
 #' variable names (`name`). By default, this is set to `stem`, so the function 

@@ -102,14 +102,14 @@ To display only percentages, set `only = "percent"`. You can also control how th
 
 ```{r}
 # Default: percentages across the full table sum to one
-cat_group_tbl(data = nlsy,
+cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
               col_var = "bthwht",
               pivot = "wider",
               only = "percent")
 
 # Rowwise: percentages sum to one across columns within each row
-cat_group_tbl(data = nlsy,
+cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
               col_var = "bthwht",
               margins = "rows",
@@ -117,7 +117,7 @@ cat_group_tbl(data = nlsy,
               only = "percent")
 
 # Columnwise: percentages within each column sum to one
-cat_group_tbl(data = nlsy,
+cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
               col_var = "bthwht",
               margins = "columns",
@@ -128,7 +128,7 @@ cat_group_tbl(data = nlsy,
 Sometimes, you may want to exclude specific values from your analysis. To do this, use a named vector or list to specify which values to exclude from the `row_var` and `col_var` variables. For example, in the case below, the `Non-Black/Non-Hispanic` category is excluded from the race variable (i.e., `row_var`) and to ensure that NAs are not returned in the final table, `na.rm.row_var` is set to `TRUE`.
 
 ```{r}
-cat_group_tbl(data = nlsy,
+cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
               col_var = "bthwht",
               na.rm.row_var = TRUE,
@@ -138,7 +138,7 @@ cat_group_tbl(data = nlsy,
 When you need to exclude more than one value from `row_var` or `col_var`, use a named list. In the example below, both the `Non-Black/Non-Hispanic` and `Hispanic` categories are excluded from the race variable.
 
 ```{r}
-cat_group_tbl(data = nlsy,
+cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
               col_var = "bthwht",
               na.rm.row_var = TRUE,

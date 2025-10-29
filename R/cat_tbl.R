@@ -1,7 +1,7 @@
 #' @title Summarize a categorical variable
 #'
 #' @description `cat_tbl()` summarizes nominal or categorical variables, 
-#' returning frequency counts and percentages. counts and percentages.
+#' returning frequency counts and percentages.
 #'
 #' @param data A data frame.
 #' @param var A character string of the name of a variable in `data` 

@@ -2,17 +2,16 @@
 #'
 #' @description `mean_group_tbl()` calculates summary statistics (i.e., 
 #' mean, standard deviation, minimum, maximum, and count of non-missing 
-#' values) for interval and ratio-level variables that share a common 
-#' variable stem, grouped either by another variable in your dataset or 
-#' by a matched pattern in the variable names. A variable 'stem' is a 
-#' shared naming pattern across related variables, often representing 
-#' repeated measures of the same concept or a series of items measuring 
-#' a single construct. Missing data are excluded using `listwise` deletion 
-#' by default.
+#' values) for continuous (i.e., interval and ratio-level) variables, 
+#' grouped either by another variable in your dataset or by a matched 
+#' pattern in the variable names.
 #'
 #' @param data A data frame.
 #' @param var_stem A character vector containing at least one element, each 
 #' representing either a variable stem or a full variable name found in `data`.
+#'  A variable 'stem' is a shared naming pattern across related variables, 
+#'  often representing repeated measures of the same concept or a series of 
+#'  items measuring a single construct.
 #' @param var_input A character string specifying whether the values supplied 
 #' to `var_stem` should be treated as variable stems (`stem`) or as complete 
 #' variable names (`name`). By default, this is set to `stem`, so the function 

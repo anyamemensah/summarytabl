@@ -1,11 +1,11 @@
 #' @title Check a named vector
 #'
-#' @description This function assesses whether named lists and vectors have 
-#' invalid values (like `NULL` or `NA`), invalid names (such as missing or 
-#' empty names), confirms that the count of valid names matches the count of 
-#' provided values, and verifies that the valid names obtained from the named 
-#' object align with the supplied names. If any checks fail, the `default` 
-#' value is returned.
+#' @description This function checks whether named lists and vectors contain 
+#' invalid values (like `NULL` or `NA`), have invalid names (such as missing 
+#' or empty names), ensures the number of valid names matches the number of 
+#' supplied values, and confirms that valid names from the object correspond 
+#' to the provided names. If any of these checks fail, the function returns 
+#' the `default` value.
 #'
 #' @param x A named vector.
 #' @param names A character vector or list of character vectors of length one 
