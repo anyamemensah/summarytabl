@@ -7,7 +7,8 @@ check_data_types <- function(data, cols, table_type, allowed_type, arg_name) {
   
   if (length(dtypes) == 1 && !(dtypes %in% valid_types)) {
     stop(sprintf("The '%s' argument has an unsupported data type. Allowed types: %s.", 
-                 arg_name, paste(valid_types, collapse = ", ")))
+                 arg_name, paste(valid_types, collapse = ", ")),
+         call. = FALSE)
   }
   
   invalid_cols <- names(dtypes)[!unlist(dtypes) %in% valid_types]
@@ -20,7 +21,7 @@ check_data_types <- function(data, cols, table_type, allowed_type, arg_name) {
       arg_name,
       paste(invalid_cols, collapse = ", "),
       paste(valid_types, collapse = ", ")
-    ))
+    ), call. = FALSE)
   }
   
   return(list(valid = TRUE, dtype = dtypes))
@@ -50,7 +51,8 @@ extract_group_info <- function(group,
       stop(
         paste("Invalid 'group' argument. The value provided to 'group' did",
               "not produce a unique or expected set of column names in 'data'.",
-              "Please check for typos, spelling mistakes, or invalid characters.")
+              "Please check for typos, spelling mistakes, or invalid characters."),
+        call. = FALSE
       )
     }
     
@@ -179,7 +181,7 @@ extract_group_var_stem_info <- function(data,
 # Function that checks the structure of the 'ignore' argument
 check_ignore_struct <- function(ignore, table_type, group_func) {
   if (!is.null(ignore) && !(is.vector(ignore) || is.list(ignore))) { 
-    stop("'ignore' must be a vector, list, or NULL.") 
+    stop("'ignore' must be a vector, list, or NULL.", call. = FALSE) 
   }
   
   named_required <- !(table_type == "cat" && group_func == FALSE)
@@ -208,7 +210,7 @@ check_returned_cols <- function(x, label, var_input) {
     }
   
   if (!is.character(x) || length(x) == 0) {
-    stop(message)
+    stop(message, call. = FALSE)
   }
   
   col_has_invalid_chars <- sapply(x, string_has_invalid_chars)
@@ -220,7 +222,8 @@ check_returned_cols <- function(x, label, var_input) {
         paste("One or more columns returned using the variable stem '%s'",
               "contain invalid characters: %s. Column names must only include",
               "letters, digits, periods (.), or underscores (_)."), 
-        label, paste0(invalid_names, collapse = ", "))
+        label, paste0(invalid_names, collapse = ", ")),
+      call. = FALSE
     )
   }
 }
@@ -389,7 +392,8 @@ generate_tbl_key <- function(values_from, values_to, string = TRUE) {
   value_lengths <- vapply(list(values_from, values_to), length, numeric(1))
   
   if (!(value_lengths[[1]] == value_lengths[[2]])) {
-    stop("'values_from' is not the same length as 'values_to'.")
+    stop("'values_from' is not the same length as 'values_to'.", 
+         call. = FALSE)
   }
   
   if (string) {
@@ -436,7 +440,8 @@ get_data_type <- function(x) {
 only_type <- function(table_type) {
   
   if (!(table_type %in% c("cat", "mean", "select"))) {
-    stop("'table_type' should be one of cat, mean, select.")
+    stop("'table_type' should be one of cat, mean, select.",
+         call. = FALSE)
   }
   
   switch(
