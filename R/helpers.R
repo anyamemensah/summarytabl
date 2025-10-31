@@ -4,7 +4,8 @@
 check_cat_args <- function(args) {
   checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     var = function(args)
       check_var(var_name = args$var_name,
                 var_label = args$var_label,
@@ -44,7 +45,8 @@ check_cat_args <- function(args) {
 check_cat_group_args <- function(args) {
   checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     row_var = function(args)
       check_var(var_name = args$row_var,
                 var_label = args$var_label_row,
@@ -56,7 +58,8 @@ check_cat_group_args <- function(args) {
                 data = args$data,
                 .main_env = args$.main_env),
     margins = function(args)
-      check_margins(margins = args$margins, .main_env = args$.main_env),
+      check_margins(margins = args$margins, 
+                    .main_env = args$.main_env),
     na_row = function(args)
       check_na.rm(na.rm = args$na_rm_row_var, 
                   var_label = args$label_na_rm_row,
@@ -66,7 +69,8 @@ check_cat_group_args <- function(args) {
                   var_label = args$label_na_rm_col,
                   .main_env = args$.main_env),
     pivot = function(args)
-      check_pivot(pivot = args$pivot, .main_env = args$.main_env),
+      check_pivot(pivot = args$pivot, 
+                  .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     only = function(args)
@@ -104,15 +108,19 @@ check_cat_group_args <- function(args) {
 check_select_args <- function(args) {
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
+      check_var_stem(var_stem = args$var_stem, 
+                     .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
+      check_var_input(var_input = args$var_input, 
+                      .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
+      check_na_removal(na_removal = args$na_removal, 
+                       .main_env = args$.main_env),
     pivot = function(args)
       check_pivot(pivot = args$pivot, .main_env = args$.main_env),
     only = function(args)
@@ -189,15 +197,20 @@ check_select_group_args <- function(args) {
   # shared checks
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
+      check_var_stem(var_stem = args$var_stem, 
+                     .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
+      check_var_input(var_input = args$var_input, 
+                      .main_env = args$.main_env),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
+      check_na_removal(na_removal = args$na_removal, 
+                       .main_env = args$.main_env),
     pivot = function(args)
-      check_pivot(pivot = args$pivot, .main_env = args$.main_env),
+      check_pivot(pivot = args$pivot, 
+                  .main_env = args$.main_env),
     regex_stem = function(args)
       check_logical(x = args$regex_stem, 
                     label = "regex_stem",
@@ -225,7 +238,8 @@ check_select_group_args <- function(args) {
                  table_type = args$table_type,
                  .main_env = args$.main_env),
     margins = function(args)
-      check_margins(margins = args$margins, .main_env = args$.main_env),
+      check_margins(margins = args$margins, 
+                    .main_env = args$.main_env),
     ignore = function(args)
       check_ignore_struct(ignore = args$ignore, 
                           table_type = args$table_type, 
@@ -236,7 +250,8 @@ check_select_group_args <- function(args) {
                     label = "force_pivot",
                     .main_env = args$.main_env),
     group_type = function(args) 
-      check_group_type(group_type = args$group_type, .main_env = args$.main_env),
+      check_group_type(group_type = args$group_type, 
+                       .main_env = args$.main_env),
     group_var = function(args) 
       check_group_var(group_var = args$group_var, 
                       group_type = args$group_type,
@@ -245,14 +260,15 @@ check_select_group_args <- function(args) {
                       use_regex = args$regex_group, 
                       .main_env = args$.main_env),
     group_name = function(args)
-      check_group_name(group_name = args$group_name, .main_env = args$.main_env),
+      check_group_name(group_name = args$group_name, 
+                       .main_env = args$.main_env),
     env = function(args)
       args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
   
-  # update group_var with resolved name
+  # update group_var with 'cleaned' name
   args$group_var <- shared_results$group_var$group_var
   
   # var_stem-specific checks
@@ -315,15 +331,19 @@ check_select_group_args <- function(args) {
 check_mean_args <- function(args) {
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
+      check_var_stem(var_stem = args$var_stem, 
+                     .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
+      check_var_input(var_input = args$var_input, 
+                      .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
+      check_na_removal(na_removal = args$na_removal, 
+                       .main_env = args$.main_env),
     only = function(args)
       check_only(only = args$only, 
                  table_type = args$table_type,
@@ -392,13 +412,17 @@ check_mean_group_args <- function(args) {
   # shared checks
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data, .main_env = args$.main_env),
+      check_df(data = args$data, 
+               .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
+      check_var_stem(var_stem = args$var_stem, 
+                     .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
+      check_var_input(var_input = args$var_input, 
+                      .main_env = args$.main_env),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
+      check_na_removal(na_removal = args$na_removal, 
+                       .main_env = args$.main_env),
     regex_stem = function(args)
       check_logical(x = args$regex_stem, 
                     label = "regex_stem", 
@@ -431,7 +455,8 @@ check_mean_group_args <- function(args) {
                           group_func = args$group_func,
                           .main_env = args$.main_env),
     group_type = function(args) 
-      check_group_type(group_type = args$group_type, .main_env = args$.main_env),
+      check_group_type(group_type = args$group_type, 
+                       .main_env = args$.main_env),
     group_var = function(args) 
       check_group_var(group_var = args$group_var, 
                       group_type = args$group_type,
@@ -440,14 +465,15 @@ check_mean_group_args <- function(args) {
                       use_regex = args$regex_group, 
                       .main_env = args$.main_env),
     group_name = function(args)
-      check_group_name(group_name = args$group_name, .main_env = args$.main_env),
+      check_group_name(group_name = args$group_name, 
+                       .main_env = args$.main_env),
     env = function(args)
       args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
   
-  # update group_var with resolved name
+  # update group_var with 'cleaned' name
   args$group_var <- shared_results$group_var$group_var
   
   # var_stem-specific checks

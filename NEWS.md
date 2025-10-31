@@ -31,9 +31,9 @@ cat_group_tbl(data = nlsy_sub,
               only = "percent")
 
 # gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
-# <chr>   <dbl>     <dbl>   <dbl>
-# 1 female  0.146   0.102   0.243
-# 2 male    0.146   0.110   0.253
+# <chr>               <dbl>                 <dbl>                                 <dbl>
+# 1 female            0.146                 0.102                                 0.243
+# 2 male              0.146                 0.110                                 0.253
 
 # Margins: Columnwise
 cat_group_tbl(data = nlsy_sub,
@@ -43,10 +43,10 @@ cat_group_tbl(data = nlsy_sub,
               margins = "columns",
               only = "percent")
 
-# gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
-# <chr>   <dbl>     <dbl>   <dbl>
-# 1 female 0.50.483   0.490
-# 2 male   0.50.517   0.510
+# gender   percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
+# <chr>                 <dbl>                 <dbl>                                 <dbl>
+# 1 female                0.5                 0.483                                 0.490
+# 2 male                  0.5                 0.517                                 0.510
 
 # Margins: Rowwise
 cat_group_tbl(data = nlsy_sub,
@@ -57,9 +57,9 @@ cat_group_tbl(data = nlsy_sub,
               only = "percent")
 
 # gender percent_race_Black percent_race_Hispanic `percent_race_Non-Black,Non-Hispanic`
-# <chr>   <dbl>     <dbl>   <dbl>
-# 1 female0.297     0.208   0.495
-# 2 male  0.287     0.215   0.498
+# <chr>               <dbl>                 <dbl>                                 <dbl>
+# 1 female            0.297                 0.208                                 0.495
+# 2 male              0.287                 0.215                                 0.498
 ```
 
 #### `select_tbl()`

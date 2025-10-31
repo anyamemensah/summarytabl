@@ -299,7 +299,7 @@ drop_only_cols <- function(data, only, only_type) {
 extract_group_flags <- function(cols,
                                 pattern,
                                 ignore.case = FALSE,
-                                perl = perl,
+                                perl = FALSE,
                                 remove_non_alum = FALSE) {
   group_flag <- 
     regmatches(
@@ -367,7 +367,8 @@ extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
 
 
 # Function that searches for and returns the names of columns in 
-# 'data' that start with a specific variable stem (i.e., 'var_stem')
+# 'data' by their name or that start with a specific variable 
+# stem (i.e., 'var_stem')
 find_columns <- function(data,
                          var_stem,
                          perl = FALSE,
@@ -423,11 +424,10 @@ get_data_type <- function(x) {
   
   if ("haven_labelled" %in% class_x) {
     "haven_labelled"
-  }
-  else if ("factor" %in% class_x) {
+  } else if ("factor" %in% class_x) {
     "factor"
   } else if ("POSIXt" %in% class_x || "POSIXct" %in% class_x ||
-             "POSIXlt" %in% class_x || "Date" %in% class_x  || 
+             "POSIXlt" %in% class_x || "Date" %in% class_x  ||
              "difftime" %in% class_x) {
     "datetime"
   } else if ("numeric" %in% class_x || "integer" %in% class_x ||
@@ -496,7 +496,7 @@ pluck_results <- function(list_obj,
   
   if (unlist) {
     if (repeat_outer_names) {
-      collapsed_obj <- setNames(
+      collapsed_obj <- stats::setNames(
         unlist(collapsed_obj, use.names = FALSE),
         rep(names(collapsed_obj), lengths(collapsed_obj))
       )
@@ -587,19 +587,36 @@ return_data_types <- function(table_type) {
   valid_var_types <- 
     switch(
       table_type,
-      cat =  c(factor = "factor", character = "character", 
-               logical = "logical", numeric = "numeric", 
-               datetime = "POSIXt", datetime = "POSIXct", 
-               datetime = "POSIXlt", datetime = "difftime", 
-               datetime = "Date"),
-      mean = c(numeric = "numeric", datetime = "POSIXt", 
-               datetime = "POSIXct", datetime = "POSIXlt", 
-               datetime = "difftime", datetime = "Date"),
-      select = c(factor = "factor", character = "character", 
-                 logical = "logical", numeric = "numeric", 
-                 datetime = "POSIXt", datetime = "POSIXct", 
-                 datetime = "POSIXlt", datetime = "difftime", 
-                 datetime = "Date")
+      cat =  c(
+        factor = "factor",
+        character = "character",
+        logical = "logical",
+        numeric = "numeric",
+        datetime = "POSIXt",
+        datetime = "POSIXct",
+        datetime = "POSIXlt",
+        datetime = "difftime",
+        datetime = "Date"
+      ),
+      mean = c(
+        numeric = "numeric",
+        datetime = "POSIXt",
+        datetime = "POSIXct",
+        datetime = "POSIXlt",
+        datetime = "difftime",
+        datetime = "Date"
+      ),
+      select = c(
+        factor = "factor",
+        character = "character",
+        logical = "logical",
+        numeric = "numeric",
+        datetime = "POSIXt",
+        datetime = "POSIXct",
+        datetime = "POSIXlt",
+        datetime = "difftime",
+        datetime = "Date"
+      )
     )
   
   valid_grp_types <- c(factor = "factor", character = "character", 
@@ -608,7 +625,8 @@ return_data_types <- function(table_type) {
                        datetime = "POSIXlt", datetime = "difftime", 
                        datetime = "Date")
   
-  return (list(valid_var_types = valid_var_types, valid_grp_types = valid_grp_types))
+  return (list(valid_var_types = valid_var_types, 
+               valid_grp_types = valid_grp_types))
 }
 
 

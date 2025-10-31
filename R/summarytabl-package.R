@@ -32,8 +32,8 @@
 #' @importFrom stats na.omit
 #' @importFrom stats sd
 #' @importFrom stats setNames
-#' @importFrom tibble tibble
 #' @importFrom tibble as_tibble
 #' @importFrom tidyr pivot_wider
+#' @importFrom tibble tibble
 ## usethis namespace: end
 NULL
