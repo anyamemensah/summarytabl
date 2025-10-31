@@ -7,10 +7,10 @@ This minor release (v0.2.0) includes several updates to the existing `summarytab
 * Reorganized internal structure by separating helper and utility functions.
 * Added input validation for each variable-type-specific function.
 * Expanded documentation and examples, revised vignette, and added unit tests.
+* Dropped support for `haven_labelled` columns in `cat_` and `select_` functions.
 * New or updated features: 
   - datasets
     * `sdoh`: A subset of the 2020 Social Determinants of Health Database.
-    * `gss`: A subset of the 2022 General Social Survey.
   - `cat_group_tbl()`
     * New arguments 
       - `margins`: Allows users to specify how percentages are calculated in the output table. This provides greater flexibility in defining whether percentages are based on row totals, column totals, or overall totals.

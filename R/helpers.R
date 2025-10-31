@@ -4,26 +4,36 @@
 check_cat_args <- function(args) {
   checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     var = function(args)
       check_var(var_name = args$var_name,
                 var_label = args$var_label,
-                data = args$data),
+                data = args$data,
+                .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(table_type = args$table_type),
     na.rm = function(args)
-      check_na.rm(na.rm = args$na.rm, var_label = args$label_na_rm),
+      check_na.rm(na.rm = args$na.rm, 
+                  var_label = args$label_na_rm, 
+                  .main_env = args$.main_env),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
+      check_ignore_struct(ignore = args$ignore, 
+                          table_type = args$table_type,
+                          group_func = args$group_func, 
+                          .main_env = args$.main_env),
     dtype = function(args)
       check_data_types(data = args$data,
                        cols = args$var_name,
                        table_type = args$table_type,
                        allowed_type = args$variable_type,
-                       arg_name = args$var_label)
+                       arg_name = args$var_label,
+                       .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   lapply(checks, function(chk) chk(args))
@@ -34,42 +44,56 @@ check_cat_args <- function(args) {
 check_cat_group_args <- function(args) {
   checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     row_var = function(args)
       check_var(var_name = args$row_var,
                 var_label = args$var_label_row,
-                data = args$data),
+                data = args$data,
+                .main_env = args$.main_env),
     col_var = function(args)
       check_var(var_name = args$col_var,
                 var_label = args$var_label_col, 
-                data = args$data),
+                data = args$data,
+                .main_env = args$.main_env),
     margins = function(args)
-      check_margins(margins = args$margins),
+      check_margins(margins = args$margins, .main_env = args$.main_env),
     na_row = function(args)
-      check_na.rm(na.rm = args$na_rm_row_var, var_label = args$label_na_rm_row),
+      check_na.rm(na.rm = args$na_rm_row_var, 
+                  var_label = args$label_na_rm_row,
+                  .main_env = args$.main_env),
     na_col = function(args)
-      check_na.rm(na.rm = args$na_rm_col_var, var_label = args$label_na_rm_col),
+      check_na.rm(na.rm = args$na_rm_col_var, 
+                  var_label = args$label_na_rm_col,
+                  .main_env = args$.main_env),
     pivot = function(args)
-      check_pivot(pivot = args$pivot),
+      check_pivot(pivot = args$pivot, .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
+      check_ignore_struct(ignore = args$ignore, 
+                          table_type = args$table_type,
+                          group_func = args$group_func,
+                          .main_env = args$.main_env),
     row_dtype = function(args)
       check_data_types(data = args$data,
                        cols = args$row_var,
                        table_type = args$table_type,
                        allowed_type = args$variable_type,
-                       arg_name = args$var_label_row),
+                       arg_name = args$var_label_row,
+                       .main_env = args$.main_env),
     col_dtype = function(args)
       check_data_types(data = args$data,
                        cols = args$col_var,
                        table_type = args$table_type,
                        allowed_type = args$variable_type,
-                       arg_name = args$var_label_col)
+                       arg_name = args$var_label_col,
+                       .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   lapply(checks, function(chk) chk(args))
@@ -80,28 +104,40 @@ check_cat_group_args <- function(args) {
 check_select_args <- function(args) {
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem),
+      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input),
+      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
+      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
     pivot = function(args)
-      check_pivot(pivot = args$pivot),
+      check_pivot(pivot = args$pivot, .main_env = args$.main_env),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     regex_stem = function(args)
-      check_logical(x = args$regex_stem, label = "regex_stem"),
+      check_logical(x = args$regex_stem, 
+                    label = "regex_stem",
+                    .main_env = args$.main_env),
     ignore_stem_case = function(args)
-      check_logical(x = args$ignore_stem_case, label = "ignore_stem_case"),
+      check_logical(x = args$ignore_stem_case, 
+                    label = "ignore_stem_case",
+                    .main_env = args$.main_env),
     ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func),
+      check_ignore_struct(ignore = args$ignore, 
+                          table_type = args$table_type,
+                          group_func = args$group_func,
+                          .main_env = args$.main_env),
     force_pivot = function(args)
-      check_logical(x = args$force_pivot, label = "force_pivot")
+      check_logical(x = args$force_pivot, 
+                    label = "force_pivot",
+                    .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
@@ -117,7 +153,8 @@ check_select_args <- function(args) {
         var_stem_labels = args$var_labels,
         regex_stem = args$regex_stem,
         ignore_stem_case = args$ignore_stem_case,
-        table_type = args$table_type
+        table_type = args$table_type,
+        .main_env = args$.main_env
       )
   )
   
@@ -141,7 +178,8 @@ check_select_args <- function(args) {
     only = shared_results$only$only,
     ignore = shared_results$ignore,
     force_pivot = shared_results$force_pivot$x,
-    table_type = shared_results$table_type$table_type
+    table_type = shared_results$table_type$table_type,
+    env = shared_results$env
   )
 }
 
@@ -151,47 +189,65 @@ check_select_group_args <- function(args) {
   # shared checks
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem),
+      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input),
+      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
+      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
     pivot = function(args)
-      check_pivot(pivot = args$pivot),
+      check_pivot(pivot = args$pivot, .main_env = args$.main_env),
     regex_stem = function(args)
-      check_logical(x = args$regex_stem, label = "regex_stem"),
+      check_logical(x = args$regex_stem, 
+                    label = "regex_stem",
+                    .main_env = args$.main_env),
     ignore_stem_case = function(args)
-      check_logical(x = args$ignore_stem_case, label = "ignore_stem_case"),
+      check_logical(x = args$ignore_stem_case, 
+                    label = "ignore_stem_case",
+                    .main_env = args$.main_env),
     regex_group = function(args)
-      check_logical(x = args$regex_group, label = "regex_group"),
+      check_logical(x = args$regex_group, 
+                    label = "regex_group",
+                    .main_env = args$.main_env),
     ignore_group_case = function(args)
-      check_logical(x = args$ignore_group_case, label = "ignore_group_case"),
+      check_logical(x = args$ignore_group_case, 
+                    label = "ignore_group_case",
+                    .main_env = args$.main_env),
     remove_group_non_alnum = function(args)
-      check_logical(x = args$remove_group_non_alnum, label = "remove_group_non_alnum"),
+      check_logical(x = args$remove_group_non_alnum, 
+                    label = "remove_group_non_alnum",
+                    .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     margins = function(args)
-      check_margins(margins = args$margins),
+      check_margins(margins = args$margins, .main_env = args$.main_env),
     ignore = function(args)
       check_ignore_struct(ignore = args$ignore, 
                           table_type = args$table_type, 
-                          group_func = args$group_func),
+                          group_func = args$group_func,
+                          .main_env = args$.main_env),
     force_pivot = function(args)
-      check_logical(x = args$force_pivot, label = "force_pivot"),
+      check_logical(x = args$force_pivot, 
+                    label = "force_pivot",
+                    .main_env = args$.main_env),
     group_type = function(args) 
-      check_group_type(group_type = args$group_type),
+      check_group_type(group_type = args$group_type, .main_env = args$.main_env),
     group_var = function(args) 
       check_group_var(group_var = args$group_var, 
                       group_type = args$group_type,
                       col_names = colnames(args$data), 
                       ignore_case = args$ignore_group_case,
-                      use_regex = args$regex_group),
+                      use_regex = args$regex_group, 
+                      .main_env = args$.main_env),
     group_name = function(args)
-      check_group_name(group_name = args$group_name)
+      check_group_name(group_name = args$group_name, .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
@@ -216,7 +272,8 @@ check_select_group_args <- function(args) {
         regex_group = args$regex_group, 
         ignore_group_case = args$ignore_group_case, 
         var_stem_labels = args$var_labels,
-        table_type = args$table_type
+        table_type = args$table_type,
+        .main_env = args$.main_env
       )
   )
   
@@ -248,7 +305,8 @@ check_select_group_args <- function(args) {
     only = shared_results$only$only,
     ignore = shared_results$ignore,
     force_pivot = shared_results$force_pivot$x,
-    table_type = shared_results$table_type$table_type
+    table_type = shared_results$table_type$table_type,
+    env = shared_results$env
   )
 }
 
@@ -257,24 +315,34 @@ check_select_group_args <- function(args) {
 check_mean_args <- function(args) {
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem),
+      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input),
+      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
+      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     regex_stem = function(args)
-      check_logical(x = args$regex_stem, label = "regex_stem"),
+      check_logical(x = args$regex_stem, 
+                    label = "regex_stem", 
+                    .main_env = args$.main_env),
     ignore_stem_case = function(args)
-      check_logical(x = args$ignore_stem_case, label = "ignore_stem_case"),
+      check_logical(x = args$ignore_stem_case, 
+                    label = "ignore_stem_case",
+                    .main_env = args$.main_env),
     ignore = function(args)
-      check_ignore_struct(ignore = args$ignore, table_type = args$table_type,
-                          group_func = args$group_func)
+      check_ignore_struct(ignore = args$ignore, 
+                          table_type = args$table_type,
+                          group_func = args$group_func,
+                          .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
@@ -290,7 +358,8 @@ check_mean_args <- function(args) {
         var_stem_labels = args$var_labels,
         regex_stem = args$regex_stem,
         ignore_stem_case = args$ignore_stem_case,
-        table_type = args$table_type
+        table_type = args$table_type,
+        .main_env = args$.main_env
       )
   )
   
@@ -312,7 +381,8 @@ check_mean_args <- function(args) {
     na_removal = shared_results$na_rm$na_removal,
     only = shared_results$only$only,
     ignore = shared_results$ignore,
-    table_type = shared_results$table_type$table_type
+    table_type = shared_results$table_type$table_type,
+    env = shared_results$env
   )
 }
 
@@ -322,41 +392,57 @@ check_mean_group_args <- function(args) {
   # shared checks
   shared_checks <- list(
     data = function(args)
-      check_df(data = args$data),
+      check_df(data = args$data, .main_env = args$.main_env),
     var_stem = function(args)
-      check_var_stem(var_stem = args$var_stem),
+      check_var_stem(var_stem = args$var_stem, .main_env = args$.main_env),
     var_input = function(args)
-      check_var_input(var_input = args$var_input),
+      check_var_input(var_input = args$var_input, .main_env = args$.main_env),
     na_rm = function(args)
-      check_na_removal(na_removal = args$na_removal),
+      check_na_removal(na_removal = args$na_removal, .main_env = args$.main_env),
     regex_stem = function(args)
-      check_logical(x = args$regex_stem, label = "regex_stem"),
+      check_logical(x = args$regex_stem, 
+                    label = "regex_stem", 
+                    .main_env = args$.main_env),
     ignore_stem_case = function(args)
-      check_logical(x = args$ignore_stem_case, label = "ignore_stem_case"),
+      check_logical(x = args$ignore_stem_case, 
+                    label = "ignore_stem_case",
+                    .main_env = args$.main_env),
     regex_group = function(args)
-      check_logical(x = args$regex_group, label = "regex_group"),
+      check_logical(x = args$regex_group, 
+                    label = "regex_group",
+                    .main_env = args$.main_env),
     ignore_group_case = function(args)
-      check_logical(x = args$ignore_group_case, label = "ignore_group_case"),
+      check_logical(x = args$ignore_group_case, 
+                    label = "ignore_group_case",
+                    .main_env = args$.main_env),
     remove_group_non_alnum = function(args)
-      check_logical(x = args$remove_group_non_alnum, label = "remove_group_non_alnum"),
+      check_logical(x = args$remove_group_non_alnum, 
+                    label = "remove_group_non_alnum",
+                    .main_env = args$.main_env),
     table_type = function(args)
       check_table_type(args$table_type),
     only = function(args)
-      check_only(only = args$only, table_type = args$table_type),
+      check_only(only = args$only, 
+                 table_type = args$table_type,
+                 .main_env = args$.main_env),
     ignore = function(args)
       check_ignore_struct(ignore = args$ignore, 
                           table_type = args$table_type, 
-                          group_func = args$group_func),
+                          group_func = args$group_func,
+                          .main_env = args$.main_env),
     group_type = function(args) 
-      check_group_type(group_type = args$group_type),
+      check_group_type(group_type = args$group_type, .main_env = args$.main_env),
     group_var = function(args) 
       check_group_var(group_var = args$group_var, 
                       group_type = args$group_type,
                       col_names = colnames(args$data), 
                       ignore_case = args$ignore_group_case,
-                      use_regex = args$regex_group),
+                      use_regex = args$regex_group, 
+                      .main_env = args$.main_env),
     group_name = function(args)
-      check_group_name(group_name = args$group_name)
+      check_group_name(group_name = args$group_name, .main_env = args$.main_env),
+    env = function(args)
+      args$.main_env
   )
   
   shared_results <- lapply(shared_checks, function(chk) chk(args))
@@ -381,7 +467,8 @@ check_mean_group_args <- function(args) {
         regex_group = args$regex_group, 
         ignore_group_case = args$ignore_group_case, 
         var_stem_labels = args$var_labels,
-        table_type = args$table_type
+        table_type = args$table_type,
+        .main_env = args$.main_env
       )
   )
   
@@ -410,6 +497,7 @@ check_mean_group_args <- function(args) {
     na_removal = shared_results$na_rm$na_removal,
     only = shared_results$only$only,
     ignore = shared_results$ignore,
-    table_type = shared_results$table_type$table_type
+    table_type = shared_results$table_type$table_type,
+    env = shared_results$env
   )
 }

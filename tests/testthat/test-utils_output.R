@@ -29,31 +29,21 @@ test_that("check valid variable data types", {
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     check_data_types(data = nlsy,
                      cols = c("race"),
                      table_type = "mean",
                      allowed_type = "valid_var_types",
-                     arg_name = "var_stem"),
-    paste("The 'var_stem' argument has an unsupported data type. Allowed types:", 
-            "numeric, datetime.")
-  )
+                     arg_name = "var_stem")
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     check_data_types(data = test_data,
                      cols = c("var_1", "var.2"),
                      table_type = "mean",
                      allowed_type = "valid_var_types",
-                     arg_name = "var_stem"),
-    sprintf(
-      paste("One or more columns returned using the variable stem '%s'",
-            "contain an unsupported data type: %s.",
-            "Allowed types: %s."),
-      "var_stem",
-      paste(c("var_1", "var.2"), collapse = ", "),
-      "numeric, datetime"
-    )
-  )
+                     arg_name = "var_stem")
+  })
 })
 
 
@@ -92,7 +82,8 @@ test_that("extract group information", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
+  
+  expect_snapshot(error = TRUE, {
     extract_group_info(
       group = "_\\d",
       group_type = "pattern", 
@@ -101,11 +92,8 @@ test_that("extract group information", {
       cols = c("var_1", "var_4", "var_10"),
       data = test_data, 
       table_type = "select", 
-      allowed_type = "valid_grp_types"),
-    paste("Invalid 'group' argument. The value provided to 'group' did",
-          "not produce a unique or expected set of column names in 'data'.",
-          "Please check for typos, spelling mistakes, or invalid characters.")
-  )
+      allowed_type = "valid_grp_types")
+  })
 })
 
 
@@ -134,22 +122,13 @@ test_that("check structure of ignore values list", {
 
 
 test_that("check returned columns", {
-  expect_error(
-    check_returned_cols(character(0), "this", "stem"),
-    "No matching columns found for the following variable stems: this."
-  )
+  expect_snapshot(error = TRUE, {
+    check_returned_cols(character(0), "this", "stem")
+  })
   
-  expect_error(
-    check_returned_cols(character(0), "this", "name"),
-    "No matching columns found for the following names: this."
-  )
-  
-  expect_error(
-    check_returned_cols(c("Meep", "beep beep"), "this", "name"),
-    paste("One or more columns returned using the variable stem 'this'",
-          "contain invalid characters: beep beep. Column names must only include",
-          "letters, digits, periods \\(.\\), or underscores \\(_\\).")
-  )
+  expect_snapshot(error = TRUE, {
+    check_returned_cols(c("Meep", "beep beep"), "this", "name")
+  })
 })
 
 
@@ -173,25 +152,23 @@ test_that("get valid columns", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     get_valid_cols(data = depressive,
                    var_stem = "bloop",
                    var_input = "name",
                    regex_stem = FALSE,
                    ignore_stem_case = FALSE,
-                   find_exact_match = TRUE),
-    "No matching columns found for the following names: bloop"
-  )
+                   find_exact_match = TRUE)
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     get_valid_cols(data = depressive,
                    var_stem = "bloop",
                    var_input = "stem",
                    regex_stem = FALSE,
                    ignore_stem_case = FALSE,
-                   find_exact_match = TRUE),
-    "No matching columns found for the following variable stems: bloop"
-  )
+                   find_exact_match = TRUE)
+  })
 })
 
 
@@ -397,7 +374,8 @@ test_that("find_columns", {
 
 test_that("generate key for recoding values", {
   key_observed <- 
-    generate_tbl_key(values_from = 1:3, values_to = c("one", "two", "three"))
+    generate_tbl_key(values_from = 1:3, 
+                     values_to = c("one", "two", "three"))
   
   key_expected <- 
     purrr::map2(.x = paste0(1:3),
@@ -405,12 +383,11 @@ test_that("generate key for recoding values", {
                 .f = ~ rlang::new_formula(.x, .y))
   
   expect_equal(key_observed, key_expected, ignore_attr = TRUE)
-
-  expect_error(
+  
+  expect_snapshot(error = TRUE, {
     generate_tbl_key(values_from = 1:2, 
-                     values_to = c("one", "two", "three")),
-    "'values_from' is not the same length as 'values_to'."
-  )
+                     values_to = c("one", "two", "three"))
+  })
 })
 
 
@@ -699,23 +676,31 @@ test_that("replace with NA", {
 
 test_that("return valid data types by table type", {
   observed1 <- return_data_types(table_type = "cat")$valid_var_types
-  expected1 <- c("haven_labelled", "factor", "character", 
-                 "logical", "datetime", "numeric")
+  expected1 <- c(factor = "factor", character = "character", 
+                 logical = "logical", numeric = "numeric", 
+                 datetime = "POSIXt", datetime = "POSIXct", 
+                 datetime = "POSIXlt", datetime = "difftime", 
+                 datetime = "Date")
   
   observed2 <- return_data_types(table_type = "mean")$valid_var_types
-  expected2 <- c("numeric", "datetime")
+  expected2 <- c(numeric = "numeric", datetime = "POSIXt", 
+                 datetime = "POSIXct", datetime = "POSIXlt", 
+                 datetime = "difftime", datetime = "Date")
   
   observed3 <- return_data_types(table_type = "select")$valid_var_types
-  expected3 <-  c("haven_labelled", "factor", "character", 
-                  "logical", "numeric")
+  expected3 <-  c(factor = "factor", character = "character", 
+                  logical = "logical", numeric = "numeric", 
+                  datetime = "POSIXt", datetime = "POSIXct", 
+                  datetime = "POSIXlt", datetime = "difftime", 
+                  datetime = "Date")
   
-  expect_equal(observed1, expected1)
-  expect_equal(observed2, expected2)
-  expect_equal(observed3, expected3)
+  expect_equal(unname(observed1), unname(expected1))
+  expect_equal(unname(observed2), unname(expected2))
+  expect_equal(unname(observed3), unname(expected3))
 })
 
 
-test_that("override pivot wider", {
+test_that("Warning: override pivot wider", {
   sample_tbl <- 
     tibble::tibble(
       variable = c("var_1", "var_1", "var_2", "var2", "var_2"),
@@ -725,22 +710,21 @@ test_that("override pivot wider", {
   
   observed1 <-
   suppressWarnings({override_pivot(tabl = sample_tbl, var_col = "variable", 
-                                   values_col = "values", allow_overide = FALSE)})
+                                   values_col = "values", allow_overide = FALSE, 
+                                   .main_env = environment())})
   observed2 <-
   override_pivot(tabl = sample_tbl, var_col = "variable", 
-                 values_col = "values", allow_overide = TRUE)
+                 values_col = "values", allow_overide = TRUE, 
+                 .main_env = environment())
   
   expected1 <- FALSE
   expected2 <- TRUE
   
-  expect_warning(
+  expect_snapshot(error = FALSE, {
     override_pivot(tabl = sample_tbl, var_col = "variable", 
-                   values_col = "values", allow_overide = FALSE),
-    paste("Some variables have different values, so pivoting to", 
-          "the 'wider' format has been disabled. The table will",
-          "be displayed in the 'long' format instead. To override",
-          "this behavior and force pivoting, set `force_pivot = TRUE`.")
-  )
+                   values_col = "values", allow_overide = FALSE,
+                   .main_env = environment())
+  })
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)

@@ -82,7 +82,8 @@ mean_tbl <- function(data,
     na_removal = na_removal,
     only = only,
     var_labels = var_labels,
-    ignore = ignore
+    ignore = ignore,
+    .main_env = environment()
   )
   
   checks <- check_mean_args(args)
@@ -94,6 +95,7 @@ mean_tbl <- function(data,
   check_na_removal <- checks$na_removal
   check_only <- checks$only
   check_table_type <- checks$table_type
+  check_env <- checks$env
   
   data_sub <- checks$df[check_cols]
   
@@ -128,8 +130,8 @@ mean_tbl <- function(data,
         variable,
         !!!generate_tbl_key(
           values_from = names(check_col_labels),
-          values_to = unname(check_col_labels)
-        ),
+          values_to = unname(check_col_labels), 
+          .main_env = check_env),
         .default = NA_character_
       )) |>
       dplyr::relocate(variable_label, .after = variable)

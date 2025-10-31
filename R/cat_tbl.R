@@ -42,7 +42,8 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
     na.rm = na.rm,
     label_na_rm = "na.rm",
     only = only,
-    ignore = ignore
+    ignore = ignore,
+    .main_env = environment()
   )
   
   checks <- check_cat_args(args)
@@ -50,7 +51,9 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   check_ignore <- checks$ignore$ignore
   check_na.rm <- checks$na.rm$na.rm
   check_only <- checks$only$only
+  check_dtype <- checks$dtype$dtype
   check_table_type <- checks$table_type$table_type
+  check_env <- checks$env
   
   data_sub <- checks$data$df[check_var_name]
 

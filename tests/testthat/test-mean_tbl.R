@@ -1,54 +1,100 @@
 # Test mean_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
     mean_tbl(
       data = NULL,
       var_stem = "belong_belong"
-    ),
-    "The 'data' argument is not a data frame."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     mean_tbl(
       data = data.frame(),
       var_stem = "belong_belong"
-    ),
-    "The 'data' argument is empty."
-  )
+    )
+  })
 })
 
-
-test_that("No matching columns found 'cols' found", {
-  expect_error(
+test_that("Failure: Invalid 'var_stem' argument", {
+  ex_mean_dat <- tibble::tibble(var_1 = 1:3, `var 2` = 5:7)
+  
+  expect_snapshot(error = TRUE, {
     mean_tbl(
       data = stem_social_psych,
       var_stem = c("belong_beoln", "identities")
-    ),
-    "No matching columns found for the following variable stems: belong_beoln."
-  )
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = ex_mean_dat,
+      var_stem = "var"
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "BELONG_belong",
+      ignore_stem_case = FALSE
+    )
+  })
 })
 
-test_that("Invalid 'only' argument", {
-  expect_error(
+test_that("Failure: Invalid 'var_input' argument", {
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = "var_name"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'only' argument", {
+  expect_snapshot(error = TRUE, {
     mean_tbl(
       data = stem_social_psych,
       var_stem = "belong_belong",
       only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     mean_tbl(
       data = stem_social_psych,
       var_stem = "belong_belong",
       only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'mean', 'sd', 'min', 'max', 'nobs'."
-  )
+    )
+  })
 })
 
+test_that("Failure: Invalid 'na_removal' argument", {
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      na_removal = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      na_removal = "side-ways"
+    )
+  })
+})
 
 test_that("Expected output", {
   observed <-
@@ -78,17 +124,7 @@ test_that("Expected output", {
 
 
 test_that("Expected output with ignore_stem_case", {
-  
-  expect_error(
-    mean_tbl(
-      data = stem_social_psych,
-      var_stem = "belong_BELONG",
-      ignore_stem_case = FALSE
-    ),
-    "No matching columns found for the following variable stems: belong_BELONG."
-  )
-  
-  observed <-
+    observed <-
     mean_tbl(
       data = stem_social_psych,
       var_stem = "belong_BELONG",

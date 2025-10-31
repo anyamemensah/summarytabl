@@ -1,77 +1,57 @@
 # Test cat_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
-    cat_tbl(
-      data = NULL,
-      var = "race"
-    ),
-    "The 'data' argument is not a data frame."
-  )
-
-  expect_error(
-      cat_tbl(
-        data = data.frame(),
-        var = "race"
-      ),
-    "The 'data' argument is empty."
-  )
-})
-
-
-test_that("Invalid 'var' argument", {
-  expect_error(
-    cat_tbl(
-      data = nlsy,
-      var = c("race", "gender")
-    ),
-    "Invalid 'var' argument. 'var' must be a character vector of length one."
-  )
-
-  expect_error(
-    cat_tbl(
-      data = nlsy,
-      var = "raced"
-    ),
-    "The 'var' argument is not a column in 'data'."
-  )
-})
-
-
-test_that("Invalid 'na.rm' argument", {
-  expect_error(
-    cat_tbl(
-      data = nlsy,
-      var = "race",
-      na.rm = "TU"
-    ),
-    "Invalid 'na.rm' argument. 'na.rm' must be a logical vector of length one."
-  )
-})
-
-
-test_that("Invalid 'only' argument", {
-  expect_error(
-    cat_tbl(
-      data = nlsy,
-      var = "race",
-      na.rm = TRUE,
-      only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = NULL, var = "age")
+  })
   
-  expect_error(
-    cat_tbl(
-      data = nlsy,
-      var = "race",
-      na.rm = TRUE,
-      only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = data.frame(), var = "age")
+  })
 })
 
+test_that("Failure: 'var' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = c("race", "gender"))
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = c("raced"))
+  })
+})
+
+
+test_that("Failure: 'na.rm' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = "race",
+            na.rm = "TU")
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = "race",
+            na.rm = NA)
+  })
+})
+
+test_that("Failure: 'only' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = "race",
+            na.rm = TRUE,
+            only = character(0))
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_tbl(data = nlsy,
+            var = "race",
+            na.rm = TRUE,
+            only = NA)
+  })
+})
 
 test_that("Expected output", {
   observed <-
@@ -79,20 +59,20 @@ test_that("Expected output", {
       data = nlsy,
       var = "race",
       na.rm = TRUE
-      ) |>
+    ) |>
     dplyr::mutate(
       dplyr::across(
         .cols = c("percent"),
         .fns = ~ round(., digits = 3)
       )
     )
-
+  
   expected <-
     tibble::tibble(
       race = c("Black", "Hispanic", "Non-Black,Non-Hispanic"),
       count = c(868, 631, 1477),
       percent = c(0.292, 0.212, 0.496)
-      )
+    )
   
   expect_equal(observed, expected)
 })
@@ -114,9 +94,9 @@ test_that("Expected output with 'ignore' values", {
       count = as.integer(c(868, 1477)),
       percent = c(0.37, 0.63)
     ) 
-
+  
   expect_equal(observed, expected)
-
+  
 })
 
 

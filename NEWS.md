@@ -1,11 +1,14 @@
 # summarytabl 0.2.0
 
+## Breaking Changes
+
+* Functions prefixed with `cat_` and `select_` no longer support columns of the `haven_labelled` type. Users must convert these columns to factors before using these functions. To convert `haven_labelled` columns to factors, consider using `haven::as_factor()` or `labelled::unlabelled()`.
+
 ## Minor improvements
 
 ### New datasets
 
 * `sdoh`: A subset of the 2020 Social Determinants of Health Database.
-* `gss`: A subset of the 2022 General Social Survey.
 
 ### Updates by function
 

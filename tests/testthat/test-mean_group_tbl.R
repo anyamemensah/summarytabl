@@ -1,102 +1,166 @@
 # Test mean_group_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
     mean_group_tbl(
       data = NULL,
       var_stem = "belong_outsiderStem",
       group = "_w\\d",
       group_type = "pattern"
-    ),
-    "The 'data' argument is not a data frame."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     mean_group_tbl(
       data = data.frame(),
       var_stem = "belong_outsiderStem",
       group = "_w\\d",
       group_type = "pattern"
-    ),
-    "The 'data' argument is empty."
-  )
+    )
+  })
 })
 
-
-test_that("Invalid 'var_stem' argument and no columns found", {
-  expect_error(
+test_that("Failure: Invalid 'var_stem' argument", {
+  ex_mean_dat <- tibble::tibble(var_1 = 1:3, `var 2` = 5:7)
+  
+  expect_snapshot(error = TRUE, {
     mean_group_tbl(
       data = stem_social_psych,
       var_stem = c("belong_beoln", "identities"),
       group = "_w\\d",
       group_type = "pattern"
-    ),
-    "No matching columns found for the following variable stems: belong_beoln."
-  )
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = ex_mean_dat,
+      var_stem = "var",
+      group = "\\d$",
+      group_type = "pattern"
+    )
+  })
 })
 
-test_that("Invalid 'only' argument", {
-  expect_error(
+test_that("Failure: Invalid 'var_input' argument", {
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = "pattern",
+      var_input = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = "pattern",
+      var_input = "var_name"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'group' argument", {
+  sample_mean_data <- 
+    data.frame(var_1 = 1:3, var_2 = 5:7, 
+               group = letters[1:3], 
+               group = letters[1:3],
+               check.names = FALSE)
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = sample_mean_data,
+      var_stem = "var",
+      group = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "URMS",
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = sample_mean_data,
+      var_stem = "var",
+      group = "group"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'group_type' argument", {
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = "patterning"
+    )
+  })
+})
+
+
+test_that("Failure: Invalid 'only' argument", {
+  expect_snapshot(error = TRUE, {
     mean_group_tbl(
       data = stem_social_psych,
       var_stem = "belong_outsiderStem",
       group = "_w\\d",
       group_type = "pattern",
       only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     mean_group_tbl(
       data = stem_social_psych,
       var_stem = "belong_outsiderStem",
       group = "_w\\d",
       group_type = "pattern",
       only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'mean', 'sd', 'min', 'max', 'nobs'."
-  )
-})
-
-test_that("Invalid 'group'/'group_type' argument", {
-  set.seed(0204)
-  symptoms_data <-
-    data.frame(
-      symptoms_t1 = sample(c(0:10, -999), replace = TRUE, size = 50),
-      symptoms_t2 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50),
-      symptoms_t3 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50),
-      group = sample(c("placebo","treatment"), replace = TRUE, size = 50)
     )
-  
-  expect_error(
-    mean_group_tbl(data = symptoms_data, 
-                   var_stem = "symptoms",
-                   group = "_t\\d",
-                   group_type = "variable",
-                   group_name = "time_point",
-                   ignore = c(symptoms = -999),
-                   only = c("mean", "sd")),
-    paste("The 'group' argument contains invalid characters.", 
-          "Column names must only include letters, digits,",
-          "periods \\(.\\), or underscores \\(_\\).")
-  )
-  
-  expect_error(
-    mean_group_tbl(data = symptoms_data, 
-                   var_stem = "symptoms",
-                   group = "group",
-                   group_type = "pattern",
-                   group_name = "study_group",
-                   ignore = c(symptoms = -999),
-                   only = c("mean", "sd")),
-    paste("Invalid 'group' argument. The value provided to 'group' did",
-          "not produce a unique or expected set of column names in 'data'.",
-          "Please check for typos, spelling mistakes, or invalid characters.")
-  )
-
+  })
 })
 
+
+test_that("Failure: Invalid 'na_removal' argument", {
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_outsiderStem",
+      group = "_w\\d",
+      group_type = "pattern",
+      na_removal = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    mean_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_outsiderStem",
+      group = "_w\\d",
+      group_type = "pattern",
+      na_removal = "side-wise"
+    )
+  })
+})
 
 test_that("Expected output for group pattern with specified group name", {
   observed <-
@@ -291,19 +355,7 @@ test_that("Expected output for group pattern and remove_group_non_alnum (TRUE/FA
 })
 
 
-test_that("Error and expected output with ignore_stem_case", {
-  expect_error(
-    mean_group_tbl(
-      data = stem_social_psych,
-      var_stem = "belong_OUTSIDERStem",
-      ignore_stem_case = FALSE,
-      group = "_w\\d",
-      group_type = "pattern"
-    ),
-    "No matching columns found for the following variable stems: belong_OUTSIDERStem."
-  )
-  
-  
+test_that("Expected output with ignore_stem_case", {
   observed1 <-
     mean_group_tbl(
       data = stem_social_psych,
@@ -334,20 +386,7 @@ test_that("Error and expected output with ignore_stem_case", {
 })
 
 
-test_that("Error and expected output with ignore_group_case", {
-  expect_error(
-    mean_group_tbl(
-      data = stem_social_psych,
-      var_stem = "belong_belongStem",
-      group = "IS_MALE",
-      group_type = "variable",
-      ignore_group_case = FALSE
-    ),
-    paste("Invalid 'group' argument. The value provided to 'group' is", 
-          "not a column in 'data'. Check for typos, spelling mistakes,",
-          "or invalid characters.")
-  )
-  
+test_that("Expected output with ignore_group_case", {
   observed1 <-
     mean_group_tbl(
       data = stem_social_psych,

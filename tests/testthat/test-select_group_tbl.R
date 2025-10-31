@@ -1,146 +1,189 @@
 # Test select_group_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
       data = NULL,
       var_stem = "dep",
       group = "_\\d"
-    ),
-    "The 'data' argument is not a data frame."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
       data = data.frame(),
       var_stem = "dep",
       group = "sex",
       group_type = "variable"
-    ),
-    "The 'data' argument is empty."
-  )
+    )
+  })
 })
 
-
-test_that("Invalid 'var_stem' argument and No matching columns", {
-  expect_error(
+test_that("Failure: Invalid 'var_stem' argument", {
+  ex_mean_dat <- tibble::tibble(var_1 = 1:3, `var 2` = 5:7)
+  
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
       data = depressive,
       var_stem = NA,
       group = "sex",
       group_type = "variable"
-    ),
-    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of at least length one."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
       data = depressive,
       var_stem = c("dep", "gender"),
       group = "sex",
       group_type = "variable"
-    ),
-    "No matching columns found for the following variable stems: gender."
-  )
-})
-
-
-test_that("Invalid 'na_removal' argument", {
-  expect_error(
-    select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
-      na_removal = 123
-    ),
-    "Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
-      na_removal = "sidewise"
-    ),
-    "Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'."
-  )
+      data = stem_social_psych,
+      var_stem = "BELONG_belong",
+      ignore_stem_case = FALSE,
+      group = "urm",
+      group_type = "variable"
+    )
+  })
 })
 
-test_that("Invalid 'pivot' argument", {
-  expect_error(
+test_that("Failure: Invalid 'var_input' argument", {
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
-      pivot = 1234
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be a character vector of length one."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = NULL,
+      group = "urm"
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
-      pivot = "sidewise"
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = "var_name",
+      group = "urm"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'group' argument", {
+  sample_select_data <- 
+    data.frame(var_1 = 1:3, var_2 = 5:7, 
+               group = letters[1:3], 
+               group = letters[1:3],
+               check.names = FALSE)
+  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = sample_select_data,
+      var_stem = "var",
+      group = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "URMS",
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = sample_select_data,
+      var_stem = "var",
+      group = "group"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'group_type' argument", {
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "\\d$",
+      group_type = "patterning"
+    )
+  })
 })
 
 
-test_that("Invalid 'only' argument", {
-  expect_error(
+test_that("Failure: Invalid 'only' argument", {
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
       only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "sex",
-      group_type = "variable",
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
       only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
+    )
+  })
 })
 
-test_that("Invalid 'group'/'group_type' combo", {
-  expect_error(
-    select_group_tbl(data = depressive, 
-                     var_stem = "dep",
-                     group = "_\\d",
-                     group_type = "variable",
-                     group_name = "item_number"),
-    paste("The 'group' argument contains invalid characters.",
-          "Column names must only include letters, digits,",
-          "periods \\(.\\), or underscores \\(_\\).")
-  )
+test_that("Failure: Invalid 'na_removal' argument", {
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
+      na_removal = NULL
+    )
+  })
   
-  expect_error(
-    select_group_tbl(data = depressive, 
-                     var_stem = "dep",
-                     group = "sex",
-                     group_type = "pattern"),
-    paste("Invalid 'group' argument. The value provided to 'group' did",
-          "not produce a unique or expected set of column names in 'data'.",
-          "Please check for typos, spelling mistakes, or invalid characters."))
-  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
+      na_removal = "side-ways"
+    )
+  })
 })
 
+
+test_that("Failure: Invalid 'pivot' argument", {
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
+      pivot = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_group_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      group = "urm",
+      pivot = "side_ways"
+    )
+  })
+})
 
 test_that("Expected output longer format", {
   observed <-
@@ -323,21 +366,7 @@ test_that("Expected output with remove_group_non_alnum", {
 })
 
 
-test_that("Error and expected output with ignore_stem_case", {
-  
-  expect_error(
-    select_group_tbl(
-      data = depressive,
-      var_stem = "DEP",
-      ignore_stem_case = FALSE,
-      group = "sex",
-      group_type = "variable",
-      pivot = "wider",
-      only = "count"
-    ),
-    "No matching columns found for the following variable stems: DEP."
-  )
-  
+test_that("Expected output with ignore_stem_case", {
   observed <-
     select_group_tbl(
       data = depressive,
@@ -364,23 +393,7 @@ test_that("Error and expected output with ignore_stem_case", {
   expect_equal(observed, expected)
 })
 
-
-
-test_that("Error and expected output with ignore_group_case", {
-  expect_error(
-    select_group_tbl(
-      data = depressive,
-      var_stem = "dep",
-      group = "SEX",
-      group_type = "variable",
-      ignore_group_case = FALSE,
-      pivot = "wider",
-      only = "count"
-    ),
-    paste("Invalid 'group' argument. The value provided to 'group' is", 
-          "not a column in 'data'. Check for typos, spelling mistakes, or invalid characters.")
-  )
-  
+test_that("Expected output with ignore_group_case", {
   observed <-
     select_group_tbl(
       data = depressive,
@@ -407,7 +420,6 @@ test_that("Error and expected output with ignore_group_case", {
   
   expect_equal(observed, expected)
 })
-
 
 test_that("Expected output with different 'only' types", {
   observed1 <-
@@ -576,4 +588,18 @@ test_that("Expected output with multiple variable names, group is variable, and 
     )
   
   expect_equal(observed, expected)
+})
+
+
+test_that("Warning: override pivot wider", {
+  expect_snapshot(error = FALSE, {
+    select_group_tbl(
+      data = social_psy_data,
+      var_stem = c("belong", "identity"),
+      group = "gender",
+      na_removal = "pairwise",
+      only = "count",
+      pivot = "wider",
+      ignore = list(belong = c(1,2,3), identity = c(3,4,5)))
+  })
 })

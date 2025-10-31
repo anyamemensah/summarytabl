@@ -7,7 +7,7 @@ check_table_type <- function(table_type) {
   }
   
   if (!(table_type %in% c("cat", "select", "mean"))) {
-    stop("Invalid 'table_type' argument. 'table_type' must be one of 'cat', 'select', 'mean'.",
+    stop("Invalid 'table_type' argument. 'table_type' must be one of: 'cat', 'select', 'mean'.",
          call. = FALSE)
   }
   
@@ -15,13 +15,19 @@ check_table_type <- function(table_type) {
 }
 
 # Function that validates the 'data' argument
-check_df <- function(data) {
+check_df <- function(data, .main_env) {
   if (!is.data.frame(data)) {
-    stop("The 'data' argument is not a data frame.", call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg data} argument.",
+      "i" = "The {.arg data} argument must be a {.cls data.frame} or {.cls tibble}."),
+      call = .main_env)
   }
   
   if (prod(dim(data)) == 0) {
-    stop("The 'data' argument is empty.", call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg data} argument.",
+      "i" = "The {.arg data} argument must have at least one row and one column."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, df = data))
@@ -30,15 +36,19 @@ check_df <- function(data) {
 
 # Function that validates generic logical arguments
 # that should be either TRUE or FALSE
-check_logical <- function(x, label) {
+check_logical <- function(x, label, .main_env) {
   if (!is.logical(x) || length(x) != 1) {
-    stop(sprintf("Invalid '%s' argument. '%s' must be a logical vector of length one.",label, label),
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg {label}} argument.",
+      "i" = "The {.arg {label}} argument must be a logical vector of length one."),      
+      call = .main_env)
   }
   
   if (!(x %in% c(TRUE, FALSE))) {
-    stop(sprintf("Invalid '%s' argument. '%s' must be one of 'TRUE', 'FALSE'.", label, label),
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg {label}} argument.",
+      "i" = "The {.arg {label}} argument must be one of: {.val {TRUE}} or {.val {FALSE}}."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, x = x))
@@ -46,15 +56,21 @@ check_logical <- function(x, label) {
 
 
 # Function that validates the 'margins' argument
-check_margins <- function(margins) {
+check_margins <- function(margins, .main_env) {
   if (!is.character(margins) || length(margins) != 1) {
-    stop("Invalid 'margins' argument. 'margins' must be a character vector of length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg margins} argument.",
+      "i" = "The {.arg margins} argument must be a character vector of length one."),      
+      call = .main_env)
   }
   
   if (!(margins %in% c("rows", "columns", "all"))) {
-    stop("Invalid 'margins' argument. 'margins' must be one of 'rows', 'columns', 'all'.",
-         call. = FALSE)
+    valid_margs <- c("rows", "columns", "all")
+    cli::cli_abort(c(
+      "Invalid {.arg margins} argument.",
+      "i" = paste("The {.arg margins} argument must be one of: {.val rows},",
+                  "{.val columns}, or {.val all}.")),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, margins = margins))
@@ -62,11 +78,20 @@ check_margins <- function(margins) {
 
 
 # Function that validates 'na.rm' arguments
-check_na.rm <- function(na.rm, var_label) {
-  if (!is.logical(na.rm) || length(na.rm) != 1 || is.na(na.rm)) { 
-    stop(sprintf("Invalid '%s' argument. '%s' must be a logical vector of length one.",
-                 var_label, var_label),
-         call. = FALSE)
+check_na.rm <- function(na.rm, var_label, .main_env) {
+  if (!is.logical(na.rm) || length(na.rm) != 1) { 
+    cli::cli_abort(c(
+      "Invalid {.arg {var_label}} argument.",
+      "i" = "The {.arg {var_label}} argument must be a logical vector of length one."),      
+      call = .main_env)
+  }
+    
+  if (!(na.rm %in% c(TRUE, FALSE))) {
+    cli::cli_abort(c(
+      "Invalid {.arg {var_label}} argument.",
+      "i" = paste("The {.arg {var_label}} argument must be one of:",
+                  "{.val {TRUE}} or {.val {FALSE}}.")),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, na.rm = na.rm))
@@ -74,15 +99,20 @@ check_na.rm <- function(na.rm, var_label) {
 
 
 # Function that validates 'na_removal' arguments
-check_na_removal <- function(na_removal) {
+check_na_removal <- function(na_removal, .main_env) {
   if (!is.character(na_removal) || length(na_removal) != 1) { 
-    stop("Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one.",
-         call. = FALSE) 
+    cli::cli_abort(c(
+      "Invalid {.arg na_removal} argument.",
+      "i" = "The {.arg na_removal} argument must be a character vector of length one."),
+      call = .main_env)
   }
   
   if (!(na_removal %in% c("listwise", "pairwise"))) {
-    stop("Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg na_removal} argument.",
+      "i" = paste("The {.arg na_removal} argument must be one of {.val listwise}",
+                  "or {.val pairwise}.")),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, na_removal = na_removal))
@@ -90,7 +120,7 @@ check_na_removal <- function(na_removal) {
 
 
 # Function that validates the 'only' argument
-check_only <- function(only = NULL, table_type) {
+check_only <- function(only = NULL, table_type, .main_env) {
   current_only <- 
     if (is.null(only)) {
       only_type(table_type)
@@ -99,14 +129,17 @@ check_only <- function(only = NULL, table_type) {
     }
   
   if (length(current_only) == 0){
-    stop("Invalid 'only' argument. 'only' must be a character vector of length at least one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg only} argument.",
+      "i" = "The {.arg only} argument must be a character vector of length at least one."),
+      call = .main_env)
   }
   
   if (!(all(current_only %in% only_type(table_type)))){
-    stop(sprintf("Invalid 'only' argument. 'only' must be any of: %s.",
-                 paste0(sprintf("'%s'", only_type(table_type)), collapse = ", ")),
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg only} argument.",
+      "i" = "The {.arg only} argument must be one or more of: {.val {only_type(table_type)}}."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, only = current_only))
@@ -114,15 +147,19 @@ check_only <- function(only = NULL, table_type) {
 
 
 # Function that validates the 'pivot' argument
-check_pivot <- function(pivot) {
+check_pivot <- function(pivot, .main_env) {
   if (!is.character(pivot) || length(pivot) != 1) {
-    stop("Invalid 'pivot' argument. 'pivot' must be a character vector of length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg pivot} argument.",
+      "i" = "The {.arg pivot} argument must be a character vector of length one."),
+      call = .main_env)
   }
   
   if (!(pivot %in% c("longer", "wider"))) {
-    stop("Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg pivot} argument.",
+      "i" = "The {.arg pivot} argument must be one of: {.val wider} or {.val longer}."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, pivot = pivot))
@@ -132,21 +169,25 @@ check_pivot <- function(pivot) {
 # Function that validates the 'group_name' argument;
 # (It should not contain any characters that are not 
 # letters, digits, periods, or underscores)
-check_group_name <- function(group_name) {
+check_group_name <- function(group_name, .main_env) {
   group_name <-
     if (is.null(group_name) || is.na(group_name)) NULL else group_name
   
   if (!is.null(group_name)) {
     if(length(group_name) != 1 || !is.character(group_name)) {
-      stop("Invalid 'group_name' argument. 'group_name' must be NULL or a character vector of length one.",
-           call. = FALSE)
+      cli::cli_abort(c(
+        "Invalid {.arg group_name} argument.",
+        "i" = 'The {.arg group_name} argument must be NULL or a character vector of length one.'),
+        call = .main_env)
     }
     
     has_invalid_chrs <- string_has_invalid_chars(group_name)
     if (has_invalid_chrs || is.na(group_name)) {
-      stop(paste("The 'group_name' argument contains invalid characters.",
-                 "Column names must only include letters, digits, periods (.), or underscores (_)."),
-           call. = FALSE)
+      cli::cli_abort(c(
+        "Invalid {.arg group_name} argument.",
+        "i" = "The {.arg group_name} argument contains invalid characters.",
+        "i" = "Column names must only include letters, digits, periods (.), or underscores (_)."),
+        call = .main_env)
     }
   }
   
@@ -157,21 +198,24 @@ check_group_name <- function(group_name) {
 # Function that validates the 'var_stem' argument. Each element
 # must be a character vector of at least length one and should 
 # not contain invalid characters
-check_var_stem <- function(var_stem) {
+check_var_stem <- function(var_stem, .main_env) {
   if (!is.character(var_stem) || length(var_stem) == 0) {
-    stop("Invalid 'var_stem' argument. 'var_stem' must be a character vector of at least length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg var_stem} argument.",
+      "i" = "The {.arg var_stem} argument must be a character vector of at least length one."),
+      call = .main_env)
   }
   
   var_stem_has_invalid_chars <- sapply(var_stem, string_has_invalid_chars)
   invalid_names <- names(which(var_stem_has_invalid_chars))
   
   if (length(invalid_names) > 0) {
-    stop(paste(
-      sprintf("The 'var_stem' argument contains invalid characters: %s.", 
-              paste(invalid_names, collapse = ", ")),
-      "\nColumn names must only include letters, digits, periods (.), or underscores (_)."),
-      call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg var_stem} argument.",
+      "i" = paste('The {.arg var_stem} argument contains elements with invalid characters:',
+                  '{.val {invalid_names}}.'),
+      "i" = "Column names must only include letters, digits, periods (.), or underscores (_)."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, var_stem = var_stem))
@@ -180,20 +224,27 @@ check_var_stem <- function(var_stem) {
 
 # Function that validates individual variable arguments 
 # (i.e., 'var', 'col_var', 'row_var')
-check_var <- function(var_name, var_label, data) { 
+check_var <- function(var_name, var_label, data, .main_env) { 
   if (!is.character(var_name) || length(var_name) != 1) { 
-    stop(sprintf("Invalid '%s' argument. '%s' must be a character vector of length one.", 
-                 var_label, var_label), call. = FALSE) 
+    cli::cli_abort(c(
+      "Invalid {.arg {var_label}} argument.",
+      "i" = "The {.arg {var_label}} argument must be a character vector of length one."),
+      call = .main_env)
   } 
   
   if (!(var_name %in% colnames(data))) { 
-    stop(sprintf("The '%s' argument is not a column in 'data'.", var_label), call. = FALSE) 
-  } 
+    cli::cli_abort(c(
+      "Invalid {.arg {var_label}} argument.",
+      "i" = "The {.arg {var_label}} argument, {.val {var_name}}, is not a column in {.arg data}."),
+      call = .main_env)
+  }
   
   if (string_has_invalid_chars(var_name)) {
-    stop(sprintf(paste("The '%s' argument contains invalid characters.",
-                       "Column names must only include letters, digits, periods (.),",
-                       "or underscores (_)."), var_label), call. = FALSE) 
+    cli::cli_abort(c(
+      "Invalid {.arg {var_label}} argument.",
+      "i" = 'The {.arg {var_label}} argument contains invalid characters.',
+      "i" = "Column names must only include letters, digits, periods (.), or underscores (_)."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, var = var_name, label = var_label))
@@ -201,34 +252,47 @@ check_var <- function(var_name, var_label, data) {
 
 
 # Function that validates the 'var_input' argument
-check_var_input <- function(var_input) {
+check_var_input <- function(var_input, .main_env) {
   if (!is.character(var_input) || length(var_input) != 1) {
-    stop("Invalid 'var_input' argument. 'var_input' must be a character vector of length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg var_input} argument.",
+      "i" = "The {.arg var_input} argument must be a character vector of length one."),
+      call = .main_env)
   }
   
   if (!(var_input %in% c("stem", "name"))) {
-    stop("Invalid 'var_input' argument. 'var_input' must be one of 'stem', 'name'.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg var_input} argument.",
+      "i" = "The {.arg var_input} argument must be one of: {.val stem} or {.val name}."),
+      call = .main_env)
   }
 }
 
 
 # Function that validates the 'group' argument 
-check_group_var <- function(group_var, group_type, col_names, ignore_case, use_regex) { 
+check_group_var <- function(group_var,
+                            group_type,
+                            col_names,
+                            ignore_case,
+                            use_regex,
+                            .main_env) {
   if (!is.character(group_var) || length(group_var) != 1) { 
-    stop("Invalid 'group' argument. 'group' must be a character vector of length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg group} argument.",
+      "i" = "The {.arg group} argument must be a character vector of length one."),
+      call = .main_env)
   } 
   
   if (group_type == "variable") { 
     has_invalid_chars <- string_has_invalid_chars(group_var)
     
     if (has_invalid_chars) {
-      stop(paste("The 'group' argument contains invalid characters.",
-                 "Column names must only include letters, digits, periods (.),",
-                 "or underscores (_)."),
-           call. = FALSE)
+      cli::cli_abort(c(
+        "Invalid {.arg group} argument.",
+        "i" = 'The {.arg group} argument contains invalid characters.',
+        "i" = paste("Column names must only include letters, digits, periods (.),", 
+                    "or underscores (_).")),
+        call = .main_env)
     }
     
     group_cols_matched <- grep(pattern = paste0("^", group_var, "$"), 
@@ -241,14 +305,19 @@ check_group_var <- function(group_var, group_type, col_names, ignore_case, use_r
     if (is.character(group_cols_matched) && length(group_cols_matched) == 1) {
       group_var_clean <- group_cols_matched
     } else if (is.character(group_cols_matched) && length(group_cols_matched) > 1) {
-      stop(sprintf("Invalid 'group' argument. Multiple columns in 'data' matched the 'group' argument: %s.",
-                   paste(group_cols_matched, collapse = ", ")),
-           call. = FALSE)
+      cli::cli_abort(c(
+        "Invalid {.arg group} argument.",
+        "i" = paste("Multiple columns in {.arg data} matched the",
+                    "{.arg group} argument:",
+                    "{.val {group_cols_matched}}.")),
+        call = .main_env)
     } else {
-      stop(paste("Invalid 'group' argument. The value provided to 'group' is", 
-                 "not a column in 'data'. Check for typos, spelling mistakes,",
-                 "or invalid characters."),
-           call. = FALSE)
+      cli::cli_abort(c(
+        "Invalid {.arg group} argument.",
+        "i" = paste("The value provided to {.arg group}, {.val {group_var}},",
+                    "is not a column in {.arg data}. Check for typos,",
+                    "spelling mistakes or invalid characters.")),
+        call = .main_env)
     }
   } else {
     group_var_clean <- group_var
@@ -259,15 +328,19 @@ check_group_var <- function(group_var, group_type, col_names, ignore_case, use_r
 
 
 # Function that validates the 'group_type' argument
-check_group_type <- function(group_type) {
+check_group_type <- function(group_type, .main_env) {
   if (!is.character(group_type) || length(group_type) != 1) {
-    stop("Invalid 'group_type' argument. 'group_type' must be a character vector of length one.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg group_type} argument.",
+      "i" = "The {.arg group_type} argument must be a character vector of length one."),
+      call = .main_env)
   }
   
   if (!(group_type %in% c("pattern", "variable"))) {
-    stop("Invalid 'group_type' argument. 'group_type' must be one of 'pattern', 'variable'.",
-         call. = FALSE)
+    cli::cli_abort(c(
+      "Invalid {.arg group_type} argument.",
+      "i" = "The {.arg group_type} argument must be one of: {.val pattern} or {.val variable}."),
+      call = .main_env)
   }
   
   return(list(valid = TRUE, group_type = group_type))
@@ -280,7 +353,3 @@ check_group_type <- function(group_type) {
 string_has_invalid_chars <- function(x) {
   grepl(pattern = "[^a-zA-Z0-9._]", x = x)
 }
-
-
-
-

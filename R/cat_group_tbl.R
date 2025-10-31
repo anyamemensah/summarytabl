@@ -72,7 +72,8 @@ cat_group_tbl <- function(data,
     label_na_rm_col = "na.rm.col_var",
     pivot = pivot,
     only = only,
-    ignore = ignore
+    ignore = ignore,
+    .main_env = environment()
   )
   
   checks <- check_cat_group_args(args)

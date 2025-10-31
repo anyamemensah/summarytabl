@@ -13,7 +13,6 @@ test_that("check valid table data types", {
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
   
-  
   expect_error(
     check_table_type(c("category1", "category2")),
     "Invalid 'table_type' argument. 'table_type' must be a character vector of length one."
@@ -21,7 +20,7 @@ test_that("check valid table data types", {
   
   expect_error(
     check_table_type(c("category")),
-    "Invalid 'table_type' argument. 'table_type' must be one of 'cat', 'select', 'mean'."
+    "Invalid 'table_type' argument. 'table_type' must be one of: 'cat', 'select', 'mean'."
   )
 })
 
@@ -35,15 +34,9 @@ test_that("check 'data' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_df(NA),
-    "The 'data' argument is not a data frame."
-  )
+  expect_snapshot(error = TRUE, { check_df(NA) })
   
-  expect_error(
-    check_df(tibble::tibble()),
-    "The 'data' argument is empty."
-  )
+  expect_snapshot(error = TRUE, { check_df(tibble::tibble()) })
 })
 
 
@@ -57,15 +50,8 @@ test_that("check logical argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_logical(x = "THIS", label = "this_var"),
-    "Invalid 'this_var' argument. 'this_var' must be a logical vector of length one."
-  )
-  
-  expect_error(
-    check_logical(x = NA, label = "NA_var"),
-    "Invalid 'NA_var' argument. 'NA_var' must be one of 'TRUE', 'FALSE'."
-  )
+  expect_snapshot(error = TRUE, { check_logical(x = "THIS", label = "this_var") })
+  expect_snapshot(error = TRUE, { check_logical(x = NA, label = "NA_var") })
 })
 
 
@@ -82,15 +68,8 @@ test_that("check 'margins' argument", {
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
   
-  expect_error(
-    check_margins(NA),
-    "Invalid 'margins' argument. 'margins' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_margins("diagonal"),
-    "Invalid 'margins' argument. 'margins' must be one of 'rows', 'columns', 'all'."
-  )
+  expect_snapshot(error = TRUE, { check_margins(NA) })
+  expect_snapshot(error = TRUE, { check_margins("diagonal") })
 })
 
 
@@ -104,10 +83,8 @@ test_that("check 'na.rm' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
 
-  expect_error(
-    check_na.rm(na.rm = "this_na", var_label = "row_var"),
-    "Invalid 'row_var' argument. 'row_var' must be a logical vector of length one."
-  )
+  expect_snapshot(error = TRUE, { check_na.rm(na.rm = "this_na", var_label = "row_var") })
+  expect_snapshot(error = TRUE, { check_na.rm(na.rm = NA, var_label = "row_var") })
 })
 
 
@@ -121,15 +98,8 @@ test_that("check 'na_removal' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_na_removal(na_removal = NA),
-    "Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_na_removal(na_removal = "this_na_remove"),
-    "Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'."
-  )
+  expect_snapshot(error = TRUE, { check_na_removal(na_removal = NA) })
+  expect_snapshot(error = TRUE, { check_na_removal(na_removal = "this_na_remove") })
 })
 
 
@@ -173,15 +143,8 @@ test_that("check 'only' argument", {
   expect_equal(observed11,expected11)
   expect_equal(observed12,expected12)
   
-  expect_error(
-    check_only(only = character(0), table_type = "cat"),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
-  
-  expect_error(
-    check_only(only = c("count", "per"), table_type = "cat"),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
+  expect_snapshot(error = TRUE, { check_only(only = character(0), table_type = "cat") })
+  expect_snapshot(error = TRUE, { check_only(only = c("count", "per"), table_type = "cat") })
 })
 
 
@@ -195,15 +158,8 @@ test_that("check 'pivot' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_pivot(pivot = NA),
-    "Invalid 'pivot' argument. 'pivot' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_pivot(pivot = "diagonal"),
-    "Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'."
-  )
+  expect_snapshot(error = TRUE, { check_pivot(pivot = NA) })
+  expect_snapshot(error = TRUE, { check_pivot(pivot = "diagonal")})
 })
 
 
@@ -220,17 +176,8 @@ test_that("check 'group_name' argument", {
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
   
-  expect_error(
-    check_group_name(group_name = "THIS NAME"),
-    paste("The 'group_name' argument contains invalid characters.",
-          "Column names must only include letters, digits, periods \\(.\\), or underscores \\(_\\).")
-  )
-  
-  expect_error(
-    check_group_name(group_name = "That$NAme"),
-    paste("The 'group_name' argument contains invalid characters.",
-          "Column names must only include letters, digits, periods \\(.\\), or underscores \\(_\\).")
-  )
+  expect_snapshot(error = TRUE, { check_group_name(group_name = "THIS NAME") })
+  expect_snapshot(error = TRUE, { check_group_name(group_name = "That$NAme")})
 })
 
 
@@ -244,17 +191,9 @@ test_that("check 'var_stem' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_var_stem(var_stem = character(0)),
-    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of at least length one."
-  )
-  
-  expect_error(
-    check_var_stem(var_stem = c("this_var", "THAT VAR")),
-    paste(
-      "The 'var_stem' argument contains invalid characters: THAT VAR.",
-      "\nColumn names must only include letters, digits, periods \\(.\\), or underscores \\(_\\).")
-)
+  expect_snapshot(error = TRUE, { check_var_stem(var_stem = character(0)) })
+  expect_snapshot(error = TRUE, { check_var_stem(var_stem = c("this_var", "THAT VAR")) })
+
 })
 
 
@@ -267,39 +206,15 @@ test_that("check an individual variable argument (i.e., 'var', 'row_var', 'col_v
 
   expect_equal(observed1, expected1)
   
-  expect_error(
-    check_var_stem(var_stem = character(0)),
-    "Invalid 'var_stem' argument. 'var_stem' must be a character vector of at least length one."
-  )
-  
-  expect_error(
-    check_var(character(0), "var_label_here", nlsy),
-    "Invalid 'var_label_here' argument. 'var_label_here' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_var("not_a_var", "var_label_here", nlsy),
-    "The 'var_label_here' argument is not a column in 'data'."
-  )
-  
-  expect_error(
-    check_var("invalid col name", "invalid_var_arg", invalid_data),
-    paste("The 'invalid_var_arg' argument contains invalid characters.",
-          "Column names must only include letters, digits, periods \\(.\\), or underscores \\(_\\).")
-  )
+  expect_snapshot(error = TRUE, { check_var(var_name = character(0), "var_label_here", nlsy) })
+  expect_snapshot(error = TRUE, { check_var("not_a_var", "var_label_here", nlsy) })
+  expect_snapshot(error = TRUE, { check_var("invalid col name", "invalid_var_arg", invalid_data) })
 })
 
 
 test_that("check 'var_input' argument", {
-  expect_error(
-    check_var_input(var_input = character(0)),
-    "Invalid 'var_input' argument. 'var_input' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_var_input("stem_name"),
-    "Invalid 'var_input' argument. 'var_input' must be one of 'stem', 'name'."
-  )
+  expect_snapshot(error = TRUE, { check_var_input(var_input = character(0)) })
+  expect_snapshot(error = TRUE, { check_var_input("stem_name") })      
 })
 
 
@@ -324,39 +239,15 @@ test_that("check 'group' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_var_input(var_input = character(0)),
-    "Invalid 'var_input' argument. 'var_input' must be a character vector of length one."
-  )
   
-  expect_error(
-    check_group_var(group_var = NULL),
-    "Invalid 'group' argument. 'group' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_group_var(group_var = "This VAR", group_type = "variable"),
-    paste("The 'group' argument contains invalid characters.",
-          "Column names must only include letters, digits, periods \\(.\\),",
-          "or underscores \\(_\\).")
-  )
-  
-  expect_error(
-    check_group_var(group_var = "group_var", group_type = "variable", 
-                    col_names = names(data_test), ignore_case = FALSE, 
-                    use_regex = FALSE),
-    sprintf("Invalid 'group' argument. Multiple columns in 'data' matched the 'group' argument: %s.",
-            paste(c("group_var", "group_var"), collapse = ", "))
-  )
-  
-  expect_error(
-    check_group_var(group_var = "boop", group_type = "variable", 
-                    col_names = names(data_test), ignore_case = FALSE, 
-                    use_regex = FALSE),
-    paste("Invalid 'group' argument. The value provided to 'group' is", 
-          "not a column in 'data'. Check for typos, spelling mistakes,",
-          "or invalid characters.")
-  )
+  expect_snapshot(error = TRUE, { check_group_var(group_var = NULL) })
+  expect_snapshot(error = TRUE, { check_group_var(group_var = "This VAR", group_type = "variable") })
+  expect_snapshot(error = TRUE, { check_group_var(group_var = "group_var", group_type = "variable", 
+                                                  col_names = names(data_test), ignore_case = FALSE, 
+                                                  use_regex = FALSE) })
+  expect_snapshot(error = TRUE, { check_group_var(group_var = "boop", group_type = "variable", 
+                                                  col_names = names(data_test), ignore_case = FALSE, 
+                                                  use_regex = FALSE) })
 })
 
 
@@ -370,15 +261,8 @@ test_that("check 'group_type' argument", {
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   
-  expect_error(
-    check_group_type(group_type = character(0)),
-    "Invalid 'group_type' argument. 'group_type' must be a character vector of length one."
-  )
-  
-  expect_error(
-    check_group_type(group_type = "shape"),
-    "Invalid 'group_type' argument. 'group_type' must be one of 'pattern', 'variable'"
-  )
+  expect_snapshot(error = TRUE, { check_group_type(group_type = character(0)) })
+  expect_snapshot(error = TRUE, {check_group_type(group_type = "shape") })
 })
 
 

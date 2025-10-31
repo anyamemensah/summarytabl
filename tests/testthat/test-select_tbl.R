@@ -1,123 +1,119 @@
 # Test select_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
     select_tbl(
       data = NULL,
       var_stem = "dep"
-    ),
-    "The 'data' argument is not a data frame."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     select_tbl(
       data = data.frame(),
       var_stem = "dep"
-    ),
-    "The 'data' argument is empty."
-  )
+    )
+  })
 })
 
-
-test_that("Invalid 'var_stem' argument and No 'cols' found", {
-  expect_error(
+test_that("Failure: Invalid 'var_stem' argument", {
+  ex_mean_dat <- tibble::tibble(var_1 = 1:3, `var 2` = 5:7)
+  
+  expect_snapshot(error = TRUE, {
     select_tbl(
       data = depressive,
       var_stem = c("dep", "gender")
-    ),
-    "No matching columns found for the following variable stems: gender."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "depress"
-    ),
-    "No matching columns found for the following variable stems: depress."
-  )
+      data = ex_mean_dat,
+      var_stem = "var"
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_tbl(
+      data = stem_social_psych,
+      var_stem = "BELONG_belong",
+      ignore_stem_case = FALSE
+    )
+  })
 })
 
-test_that("Invalid 'only' argument", {
-  expect_error(
+test_that("Failure: Invalid 'var_input' argument", {
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = NULL
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
+    select_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      var_input = "var_name"
+    )
+  })
+})
+
+test_that("Failure: Invalid 'only' argument", {
+  expect_snapshot(error = TRUE, {
+    select_tbl(
+      data = stem_social_psych,
+      var_stem = "belong_belong",
       only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
+      data = stem_social_psych,
+      var_stem = "belong_belong",
       only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
+    )
+  })
 })
 
-
-test_that("Invalid 'na_removal' argument", {
-  expect_error(
+test_that("Failure: Invalid 'na_removal' argument", {
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      na_removal = 123
-    ),
-    "Invalid 'na_removal' argument. 'na_removal' must be a character vector of length one."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      na_removal = NULL
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      na_removal = "sidewise"
-    ),
-    "Invalid 'na_removal' argument. 'na_removal' must be one of 'listwise', 'pairwise'."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      na_removal = "side-ways"
+    )
+  })
 })
 
-test_that("Invalid 'pivot' argument", {
-  expect_error(
+
+test_that("Failure: Invalid 'pivot' argument", {
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      pivot = 1234
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be a character vector of length one."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      pivot = NULL
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      pivot = "sidewise"
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'."
-  )
+      data = stem_social_psych,
+      var_stem = "belong_belong",
+      pivot = "side_ways"
+    )
+  })
 })
-
-test_that("Invalid 'only' argument", {
-  expect_error(
-    select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
-  
-  expect_error(
-    select_tbl(
-      data = depressive,
-      var_stem = "dep",
-      only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
-})
-
 
 test_that("Expected output", {
   observed <-
@@ -169,7 +165,6 @@ test_that("Expected output with variable labels", {
   expect_equal(observed, expected)
 })
 
-
 test_that("Expected output with 'ignore' values", {
   observed <-
     select_tbl(
@@ -189,18 +184,7 @@ test_that("Expected output with 'ignore' values", {
   expect_equal(observed, expected)
 })
 
-
-test_that("Error and expected output with ignore_stem_case and 'ignore' values", {
-  expect_error(
-    select_tbl(
-      data = depressive,
-      var_stem = "DEP",
-      pivot = "wider",
-      only = "count"
-    ),
-    "No matching columns found for the following variable stems: DEP."
-  )
-  
+test_that("Expected output with ignore_stem_case and 'ignore' values", {
   observed <-
     select_tbl(
       data = depressive,
@@ -325,17 +309,14 @@ test_that("generate_select_tabl expected output", {
   expect_equal(observed2, expected2)
 })
 
-test_that("warning message about pivotting", {
-expect_warning(
-  select_tbl(
-    data = social_psy_data,
-    var_stem = c("belong", "identity"),
-    na_removal = "pairwise",
-    only = "count",
-    pivot = "wider",
-    ignore = list(belong = c(1,2,3), identity = c(3,4,5))),
-  paste("Some variables have different values, so pivoting to", 
-        "the 'wider' format has been disabled. The table will be",
-        "displayed in the 'long' format instead. To override this",
-        "behavior and force pivoting, set `force_pivot = TRUE`."))
+test_that("Warning: override pivot wider", {
+  expect_snapshot(error = FALSE, {
+    select_tbl(
+      data = social_psy_data,
+      var_stem = c("belong", "identity"),
+      na_removal = "pairwise",
+      only = "count",
+      pivot = "wider",
+      ignore = list(belong = c(1,2,3), identity = c(3,4,5)))
+  })
 })

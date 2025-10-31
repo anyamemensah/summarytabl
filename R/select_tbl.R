@@ -114,7 +114,8 @@ select_tbl <- function(data,
     only = only,
     var_labels = var_labels,
     ignore = ignore,
-    force_pivot = force_pivot
+    force_pivot = force_pivot,
+    .main_env = environment()
   )
   
   checks <- check_select_args(args)
@@ -128,6 +129,7 @@ select_tbl <- function(data,
   check_only <- checks$only
   check_force_pivot <- checks$force_pivot
   check_table_type <- checks$table_type
+  check_env <- checks$env
   
   data_sub <- checks$df[check_cols]
   
@@ -155,9 +157,13 @@ select_tbl <- function(data,
     purrr::reduce(dplyr::bind_rows)
   
   if (check_pivot == "wider" && 
-      override_pivot(select_tabl, "variable", 
-                     "values", check_force_pivot)) {
-      select_tabl <- 
+      override_pivot(
+        tabl = select_tabl,
+        var_col = "variable",
+        values_col = "values",
+        allow_overide = check_force_pivot,
+        .main_env = check_env)) {
+    select_tabl <- 
         pivot_tbl_wider(
           data = select_tabl,
           id_cols = "variable",
@@ -174,8 +180,8 @@ select_tbl <- function(data,
         variable,
         !!!generate_tbl_key(
           values_from = names(check_col_labels),
-          values_to = unname(check_col_labels)
-        ),
+          values_to = unname(check_col_labels), 
+          .main_env = check_env),
         .default = variable
       )) |>
       dplyr::relocate(variable_label, .after = variable)

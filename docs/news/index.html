@@ -70,13 +70,15 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="summarytabl-020">summarytabl 0.2.0<a class="anchor" aria-label="anchor" href="#summarytabl-020"></a></h2>
 <div class="section level3">
+<h3 id="breaking-changes-0-2-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-2-0"></a></h3>
+<ul><li>Functions prefixed with <code>cat_</code> and <code>select_</code> no longer support columns of the <code>haven_labelled</code> type. Users must convert these columns to factors before using these functions. To convert <code>haven_labelled</code> columns to factors, consider using <code><a href="https://forcats.tidyverse.org/reference/as_factor.html" class="external-link">haven::as_factor()</a></code> or <code><a href="https://larmarange.github.io/labelled/reference/to_factor.html" class="external-link">labelled::unlabelled()</a></code>.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="minor-improvements-0-2-0">Minor improvements<a class="anchor" aria-label="anchor" href="#minor-improvements-0-2-0"></a></h3>
 <div class="section level4">
 <h4 id="new-datasets-0-2-0">New datasets<a class="anchor" aria-label="anchor" href="#new-datasets-0-2-0"></a></h4>
 <ul><li>
 <code>sdoh</code>: A subset of the 2020 Social Determinants of Health Database.</li>
-<li>
-<code>gss</code>: A subset of the 2022 General Social Survey.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="updates-by-function-0-2-0">Updates by function<a class="anchor" aria-label="anchor" href="#updates-by-function-0-2-0"></a></h4>

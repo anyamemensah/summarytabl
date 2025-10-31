@@ -1,74 +1,70 @@
 # Test cat_group_tbl
 
-test_that("Invalid 'data' argument", {
-  expect_error(
-    cat_group_tbl(
-      data = NULL,
-      row_var = "race",
-      col_var = "gender"
-    ),
-    "The 'data' argument is not a data frame."
-  )
+test_that("Failure: 'data' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl(data = NULL,
+                  row_var = "race",
+                  col_var = "gender")
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl(data = data.frame(),
+                  row_var = "race",
+                  col_var = "gender")
+  })
+})
 
-  expect_error(
-    cat_group_tbl(
-      data = data.frame(),
-      row_var = "race",
-      col_var = "gender"
-    ),
-    "The 'data' argument is empty."
-  )
+test_that("Failure: 'row_var' or 'col_var' argument", {
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl(data = nlsy,
+                  row_var = "raced",
+                  col_var = "gender")
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl(data = nlsy,
+                  row_var = c("race", "bthwht"),
+                  col_var = "gender")
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl( data = nlsy,
+                   row_var = "bthwht",
+                   col_var = "gendered")
+  })
+  
+  expect_snapshot(error = TRUE, {
+    cat_group_tbl( data = nlsy,
+                   row_var = "bthwht",
+                   col_var = c("gender", "race"))
+  })
 })
 
 
-test_that("Invalid 'row_var' or 'col_var' argument", {
-  expect_error(
-    cat_group_tbl(
-      data = nlsy,
-      row_var = c("race", "bthwht"),
-      col_var = "gender"
-    ),
-    "Invalid 'row_var' argument. 'row_var' must be a character vector of length one."
-  )
-
-  expect_error(
-    cat_group_tbl(
-      data = nlsy,
-      row_var = "bthwht",
-      col_var = c("gender", "race")
-    ),
-    "Invalid 'col_var' argument. 'col_var' must be a character vector of length one."
-  )
-})
-
-
-test_that("Invalid 'na.rm.row_var' or 'na.rm.col_var' argument", {
-  expect_error(
+test_that("Failure: 'na.rm' argument", {
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
       col_var = "gender",
       na.rm.row_var = "TU",
       na.rm.col_var = TRUE
-    ),
-    "Invalid 'na.rm.row_var' argument. 'na.rm.row_var' must be a logical vector of length one."
-  )
-
-  expect_error(
+    )
+  })
+  
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
       col_var = "gender",
       na.rm.row_var = TRUE,
       na.rm.col_var = "ME"
-    ),
-    "Invalid 'na.rm.col_var' argument. 'na.rm.col_var' must be a logical vector of length one."
-  )
+    )
+  })
 })
 
-
-test_that("Invalid 'only' argument", {
-  expect_error(
+test_that("Failure: 'only' argument", {
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
@@ -76,11 +72,10 @@ test_that("Invalid 'only' argument", {
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
       only = character(0)
-    ),
-    "Invalid 'only' argument. 'only' must be a character vector of length at least one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
@@ -88,14 +83,13 @@ test_that("Invalid 'only' argument", {
       na.rm.row_var = TRUE,
       na.rm.col_var = TRUE,
       only = NA
-    ),
-    "Invalid 'only' argument. 'only' must be any of: 'count', 'percent'."
-  )
+    )
+  })
 })
 
 
-test_that("Invalid 'pivot' argument", {
-  expect_error(
+test_that("Failure: 'pivot' argument", {
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
@@ -104,11 +98,10 @@ test_that("Invalid 'pivot' argument", {
       na.rm.col_var = TRUE,
       only = NULL,
       pivot = 123
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be a character vector of length one."
-  )
+    )
+  })
   
-  expect_error(
+  expect_snapshot(error = TRUE, {
     cat_group_tbl(
       data = nlsy,
       row_var = "bthwht",
@@ -117,9 +110,8 @@ test_that("Invalid 'pivot' argument", {
       na.rm.col_var = TRUE,
       only = NULL,
       pivot = "Angle"
-    ),
-    "Invalid 'pivot' argument. 'pivot' must be one of 'wider', 'longer'."
-  )
+    )
+  })
 })
 
 
@@ -134,7 +126,7 @@ test_that("Expected output", {
       margins = "columns"
     ) |>
     dplyr::mutate(percent = round(percent, digits = 3))
-
+  
   expected <-
     tibble::tibble(
       bthwht = rep(0:1, times = 2),
@@ -142,7 +134,7 @@ test_that("Expected output", {
       count = c(1340, 123, 1409, 104),
       percent = c(0.916, 0.084, 0.931, 0.069)
     )
-
+  
   expect_equal(observed, expected)
 })
 
@@ -250,7 +242,7 @@ test_that("Expected output with different 'margin' types", {
       race = rep(c("Black", "Hispanic", "Non-Black,Non-Hispanic"), each = 2),
       gender = as.numeric(rep(0:1, times = 3)),
       percent = c(0.500, 0.500, 0.483, 
-                0.517, 0.490, 0.510)
+                  0.517, 0.490, 0.510)
     )
   
   observed3 <-
