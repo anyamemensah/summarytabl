@@ -130,14 +130,15 @@ variable.</li>
 variables.</li>
 </ul>
 <p>These functions are ideal for summarizing binary, ordinal, and
-Likert-type variables where respondents may select multiple options:</p>
+Likert-scale variables in which respondents select one response per
+statement, question, or item:</p>
 <ul>
 <li>
-<code><a href="../reference/select_tbl.html">select_tbl()</a></code> summarizes multiple response
+<code><a href="../reference/select_tbl.html">select_tbl()</a></code> summarizes multiple response and ordinal
 variables.</li>
 <li>
-<code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> summarizes multiple response
-variables by a group or pattern.</li>
+<code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> summarizes multiple response and
+ordinal variables by a group or pattern.</li>
 </ul>
 <p>For interval and ratio-level variables, use:</p>
 <ul>
@@ -345,16 +346,15 @@ variable.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> Black regular_bithweight   766   0.882</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="working-with-multiple-response-variables">Working with multiple response variables<a class="anchor" aria-label="anchor" href="#working-with-multiple-response-variables"></a>
+<h2 id="working-with-multiple-response-and-ordinal-variables">Working with multiple response and ordinal variables<a class="anchor" aria-label="anchor" href="#working-with-multiple-response-and-ordinal-variables"></a>
 </h2>
 <p>Next, let’s explore how to use <code><a href="../reference/select_tbl.html">select_tbl()</a></code> and
 <code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code> functions to summarize multiple response
-variables. Multiple response variables are commonly used in survey
-research, psychology, and health sciences to represent items (or
-questions) where respondents can select more than one option or where
-several items measure the same underlying concept. Examples include
-symptom checklists, scales like a depression index with multiple items,
-or questions allowing respondents to choose all applicable answers.</p>
+and ordinal variables. Multiple response and ordinal variables are
+commonly used in survey research, psychology, and health sciences.
+Examples include symptom checklists, scales like a depression index with
+multiple items, or questions allowing respondents to select all choices
+that apply to them.</p>
 <p>For example, the <code>depressive</code> dataset contains eight
 variables that share the same variable stem: <code>dep</code>, with each
 one representing a different item used to measure depression.</p>
@@ -440,13 +440,13 @@ switch to pairwise deletion instead, set
 <span><span class="co">## <span style="color: #BCBCBC;">7</span> dep_7             <span style="text-decoration: underline;">1</span>046           507            95          0.635 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">8</span> dep_8              323           801           519          0.197 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: percent_value_2 &lt;dbl&gt;, percent_value_3 &lt;dbl&gt;</span></span></span></code></pre>
-<p>It’s common practice to group multiple response variables by another
-variable. This type of descriptive analysis allows for meaningful
-comparisons across different segments of your dataset. With
+<p>It’s common practice to group multiple response or ordinal variables
+by another variable. This type of descriptive analysis allows for
+meaningful comparisons across different segments of your dataset. With
 <code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code>, you can create a summary table for
-multiple response variables, grouped either by another variable in your
-dataset or by matching a pattern in the variable names. For example, we
-often want to summarize survey responses by race.</p>
+multiple response and ordinal variables, grouped either by another
+variable in your dataset or by matching a pattern in the variable names.
+For example, we often want to summarize survey responses by race.</p>
 <p>First, recode the <code>race</code> variable and the values for each
 of the eight depressive index variables in the <code>depressive</code>
 dataset, replacing numeric categories with descriptive string labels for
@@ -1084,7 +1084,9 @@ variable.</p>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

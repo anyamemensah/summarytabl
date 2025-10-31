@@ -1,6 +1,8 @@
 ---
 title: "Introduction to summarytabl"
 output: rmarkdown::html_vignette
+toc: true
+toc_depth: 2
 description: >
   This document introduces you to some of summarytabl's most frequently used functions, and demonstrates how you can use them with data frames.
 vignette: >
@@ -24,10 +26,10 @@ Use these functions to summarize binary and nominal variables:
 * `cat_tbl()` creates a summary table for a categorical variable.
 * `cat_group_tbl()` summarizes two categorical variables.
 
-These functions are ideal for summarizing binary, ordinal, and Likert-type variables where respondents may select multiple options:
+These functions are ideal for summarizing binary, ordinal, and Likert-scale variables in which respondents select one response per statement, question, or item:
 
-* `select_tbl()` summarizes multiple response variables.
-* `select_group_tbl()` summarizes multiple response variables by a group or pattern.
+* `select_tbl()` summarizes multiple response and ordinal variables.
+* `select_group_tbl()` summarizes multiple response and ordinal variables by a group or pattern.
 
 For interval and ratio-level variables, use:
 
@@ -145,9 +147,9 @@ cat_group_tbl(data = nlsy_cross_tab,
               ignore = list(race = c("Non-Black,Non-Hispanic", "Hispanic")))
 ```  
 
-## Working with multiple response variables
+## Working with multiple response and ordinal variables
 
-Next, let's explore how to use `select_tbl()` and `select_group_tbl()` functions to summarize multiple response variables. Multiple response variables are commonly used in survey research, psychology, and health sciences to represent items (or questions) where respondents can select more than one option or where several items measure the same underlying concept. Examples include symptom checklists, scales like a depression index with multiple items, or questions allowing respondents to choose all applicable answers.
+Next, let's explore how to use `select_tbl()` and `select_group_tbl()` functions to summarize multiple response and ordinal variables. Multiple response and ordinal variables are commonly used in survey research, psychology, and health sciences. Examples include symptom checklists, scales like a depression index with multiple items, or questions allowing respondents to select all choices that apply to them.
 
 For example, the `depressive` dataset contains eight variables that share the same variable stem: `dep`, with each one representing a different item used to measure depression.
 
@@ -186,7 +188,7 @@ select_tbl(data = depressive,
            pivot = "wider")
 ```
 
-It's common practice to group multiple response variables by another variable. This type of descriptive analysis allows for meaningful comparisons across different segments of your dataset. With `select_group_tbl()`, you can create a summary table for multiple response variables, grouped either by another variable in your dataset or by matching a pattern in the variable names. For example, we often want to summarize survey responses by race.
+It's common practice to group multiple response or ordinal variables by another variable. This type of descriptive analysis allows for meaningful comparisons across different segments of your dataset. With `select_group_tbl()`, you can create a summary table for multiple response and ordinal variables, grouped either by another variable in your dataset or by matching a pattern in the variable names. For example, we often want to summarize survey responses by race.
 
 First, recode the `race` variable and the values for each of the eight depressive index variables in the `depressive` dataset, replacing numeric categories with descriptive string labels for easier interpretation.
 

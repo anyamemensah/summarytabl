@@ -78,9 +78,11 @@ multi-response variable.
 }
 \description{
 \code{select_tbl()} displays frequency counts and percentages
-(i.e., count and percent) for multiple response variables, including
-binary variables (such as Unselected/Selected) and ordinal variables
-(such as responses ranging from strongly disagree to strongly agree).
+for multiple response variables (e.g., a series of questions where
+participants answer "Yes" or "No" to each item) as well as ordinal
+variables (such as Likert or Likert-type items with responses ranging
+from "Strongly Disagree" to "Strongly Agree", where respondents select
+one response per statement, question, or item).
 }
 \examples{
 select_tbl(data = tas,

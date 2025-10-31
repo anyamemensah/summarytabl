@@ -117,12 +117,14 @@ a multi-response variable, grouped either by a specified variable in the
 dataset or by matching patterns in variable names.
 }
 \description{
-\code{select_group_tbl()} displays frequency counts and percentages
-(i.e., count and percent) for multiple response variables, including binary
-variables (such as Unselected/Selected) and ordinal variables (such as
-responses ranging from strongly disagree to strongly agree), grouped either
-by another variable in your dataset or by a matched pattern in the variable
-names.
+\code{select_group_tbl()} displays frequency counts and
+percentages for multiple response variables (e.g., a series of
+questions where participants answer "Yes" or "No" to each item) as
+well as ordinal variables (such as Likert or Likert-type items with
+responses ranging from "Strongly Disagree" to "Strongly Agree", where
+respondents select one response per statement, question, or item),
+grouped either by another variable in your dataset or by a matched
+pattern in the variable names.
 }
 \examples{
 select_group_tbl(data = stem_social_psych,

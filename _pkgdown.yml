@@ -39,7 +39,7 @@ reference:
     contents:
       - cat_tbl
       - cat_group_tbl
-  - title: Ordinal data
+  - title: Multiple-response and ordinal data
     desc: Functions that summarize multiple-response and ordinal data.
     contents:
       - select_tbl
