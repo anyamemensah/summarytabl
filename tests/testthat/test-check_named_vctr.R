@@ -1,14 +1,18 @@
 # Test check_named_vctr
 
 test_that("Expected output: NULL, numeric vector", {
-  observed <-
+  observed1 <-
     check_named_vctr(x = c(one = 1, two = 2, 3),
                      names = c("one", "two", "three"),
                      default = NULL)
   
-  expected <- NULL
+  expected1 <- NULL
   
-  expect_equal(observed, expected)
+  observed2 <- check_named_vctr(x = c(1, 2, 3), names = c("a", "b", "c"), default = "default")
+  expected2 <- "default"
+  
+  expect_equal(observed1, expected1)
+  expect_equal(observed2, expected2)
 })
 
 test_that("Expected output: named vector, numeric vector", {
@@ -248,20 +252,21 @@ test_that("check_invalid_list_values", {
   observed3 <- check_invalid_list_values(list("A"))
   expected3 <- TRUE
   
-  observed4 <- check_invalid_list_values(
-    list(a = "apple", b = c("banana"))
-    )
+  observed4 <- check_invalid_list_values(list(a = "apple", b = c("banana")))
   expected4 <- FALSE
   
-  observed5 <- check_invalid_list_values(
-    list(a = "apple", b = NA)
-  )
+  observed5 <- check_invalid_list_values(list(a = "apple", b = NA))
   expected5 <- TRUE
   
+  observed6 <- check_invalid_list_values(list(a = "apple", b = NULL))
+  expected6 <- TRUE 
+
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
   expect_equal(observed4, expected4)
+  expect_equal(observed5, expected5)
+  expect_equal(observed6, expected6)
 })
   
 
@@ -275,9 +280,13 @@ test_that("check_invalid_values", {
   observed3 <- check_invalid_values(c(a = "apple", b = NA))
   expected3 <- TRUE
   
+  observed4 <- check_invalid_values(c("apple", b = "banana"))
+  expected4 <- TRUE
+  
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
   expect_equal(observed3, expected3)
+  expect_equal(observed4, expected4)
 })
 
 

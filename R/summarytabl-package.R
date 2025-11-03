@@ -27,6 +27,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang !!
 #' @importFrom rlang :=
+#' @importFrom rlang caller_env
 #' @importFrom rlang new_formula
 #' @importFrom rlang sym
 #' @importFrom stats na.omit

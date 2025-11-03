@@ -1,0 +1,1 @@
+.summarytabl <- new.env(parent = emptyenv())

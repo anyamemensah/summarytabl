@@ -166,6 +166,9 @@ select_group_tbl <- function(data,
                              var_labels = NULL,
                              ignore = NULL,
                              force_pivot = FALSE) {
+  set_call()
+  on.exit({ .summarytabl$env <- NULL }, add = TRUE)
+  
   args <- list(
     data = data,
     table_type = "select",
@@ -189,8 +192,7 @@ select_group_tbl <- function(data,
     only = only,
     var_labels = var_labels,
     ignore = ignore,
-    force_pivot = force_pivot,
-    .main_env = environment()
+    force_pivot = force_pivot
   )
   
   checks <- check_select_group_args(args)
@@ -207,7 +209,6 @@ select_group_tbl <- function(data,
   check_only <- checks$only
   check_force_pivot <- checks$force_pivot
   check_table_type <- checks$table_type
-  check_env <- checks$env
   
   data_sub <- checks$df[c(check_group_var, check_cols)]
   
@@ -251,8 +252,7 @@ select_group_tbl <- function(data,
         tabl = select_group_tabl,
         var_col = "variable",
         values_col = "values",
-        allow_overide = check_force_pivot, 
-        .main_env = check_env)) {
+        allow_override = check_force_pivot)) {
     id_cols <- 
       if (check_group_type == "pattern") {
         c("variable", check_group_var)
@@ -291,8 +291,7 @@ select_group_tbl <- function(data,
         variable,
         !!!generate_tbl_key(
           values_from = names(check_col_labels),
-          values_to = unname(check_col_labels), 
-          .main_env = check_env),
+          values_to = unname(check_col_labels)),
         .default = variable
       )) |>
       dplyr::relocate(variable_label, .after = variable)

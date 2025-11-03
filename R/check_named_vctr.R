@@ -59,7 +59,7 @@ check_named_vctr.list <- function(x, names, default) {
     return(default)
   }
 
-  if (!all(names(x) %in% validated_names)) {
+  if (is.null(names(x)) || !all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -81,7 +81,7 @@ check_named_vctr.logical <- function(x, names, default) {
     return(default)
   }
 
-  if (!all(names(x) %in% validated_names)) {
+  if (is.null(names(x)) || !all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -104,7 +104,7 @@ check_named_vctr.character <- function(x, names, default) {
     return(default)
   }
 
-  if (!all(names(x) %in% validated_names)) {
+  if (is.null(names(x)) || !all(names(x) %in% validated_names)) {
     return(default)
   }
 
@@ -122,12 +122,12 @@ check_named_vctr.numeric <- function(x, names, default) {
   if (check_invalid_values(x)) {
     return(default)
   }
-
+  
   if (length(x) != length(validated_names)) {
     return(default)
   }
-
-  if (!all(names(x) %in% validated_names)) {
+  
+  if (is.null(names(x)) || !all(names(x) %in% validated_names)) {
     return(default)
   }
 

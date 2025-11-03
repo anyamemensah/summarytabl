@@ -56,6 +56,9 @@ cat_group_tbl <- function(data,
                           pivot = "longer",
                           only = NULL,
                           ignore = NULL) {
+  set_call()
+  on.exit({ .summarytabl$env <- NULL }, add = TRUE)
+  
   args <- list(
     data = data,
     table_type = "cat",
@@ -72,8 +75,7 @@ cat_group_tbl <- function(data,
     label_na_rm_col = "na.rm.col_var",
     pivot = pivot,
     only = only,
-    ignore = ignore,
-    .main_env = environment()
+    ignore = ignore
   )
   
   checks <- check_cat_group_args(args)

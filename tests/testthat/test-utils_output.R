@@ -710,20 +710,17 @@ test_that("Warning: override pivot wider", {
   
   observed1 <-
   suppressWarnings({override_pivot(tabl = sample_tbl, var_col = "variable", 
-                                   values_col = "values", allow_overide = FALSE, 
-                                   .main_env = environment())})
+                                   values_col = "values", allow_override = FALSE)})
   observed2 <-
   override_pivot(tabl = sample_tbl, var_col = "variable", 
-                 values_col = "values", allow_overide = TRUE, 
-                 .main_env = environment())
+                 values_col = "values", allow_override = TRUE)
   
   expected1 <- FALSE
   expected2 <- TRUE
   
   expect_snapshot(error = FALSE, {
     override_pivot(tabl = sample_tbl, var_col = "variable", 
-                   values_col = "values", allow_overide = FALSE,
-                   .main_env = environment())
+                   values_col = "values", allow_override = FALSE)
   })
   
   expect_equal(observed1, expected1)

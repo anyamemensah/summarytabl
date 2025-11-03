@@ -1,6 +1,6 @@
 #### Utility functions used to generate function outputs
 # Function that validates variable data types (also used in inputs)
-check_data_types <- function(data, cols, table_type, allowed_type, arg_name, .main_env) {
+check_data_types <- function(data, cols, table_type, allowed_type, arg_name) {
   valid_types <- return_data_types(table_type)[[allowed_type]]
   
   dtypes <- sapply(cols, function(x) get_data_type(data[[x]]))
@@ -11,7 +11,7 @@ check_data_types <- function(data, cols, table_type, allowed_type, arg_name, .ma
       "i" = paste("The {.arg {arg_name}} argument has returned a column",
             "containing an unsupported data type: {.val {cols}}."),
       "i" = "Allowed types: {.cls {unname(valid_types)}}."),
-      call = .main_env)
+      call = get_call())
   }
   
   invalid_cols <- names(dtypes)[!unlist(dtypes) %in% names(valid_types)]
@@ -22,7 +22,7 @@ check_data_types <- function(data, cols, table_type, allowed_type, arg_name, .ma
       "i" = paste("One or more columns returned using the {.arg {arg_name}} argument",
                   "contain an unsupported data type: {.val {invalid_cols}}."),
       "i" = "Allowed types: {.cls {valid_types}}."),
-      call = .main_env)
+      call = get_call())
   }
   
   return(list(valid = TRUE, dtype = dtypes))
@@ -38,8 +38,7 @@ extract_group_info <- function(group,
                                cols,
                                data,
                                table_type,
-                               allowed_type,
-                               .main_env) {
+                               allowed_type) {
   grp_dtype <- NULL
   
   if (group_type == "pattern") {
@@ -55,7 +54,7 @@ extract_group_info <- function(group,
         "i" = paste("The value provided to the {.arg group} argument did not produce",
                     "a unique or expected set of column names in {.arg data}.",
                     "Please check for typos, spelling mistakes, or invalid characters.")),
-        call = .main_env)
+        call = get_call())
     }
     
   } else {
@@ -84,8 +83,7 @@ extract_var_stem_info <- function(data,
                                   var_stem_labels,
                                   regex_stem,
                                   ignore_stem_case,
-                                  table_type,
-                                  .main_env) {
+                                  table_type) {
   find_exact_match <- var_input == "name"
   
   cols <- get_valid_cols(data,
@@ -93,16 +91,14 @@ extract_var_stem_info <- function(data,
                          var_input,
                          regex_stem,
                          ignore_stem_case,
-                         find_exact_match,
-                         .main_env)
+                         find_exact_match)
   
   dtypes <- 
     check_data_types(data = data,
                      cols = cols, 
                      table_type = table_type,
                      allowed_type = valid_var_type,
-                     arg_name = var_label, 
-                     .main_env = .main_env)
+                     arg_name = var_label)
   
   var_labels <- check_var_labels(cols, var_stem_labels)
   var_stem_map <- check_stem_mapping(cols, var_stem, var_input)
@@ -137,8 +133,7 @@ extract_group_var_stem_info <- function(data,
                                         regex_group,
                                         ignore_group_case,
                                         var_stem_labels,
-                                        table_type,
-                                        .main_env) { 
+                                        table_type) { 
   find_exact_match <- var_input == "name"
   
   cols <- get_valid_cols(data,
@@ -146,8 +141,7 @@ extract_group_var_stem_info <- function(data,
                          var_input,
                          regex_stem,
                          ignore_stem_case,
-                         find_exact_match,
-                         .main_env)
+                         find_exact_match)
   
   group_info <- 
     extract_group_info(group,
@@ -157,16 +151,14 @@ extract_group_var_stem_info <- function(data,
                        cols,
                        data,
                        table_type,
-                       valid_grp_type,
-                       .main_env)
+                       valid_grp_type)
   
   col_dtypes <- 
     check_data_types(data = data,
                      cols = cols, 
                      table_type = table_type,
                      allowed_type = valid_var_type,
-                     arg_name = var_label,
-                     .main_env = .main_env)
+                     arg_name = var_label)
   
   var_labels <- check_var_labels(cols, var_stem_labels)
   var_stem_map <- check_stem_mapping(cols, var_stem, var_input)
@@ -187,12 +179,12 @@ extract_group_var_stem_info <- function(data,
 
 
 # Function that checks the structure of the 'ignore' argument
-check_ignore_struct <- function(ignore, table_type, group_func, .main_env) {
+check_ignore_struct <- function(ignore, table_type, group_func) {
   if (!is.null(ignore) && !(is.vector(ignore) || is.list(ignore))) { 
     cli::cli_abort(c(
       "Invalid {.arg ignore} argument.",
       "i" = "The {.arg ignore} argument must be a {.cls vector}, {.cls list}, or {.cls NULL}"),
-      call = .main_env)
+      call = get_call())
   }
   
   named_required <- !(table_type == "cat" && group_func == FALSE)
@@ -210,14 +202,14 @@ check_ignore_struct <- function(ignore, table_type, group_func, .main_env) {
 
 
 # Function that validates returned columns
-check_returned_cols <- function(x, label, var_input, .main_env) {
+check_returned_cols <- function(x, label, var_input) {
   input_val <- if (var_input == "name") "names" else "variable stems"
 
   if (!is.character(x) || length(x) == 0) {
     cli::cli_abort(c(
       "Invalid {.arg var_stem} argument.",
       "i" = "No matching columns found for the following {input_val}: {.val {label}}."),
-      call = .main_env)
+      call = get_call())
   }
   
   col_has_invalid_chars <- sapply(x, string_has_invalid_chars)
@@ -228,7 +220,7 @@ check_returned_cols <- function(x, label, var_input, .main_env) {
         paste("One or more columns returned using the variable stem {.val {label}}",
               "contain invalid characters: {.val {invalid_names}}"),
         "i" = "Column names must only include letters, digits, periods (.), or underscores (_)."), 
-        call = .main_env)
+        call = get_call())
   }
 }
 
@@ -238,8 +230,7 @@ get_valid_cols <- function(data,
                            var_input,
                            regex_stem,
                            ignore_stem_case,
-                           find_exact_match,
-                           .main_env) {
+                           find_exact_match) {
   cols <- 
     find_columns(data = data,
                  var_stem = var_stem,
@@ -247,7 +238,7 @@ get_valid_cols <- function(data,
                  ignore.case = ignore_stem_case,
                  exact = find_exact_match)
   
-  check_returned_cols(cols, var_stem, var_input, .main_env)
+  check_returned_cols(cols, var_stem, var_input)
   
   return(cols)
 }
@@ -394,14 +385,14 @@ find_columns <- function(data,
 
 # Function that generates a list of two-sided formulas that map 
 # values from one set to another
-generate_tbl_key <- function(values_from, values_to, string = TRUE, .main_env) {
+generate_tbl_key <- function(values_from, values_to, string = TRUE) {
   value_lengths <- vapply(list(values_from, values_to), length, numeric(1))
   
   if (!(value_lengths[[1]] == value_lengths[[2]])) {
     cli::cli_abort(c(
       "Error constructing key to create variable labels column.",
       "i" = "`values_from` and `values_to` must be the same length."),
-      call = .main_env)
+      call = get_call())
   }
   
   if (string) {
@@ -633,7 +624,7 @@ return_data_types <- function(table_type) {
 # Function to override the 'pivot' argument when at least one variable 
 # in 'tabl' contains different values. This function applies only to 
 # the select_* functions.
-override_pivot <- function(tabl, var_col, values_col, allow_overide, .main_env) {
+override_pivot <- function(tabl, var_col, values_col, allow_override) {
   value_list <- split(tabl[[values_col]], tabl[[var_col]])
   value_list <- lapply(value_list, function(x) sort(unique(x)))
   
@@ -641,7 +632,7 @@ override_pivot <- function(tabl, var_col, values_col, allow_overide, .main_env) 
   i <- 2
   override <- TRUE
   
-  if (allow_overide) {return(override)}
+  if (allow_override) {return(override)}
   
   while (i <= length(value_list)) {
     if (!identical(first_levels, value_list[[i]])) {
@@ -651,7 +642,7 @@ override_pivot <- function(tabl, var_col, values_col, allow_overide, .main_env) 
               "{.val wider} format has been disabled. The table will be",
               "displayed in the {.val longer} format instead. To override",
               "this behavior and force pivoting, set {.code force_pivot = TRUE}.")),
-        call = .main_env)
+        call = get_call())
       break
     }
     i <- i + 1

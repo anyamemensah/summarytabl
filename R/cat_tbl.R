@@ -32,6 +32,9 @@
 #'
 #' @export
 cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
+  set_call()
+  on.exit({ .summarytabl$env <- NULL }, add = TRUE)
+  
   args <- list(
     data = data,
     table_type = "cat",
@@ -42,8 +45,7 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
     na.rm = na.rm,
     label_na_rm = "na.rm",
     only = only,
-    ignore = ignore,
-    .main_env = environment()
+    ignore = ignore
   )
   
   checks <- check_cat_args(args)
@@ -53,7 +55,6 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   check_only <- checks$only$only
   check_dtype <- checks$dtype$dtype
   check_table_type <- checks$table_type$table_type
-  check_env <- checks$env
   
   data_sub <- checks$data$df[check_var_name]
 

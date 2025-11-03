@@ -82,9 +82,9 @@
 
     Code
       override_pivot(tabl = sample_tbl, var_col = "variable", values_col = "values",
-        allow_overide = FALSE, .main_env = environment())
+        allow_override = FALSE)
     Condition
-      Warning:
+      Warning in `override_pivot()`:
       Some variables have different values, so pivoting to the "wider" format has been disabled. The table will be displayed in the "longer" format instead. To override this behavior and force pivoting, set `force_pivot = TRUE`.
     Output
       [1] FALSE
