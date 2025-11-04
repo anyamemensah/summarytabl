@@ -10,11 +10,11 @@
 #' pattern in the variable names. 
 #'
 #' @param data A data frame.
-#' @param var_stem A character vector containing at least one element, 
-#' each representing either a variable stem or a full variable name found 
-#' in `data`. A variable 'stem' is a shared naming pattern across related 
-#' variables, often representing repeated measures of the same concept or 
-#' a series of items measuring a single construct.
+#' @param var_stem A character vector with one or more elements, where each 
+#' represents either a variable stem or the complete name of a variable present 
+#' in `data`. A variable 'stem' refers to a common naming pattern shared among 
+#' related variables, typically reflecting repeated measures of the same idea 
+#' or a group of items assessing a single concept.
 #' @param var_input A character string specifying whether the values supplied 
 #' to `var_stem` should be treated as variable stems (`stem`) or as complete 
 #' variable names (`name`). By default, this is set to `stem`, so the function 
@@ -48,8 +48,8 @@
 #' pattern (if `group_type` is `pattern`) should be case-insensitive. Default is 
 #' `FALSE`. Set to `TRUE` to ignore case. 
 #' @param remove_group_non_alnum A logical value indicating whether to remove 
-#' all non-alphanumeric characters (i.e., anything that is not a letter or number) 
-#' from `group`. Default is `TRUE`.
+#' all non-alphanumeric characters (i.e., anything that is not a letter or 
+#' number) from `group`. Default is `TRUE`.
 #' @param na_removal A character string that specifies the method for handling 
 #' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
 #' @param pivot A character string that determines the format of the table. By 

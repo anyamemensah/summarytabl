@@ -37,6 +37,6 @@ Subset of data from the National Longitudinal Survey of Youth
 (NLSY) 1979 Children and Young Adults. This dataset includes survey responses
 about feelings and behaviors linked to depressive symptoms in children and
 young adults. For more information about the National Longitudinal Survey of
-Youth, visit: \href{https://www.nlsinfo.org/}{https://www.nlsinfo.org/}.
+Youth, visit: \url{https://www.nlsinfo.org/}.
 }
 \keyword{datasets}

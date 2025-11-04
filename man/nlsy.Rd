@@ -29,6 +29,6 @@ These data are a subset from the National Longitudinal Survey of Youth
 variables.
 
 For more information about the National Longitudinal Survey of Youth,
-visit https://www.nlsinfo.org/.
+visit \url{https://www.nlsinfo.org/}.
 }
 \keyword{datasets}

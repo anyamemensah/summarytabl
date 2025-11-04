@@ -145,9 +145,9 @@ check_select_args <- function(args) {
   list(
     df = shared_results$data$df,
     var_stem = names(col_info_results),
+    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     cols = pluck_cols(col_info_results, "var_stem", "cols"),
     col_labels = pluck_var_labels(col_info_results, "var_stem", "var_labels"),
-    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     na_removal = shared_results$na_rm$na_removal,
     pivot = shared_results$pivot$pivot,
     only = shared_results$only$only,
@@ -252,6 +252,7 @@ check_select_group_args <- function(args) {
   list(
     df = shared_results$data$df,
     var_stem = names(col_info_results),
+    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     cols = pluck_cols(col_info_results, "var_stem", "cols"),
     col_labels = pluck_var_labels(col_info_results, "var_stem", "var_labels"),
     group_var = shared_results$group_var$group_var,
@@ -261,7 +262,6 @@ check_select_group_args <- function(args) {
     regex_group = shared_results$regex_group$x,
     ignore_group_case = shared_results$ignore_group_case$x,
     remove_group_non_alnum = shared_results$remove_group_non_alnum$x,
-    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     na_removal = shared_results$na_rm$na_removal,
     pivot = shared_results$pivot$pivot,
     only = shared_results$only$only,
@@ -329,9 +329,9 @@ check_mean_args <- function(args) {
   list(
     df = shared_results$data$df,
     var_stem = names(col_info_results),
+    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     cols = pluck_cols(col_info_results, "var_stem", "cols"),
     col_labels = pluck_var_labels(col_info_results, "var_stem", "var_labels"),
-    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     na_removal = shared_results$na_rm$na_removal,
     only = shared_results$only$only,
     ignore = shared_results$ignore,
@@ -427,6 +427,7 @@ check_mean_group_args <- function(args) {
   list(
     df = shared_results$data$df,
     var_stem = names(col_info_results),
+    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     cols = pluck_cols(col_info_results, "var_stem", "cols"),
     col_labels = pluck_var_labels(col_info_results, "var_stem", "var_labels"),
     group_var = shared_results$group_var$group_var,
@@ -435,7 +436,6 @@ check_mean_group_args <- function(args) {
     regex_group = shared_results$regex_group$x,
     ignore_group_case = shared_results$ignore_group_case$x,
     remove_group_non_alnum = shared_results$remove_group_non_alnum$x,
-    var_stem_map = pluck_stem_map(col_info_results, "var_stem", "var_stem_map"),
     na_removal = shared_results$na_rm$na_removal,
     only = shared_results$only$only,
     ignore = shared_results$ignore,
