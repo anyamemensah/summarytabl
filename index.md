@@ -5,7 +5,7 @@
 [![R-CMD-check](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**summarytabl**  is an R package that provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames. Whether you're exploring your data or preparing a report, **summarytabl**  helps you quickly generate clear, structured summaries, so you can spend less time wrangling data and more time interpreting it.
+**summarytabl** is a lightweight package that simplifies tabulating and summarizing categorical, multiple response, ordinal, and continuous variables. 
 
 ## Installation
 
@@ -28,9 +28,9 @@ For more information on how to use the package, please read the [Introduction to
 
 ## Support us
 
-If this package has been helpful in your work and you’d like to see it continue to grow, consider supporting its development by:
+If this package has been helpful in your work and you'd like to see it continue to grow, consider supporting its development by:
 
-* Scheduling a consulting session with Ama Nyame-Mensah (<ama@anyamemensah.com>) to learn how to integrate summarytabl into your projects.
+* Scheduling a consulting session with Ama Nyame-Mensah (<ama@anyamemensah.com>) to learn how to integrate **summarytabl** into your projects.
 * [Citing](https://anyamemensah.github.io/summarytabl/authors.html#citation) the package.
 * Contributing to the documentation by [submitting an issue](https://github.com/anyamemensah/summarytabl/issues) or joining the discussion on a [pull request](https://github.com/anyamemensah/summarytabl/pulls).
 

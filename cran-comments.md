@@ -4,6 +4,7 @@ This minor release (v0.2.0) includes several updates to the existing `summarytab
 
 ### Changes from v0.1.0
 
+* Refined package title and description.
 * Reorganized internal structure by separating helper and utility functions.
 * Added input validation for each variable-type-specific function.
 * Expanded documentation and examples, revised vignette, and added unit tests.

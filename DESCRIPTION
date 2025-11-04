@@ -1,21 +1,21 @@
 Package: summarytabl
 Type: Package
-Title: Generate Summary Tables for Continuous, Ordinal, and Categorical Data
+Title: Generate Summary Tables for Categorical, Ordinal, and Continuous Data
 Version: 0.2.0
 Authors@R: c(
-    person(
-      "Ama", "Nyame-Mensah",
-      email = "ama@anyamemensah.com",
-      role = c("aut", "cre")
-    )
-  )
+    person(given = "Ama", family = "Nyame-Mensah", 
+    email = "ama@anyamemensah.com", role = c("aut", "cre")))
 Maintainer: Ama Nyame-Mensah <ama@anyamemensah.com>
 URL: https://anyamemensah.github.io/summarytabl/, https://github.com/anyamemensah/summarytabl
 BugReports: https://github.com/anyamemensah/summarytabl/issues
-Description: Provides functions for tabulating and summarizing continuous, ordinal, 
-    and categorical variables in data frames. The package was designed to streamline 
-    exploratory data analysis and simplify the creation of summary tables for reports 
-    and other purposes.
+Description: A lightweight package that simplifies tabulating 
+    and summarizing categorical, multiple response, ordinal, 
+    and continuous variables. All functions take a data frame 
+    (or tibble) as the first argument and return a tibble as 
+    output. Whether you're exploring data or preparing a report, 
+    summarytabl helps you quickly create clear, structured 
+    summaries, so you spend less time wrangling data and more 
+    time interpreting it.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

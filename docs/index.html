@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generate Summary Tables for Continuous, Ordinal, and Categorical Data • summarytabl</title>
+<title>Generate Summary Tables for Categorical, Ordinal, and Continuous Data • summarytabl</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -16,8 +16,8 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Generate Summary Tables for Continuous, Ordinal, and Categorical Data">
-<meta property="og:description" content="Provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames. The package was designed to streamline exploratory data analysis and simplify the creation of summary tables for reports and other purposes.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Generate Summary Tables for Categorical, Ordinal, and Continuous Data">
+<meta property="og:description" content="A lightweight package that simplifies tabulating and summarizing categorical, multiple response, ordinal, and continuous variables. All functions take a data frame (or tibble) as the first argument and return a tibble as output. Whether you're exploring data or preparing a report, summarytabl helps you quickly create clear, structured summaries, so you spend less time wrangling data and more time interpreting it.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -99,7 +99,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><strong>summarytabl</strong> is an R package that provides functions for tabulating and summarizing continuous, ordinal, and categorical variables in data frames. Whether you’re exploring your data or preparing a report, <strong>summarytabl</strong> helps you quickly generate clear, structured summaries, so you can spend less time wrangling data and more time interpreting it.</p>
+<p><strong>summarytabl</strong> is a lightweight package that simplifies tabulating and summarizing categorical, multiple response, ordinal, and continuous variables.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -120,7 +120,7 @@
 </h2>
 <p>If this package has been helpful in your work and you’d like to see it continue to grow, consider supporting its development by:</p>
 <ul>
-<li>Scheduling a consulting session with Ama Nyame-Mensah (<a href="mailto:ama@anyamemensah.com" class="email">ama@anyamemensah.com</a>) to learn how to integrate summarytabl into your projects.</li>
+<li>Scheduling a consulting session with Ama Nyame-Mensah (<a href="mailto:ama@anyamemensah.com" class="email">ama@anyamemensah.com</a>) to learn how to integrate <strong>summarytabl</strong> into your projects.</li>
 <li>
 <a href="https://anyamemensah.github.io/summarytabl/authors.html#citation">Citing</a> the package.</li>
 <li>Contributing to the documentation by <a href="https://github.com/anyamemensah/summarytabl/issues" class="external-link">submitting an issue</a> or joining the discussion on a <a href="https://github.com/anyamemensah/summarytabl/pulls" class="external-link">pull request</a>.</li>

@@ -1,5 +1,5 @@
 
-# summarytabl <img src="man/figures/summarytabl_logo.png" alt="summarytabl package logo" width = "200px" align = "right">
+# summarytabl <img src="man/figures/summarytabl_logo.png" alt="summarytabl package logo" height = "200" align = "right" style = "float:right; height = 100px">
 
 <!-- badges: start -->
 
@@ -8,9 +8,9 @@ status](https://www.r-pkg.org/badges/version/summarytabl)](https://CRAN.R-projec
 [![R-CMD-check](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/anyamemensah/summarytabl/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**summarytabl** is an R package that provides functions for tabulating
-and summarizing continuous, ordinal, and categorical variables in data
-frames.
+**summarytabl** is a lightweight package that simplifies tabulating and
+summarizing categorical, multiple response, ordinal, and continuous
+variables.
 
 ## Installation
 
