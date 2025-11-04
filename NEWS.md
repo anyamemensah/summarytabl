@@ -103,7 +103,7 @@ select_tbl(data = depressive,
 # 9 dep_6       3   368  0.225 
 ```
 
-Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated to a specific stem.
+Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated with a specific stem.
 
 Previous usage: value `3` is not excluded from analysis
 ```r
@@ -286,7 +286,7 @@ mean_tbl(data = sdoh,
 # 1 HHC_PCT_HHA_NURSING  58.2  49.3     0   100  3227
 # 2 HHC_PCT_HHA_AIDE     55.1  48.6     0   100  3227
 ```
-Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated to a specific stem.
+Users are now required to use a named vector or list to indicate which values to exclude for each variable or for variables associated with a specific stem.
 
 Previous usage: value `0` is not excluded from analysis
 
