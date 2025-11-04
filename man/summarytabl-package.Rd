@@ -6,7 +6,7 @@
 \alias{summarytabl-package}
 \title{summarytabl: Generate Summary Tables for Categorical, Ordinal, and Continuous Data}
 \description{
-A lightweight package that simplifies tabulating and summarizing categorical, multiple response, ordinal, and continuous variables. All functions take a data frame (or tibble) as the first argument and return a tibble as output. Whether you're exploring data or preparing a report, summarytabl helps you quickly create clear, structured summaries, so you spend less time wrangling data and more time interpreting it.
+Provides functions for tabulating and summarizing categorical, multiple response, ordinal, and continuous variables in R data frames. Makes it easy to create clear, structured summary tables, so you spend less time wrangling data and more time interpreting it.
 }
 \seealso{
 Useful links:

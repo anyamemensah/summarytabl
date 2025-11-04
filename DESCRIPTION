@@ -8,14 +8,11 @@ Authors@R: c(
 Maintainer: Ama Nyame-Mensah <ama@anyamemensah.com>
 URL: https://anyamemensah.github.io/summarytabl/, https://github.com/anyamemensah/summarytabl
 BugReports: https://github.com/anyamemensah/summarytabl/issues
-Description: A lightweight package that simplifies tabulating 
-    and summarizing categorical, multiple response, ordinal, 
-    and continuous variables. All functions take a data frame 
-    (or tibble) as the first argument and return a tibble as 
-    output. Whether you're exploring data or preparing a report, 
-    summarytabl helps you quickly create clear, structured 
-    summaries, so you spend less time wrangling data and more 
-    time interpreting it.
+Description: Provides functions for tabulating and summarizing 
+    categorical, multiple response, ordinal, and continuous 
+    variables in R data frames. Makes it easy to create clear, 
+    structured summary tables, so you spend less time wrangling 
+    data and more time interpreting it.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
