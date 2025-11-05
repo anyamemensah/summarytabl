@@ -91,7 +91,7 @@ The function returns a tibble with four columns by default:
 * `count`: the number of observations for each combination of `race` and `bthwht` categories.
 * `percent`: the percentage of observations for each combination of `race` and `bthwht` categories, calculated relative to the total
 
-To pivot the output to a wider format, set `pivot = "wider"`. 
+To pivot the output to the wide format, set `pivot = "wider"`. 
 
 ```{r}
 cat_group_tbl(data = nlsy_cross_tab,
@@ -151,7 +151,7 @@ cat_group_tbl(data = nlsy_cross_tab,
 
 Next, let's explore how to use `select_tbl()` and `select_group_tbl()` functions to summarize multiple response and ordinal variables. Multiple response and ordinal variables are commonly used in survey research, psychology, and health sciences. Examples include symptom checklists, scales like a depression index with multiple items, or questions allowing respondents to select all choices that apply to them.
 
-For example, the `depressive` dataset contains eight variables that share the same variable stem: `dep`, with each one representing a different item used to measure depression.
+The `depressive` dataset contains eight variables that share the same variable stem: `dep`, with each one representing a different item used to measure depression.
 
 ```{r}
 names(depressive)
@@ -179,7 +179,7 @@ select_tbl(data = depressive,
            na_removal = "pairwise")
 ```
 
-To display the output in a wide format, set `pivot = "wider"`.
+To display the output in the wide format, set `pivot = "wider"`.
 
 ```{r}
 select_tbl(data = depressive, 
@@ -219,7 +219,7 @@ select_group_tbl(data = dep_recoded,
                  group = "race")
 ```
 
-As with `select_tbl()`, setting the pivot argument to `"wider"` reshapes the table into a wide format, while using `"pairwise"` for the `na_removal` argument ensures missing values are addressed through pairwise deletion.
+As with `select_tbl()`, setting the pivot argument to `"wider"` reshapes the table into the wide format, while using `"pairwise"` for the `na_removal` argument ensures missing values are addressed through pairwise deletion.
 
 ```{r}
 select_group_tbl(data = dep_recoded, 

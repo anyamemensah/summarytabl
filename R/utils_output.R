@@ -40,21 +40,15 @@ extract_group_info <- function(group,
                                table_type,
                                allowed_type) {
   grp_dtype <- NULL
-  cols_cross_no_group <- NULL
+  cols_cross_group <- NULL
   
   if (group_type == "pattern") {
-    cols_no_group <- gsub(pattern = group,
-                          replacement = "",
-                          x = cols,
-                          ignore.case = ignore_group_case,
-                          perl = regex_group)
-    
-    cols_cross_no_group <- 
-      names(which(mapply(function(x, pattern) {
-        length(grep(pattern, x)) > 0
-        }, cols, cols_no_group)))
-    
-    cols_no_group <- unique(cols_no_group)
+    cols_cross_group <- grep(pattern = group, x = cols, value = TRUE)
+    cols_no_group <- unique(gsub(pattern = group,
+                                 replacement = "",
+                                 x = cols_cross_group,
+                                 ignore.case = ignore_group_case,
+                                 perl = regex_group))
     
     if (!is.character(cols_no_group) || length(cols_no_group) == 0 || 
         all(cols_no_group %in% cols)) {
@@ -76,7 +70,7 @@ extract_group_info <- function(group,
     
   }
   
-  return(list(group = group, grp_dtype = grp_dtype, cols = cols_cross_no_group))
+  return(list(group = group, grp_dtype = grp_dtype, cols = cols_cross_group))
 }
 
 
@@ -162,8 +156,7 @@ extract_group_var_stem_info <- function(data,
                        table_type = table_type,
                        allowed_type = valid_grp_type)
   
-  if (group_type == "pattern" && !is.null(group_info) &&
-      !identical(group_info$cols, cols)) {
+  if (group_type == "pattern" && !identical(group_info$cols, cols)) {
     cols <- group_info$cols
   }
   

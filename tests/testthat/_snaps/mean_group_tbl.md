@@ -75,7 +75,7 @@
     Condition
       Error in `mean_group_tbl()`:
       ! Invalid `group` argument.
-      i The value provided to `group`, "URMS", is not a column in `data`. Check for typos, spelling mistakes or invalid characters.
+      i The value provided to `group`, "URMS", is not a column in `data`. Check for typos, spelling mistakes, or invalid characters.
 
 ---
 

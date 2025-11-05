@@ -303,14 +303,16 @@ check_var <- function(var_name, var_label, data) {
 check_var_input <- function(var_input) {
   if (!is.character(var_input) || length(var_input) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg var_input} argument.", "i" = "The {.arg var_input} argument must be a character vector of length one."),
+      c("Invalid {.arg var_input} argument.", 
+        "i" = "The {.arg var_input} argument must be a character vector of length one."),
       call = get_call()
     )
   }
   
   if (!(var_input %in% c("stem", "name"))) {
     cli::cli_abort(
-      c("Invalid {.arg var_input} argument.", "i" = "The {.arg var_input} argument must be one of: {.val stem} or {.val name}."),
+      c("Invalid {.arg var_input} argument.", 
+        "i" = "The {.arg var_input} argument must be one of: {.val stem} or {.val name}."),
       call = get_call()
     )
   }
@@ -325,7 +327,8 @@ check_group_var <- function(group_var,
                             use_regex) {
   if (!is.character(group_var) || length(group_var) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg group} argument.", "i" = "The {.arg group} argument must be a character vector of length one."),
+      c("Invalid {.arg group} argument.", 
+        "i" = "The {.arg group} argument must be a character vector of length one."),
       call = get_call()
     )
   }
@@ -375,7 +378,7 @@ check_group_var <- function(group_var,
         "i" = paste(
           "The value provided to {.arg group}, {.val {group_var}},",
           "is not a column in {.arg data}. Check for typos,",
-          "spelling mistakes or invalid characters."
+          "spelling mistakes, or invalid characters."
         )
       ), call = get_call())
     }
@@ -395,14 +398,16 @@ check_group_var <- function(group_var,
 check_group_type <- function(group_type) {
   if (!is.character(group_type) || length(group_type) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg group_type} argument.", "i" = "The {.arg group_type} argument must be a character vector of length one."),
+      c("Invalid {.arg group_type} argument.", 
+        "i" = "The {.arg group_type} argument must be a character vector of length one."),
       call = get_call()
     )
   }
   
   if (!(group_type %in% c("pattern", "variable"))) {
     cli::cli_abort(
-      c("Invalid {.arg group_type} argument.", "i" = "The {.arg group_type} argument must be one of: {.val pattern} or {.val variable}."),
+      c("Invalid {.arg group_type} argument.", 
+        "i" = "The {.arg group_type} argument must be one of: {.val pattern} or {.val variable}."),
       call = get_call()
     )
   }

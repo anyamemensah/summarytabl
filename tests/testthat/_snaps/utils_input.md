@@ -246,7 +246,7 @@
     Condition
       Error in `check_group_var()`:
       ! Invalid `group` argument.
-      i The value provided to `group`, "boop", is not a column in `data`. Check for typos, spelling mistakes or invalid characters.
+      i The value provided to `group`, "boop", is not a column in `data`. Check for typos, spelling mistakes, or invalid characters.
 
 # check 'group_type' argument
 

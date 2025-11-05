@@ -244,7 +244,7 @@ of <code>race</code> and <code>bthwht</code> categories.</li>
 combination of <code>race</code> and <code>bthwht</code> categories,
 calculated relative to the total</li>
 </ul>
-<p>To pivot the output to a wider format, set
+<p>To pivot the output to the wide format, set
 <code>pivot = "wider"</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cat_group_tbl.html">cat_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy_cross_tab</span>,</span>
@@ -355,9 +355,9 @@ commonly used in survey research, psychology, and health sciences.
 Examples include symptom checklists, scales like a depression index with
 multiple items, or questions allowing respondents to select all choices
 that apply to them.</p>
-<p>For example, the <code>depressive</code> dataset contains eight
-variables that share the same variable stem: <code>dep</code>, with each
-one representing a different item used to measure depression.</p>
+<p>The <code>depressive</code> dataset contains eight variables that
+share the same variable stem: <code>dep</code>, with each one
+representing a different item used to measure depression.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">depressive</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "cid"   "race"  "sex"   "yob"   "dep_1" "dep_2" "dep_3" "dep_4" "dep_5"</span></span>
@@ -421,7 +421,7 @@ switch to pairwise deletion instead, set
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dep_3         3    55  0.033<span style="text-decoration: underline;">3</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_4         1   611  0.371 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
-<p>To display the output in a wide format, set
+<p>To display the output in the wide format, set
 <code>pivot = "wider"</code>.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_tbl.html">select_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">depressive</span>, </span>
@@ -489,9 +489,9 @@ responses for all eight variables by <code>race</code>:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> dep_2    Black                  hardly ever   234  0.146 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 62 more rows</span></span></span></code></pre>
 <p>As with <code><a href="../reference/select_tbl.html">select_tbl()</a></code>, setting the pivot argument to
-<code>"wider"</code> reshapes the table into a wide format, while using
-<code>"pairwise"</code> for the <code>na_removal</code> argument ensures
-missing values are addressed through pairwise deletion.</p>
+<code>"wider"</code> reshapes the table into the wide format, while
+using <code>"pairwise"</code> for the <code>na_removal</code> argument
+ensures missing values are addressed through pairwise deletion.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/select_group_tbl.html">select_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dep_recoded</span>, </span>
 <span>                 var_stem <span class="op">=</span> <span class="st">"dep"</span>,</span>
