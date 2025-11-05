@@ -20,17 +20,6 @@
       i One or more columns returned using the `var_stem` argument contain an unsupported data type: "var_1" and "var.2".
       i Allowed types: <numeric/POSIXt/POSIXct/POSIXlt/difftime/Date>.
 
-# extract group information
-
-    Code
-      extract_group_info(group = "_\\d", group_type = "pattern", ignore_group_case = FALSE,
-        regex_group = FALSE, cols = c("var_1", "var_4", "var_10"), data = test_data,
-        table_type = "select", allowed_type = "valid_grp_types")
-    Condition
-      Error in `extract_group_info()`:
-      ! Invalid `group` argument.
-      i The value provided to the `group` argument did not produce a unique or expected set of column names in `data`. Please check for typos, spelling mistakes, or invalid characters.
-
 # check returned columns
 
     Code
@@ -52,8 +41,8 @@
 # get valid columns
 
     Code
-      get_valid_cols(data = depressive, var_stem = "bloop", var_input = "name",
-        regex_stem = FALSE, ignore_stem_case = FALSE, find_exact_match = TRUE)
+      get_valid_cols(cols = colnames(depressive), var_stem = "bloop", var_input = "name",
+      regex_stem = FALSE, ignore_stem_case = FALSE, find_exact_match = TRUE)
     Condition
       Error in `check_returned_cols()`:
       ! Invalid `var_stem` argument.
@@ -62,8 +51,8 @@
 ---
 
     Code
-      get_valid_cols(data = depressive, var_stem = "bloop", var_input = "stem",
-        regex_stem = FALSE, ignore_stem_case = FALSE, find_exact_match = TRUE)
+      get_valid_cols(cols = colnames(depressive), var_stem = "bloop", var_input = "stem",
+      regex_stem = FALSE, ignore_stem_case = FALSE, find_exact_match = TRUE)
     Condition
       Error in `check_returned_cols()`:
       ! Invalid `var_stem` argument.

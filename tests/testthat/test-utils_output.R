@@ -76,24 +76,17 @@ test_that("extract group information", {
       table_type = "select", 
       allowed_type = "valid_grp_types")
 
-  expected1 <- list(group = "race", grp_dtype = list(valid = TRUE, dtype = c(race = "character")))
-  expected2 <- list(group = "_\\d", grp_dtype = NULL)
+  expected1 <- 
+    list(group = "race",
+         grp_dtype = list(valid = TRUE, dtype = c(race = "character")),
+         cols = NULL)
+  expected2 <-
+    list(group = "_\\d", 
+         grp_dtype = NULL, 
+         cols = c("dep_1", "dep_2", "dep_3"))
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
-  
-  
-  expect_snapshot(error = TRUE, {
-    extract_group_info(
-      group = "_\\d",
-      group_type = "pattern", 
-      ignore_group_case = FALSE, 
-      regex_group = FALSE,
-      cols = c("var_1", "var_4", "var_10"),
-      data = test_data, 
-      table_type = "select", 
-      allowed_type = "valid_grp_types")
-  })
 })
 
 
@@ -133,13 +126,13 @@ test_that("check returned columns", {
 
 
 test_that("get valid columns", {
-  observed1 <- get_valid_cols(data = depressive,
+  observed1 <- get_valid_cols(cols = colnames(depressive),
                               var_stem = "dep",
                               var_input = "stem",
                               regex_stem = FALSE,
                               ignore_stem_case = FALSE,
                               find_exact_match = FALSE)
-  observed2 <- get_valid_cols(data = depressive,
+  observed2 <- get_valid_cols(cols = colnames(depressive),
                               var_stem = "dep_2",
                               var_input = "name",
                               regex_stem = FALSE,
@@ -153,7 +146,7 @@ test_that("get valid columns", {
   expect_equal(observed2, expected2)
   
   expect_snapshot(error = TRUE, {
-    get_valid_cols(data = depressive,
+    get_valid_cols(cols = colnames(depressive),
                    var_stem = "bloop",
                    var_input = "name",
                    regex_stem = FALSE,
@@ -162,7 +155,7 @@ test_that("get valid columns", {
   })
   
   expect_snapshot(error = TRUE, {
-    get_valid_cols(data = depressive,
+    get_valid_cols(cols = colnames(depressive),
                    var_stem = "bloop",
                    var_input = "stem",
                    regex_stem = FALSE,
@@ -355,15 +348,15 @@ test_that("extract ignore_map", {
 
 test_that("find_columns", {
   observed1 <- 
-    find_columns(data = stem_social_psych, var_stem = "belong_belong")
+    find_columns(cols = colnames(stem_social_psych), var_stem = "belong_belong")
   expected1 <- c("belong_belongStem_w1", "belong_belongStem_w2")
   
   observed2 <- 
-    find_columns(data = social_psy_data, var_stem = "identity")
+    find_columns(cols = colnames(social_psy_data), var_stem = "identity")
   expected2 <- c("identity_1", "identity_2", "identity_3", "identity_4")
   
   observed3 <- 
-    find_columns(data = social_psy_data, var_stem = "NANA")
+    find_columns(cols = colnames(social_psy_data), var_stem = "NANA")
   expected3 <- character(0)
   
   expect_equal(observed1, expected1)

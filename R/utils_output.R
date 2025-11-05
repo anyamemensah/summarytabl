@@ -40,14 +40,23 @@ extract_group_info <- function(group,
                                table_type,
                                allowed_type) {
   grp_dtype <- NULL
+  cols_cross_no_group <- NULL
   
   if (group_type == "pattern") {
-    cols_no_group <- unique(gsub(pattern = group, 
-                                 replacement = "", x = cols,
-                                 ignore.case = ignore_group_case, 
-                                 perl = regex_group))
+    cols_no_group <- gsub(pattern = group,
+                          replacement = "",
+                          x = cols,
+                          ignore.case = ignore_group_case,
+                          perl = regex_group)
     
-    if (!is.character(cols_no_group) || length(cols_no_group) != 1 || 
+    cols_cross_no_group <- 
+      names(which(mapply(function(x, pattern) {
+        length(grep(pattern, x)) > 0
+        }, cols, cols_no_group)))
+    
+    cols_no_group <- unique(cols_no_group)
+    
+    if (!is.character(cols_no_group) || length(cols_no_group) == 0 || 
         all(cols_no_group %in% cols)) {
       cli::cli_abort(c(
         "Invalid {.arg group} argument.",
@@ -67,7 +76,7 @@ extract_group_info <- function(group,
     
   }
   
-  return(list(group = group, grp_dtype = grp_dtype))
+  return(list(group = group, grp_dtype = grp_dtype, cols = cols_cross_no_group))
 }
 
 
@@ -86,12 +95,12 @@ extract_var_stem_info <- function(data,
                                   table_type) {
   find_exact_match <- var_input == "name"
   
-  cols <- get_valid_cols(data,
-                         var_stem,
-                         var_input,
-                         regex_stem,
-                         ignore_stem_case,
-                         find_exact_match)
+  cols <- get_valid_cols(cols = colnames(data),
+                         var_stem = var_stem,
+                         var_input = var_input,
+                         regex_stem = regex_stem,
+                         ignore_stem_case = ignore_stem_case,
+                         find_exact_match = find_exact_match)
   
   dtypes <- 
     check_data_types(data = data,
@@ -136,22 +145,27 @@ extract_group_var_stem_info <- function(data,
                                         table_type) { 
   find_exact_match <- var_input == "name"
   
-  cols <- get_valid_cols(data,
-                         var_stem,
-                         var_input,
-                         regex_stem,
-                         ignore_stem_case,
-                         find_exact_match)
+  cols <- get_valid_cols(cols = colnames(data),
+                         var_stem = var_stem,
+                         var_input = var_input,
+                         regex_stem = regex_stem,
+                         ignore_stem_case = ignore_stem_case,
+                         find_exact_match = find_exact_match)
   
   group_info <- 
-    extract_group_info(group,
-                       group_type,
-                       ignore_group_case,
-                       regex_group,
-                       cols,
-                       data,
-                       table_type,
-                       valid_grp_type)
+    extract_group_info(group = group,
+                       group_type = group_type,
+                       ignore_group_case = ignore_group_case,
+                       regex_group = regex_group,
+                       cols = cols,
+                       data = data,
+                       table_type = table_type,
+                       allowed_type = valid_grp_type)
+  
+  if (group_type == "pattern" && !is.null(group_info) &&
+      !identical(group_info$cols, cols)) {
+    cols <- group_info$cols
+  }
   
   col_dtypes <- 
     check_data_types(data = data,
@@ -225,14 +239,14 @@ check_returned_cols <- function(x, label, var_input) {
 }
 
 # Function that retrieves validated columns
-get_valid_cols <- function(data,
+get_valid_cols <- function(cols,
                            var_stem,
                            var_input,
                            regex_stem,
                            ignore_stem_case,
                            find_exact_match) {
   cols <- 
-    find_columns(data = data,
+    find_columns(cols = cols,
                  var_stem = var_stem,
                  perl = regex_stem,
                  ignore.case = ignore_stem_case,
@@ -360,7 +374,7 @@ extract_ignore_map <- function(vars, ignore, var_stem_map = NULL) {
 # Function that searches for and returns the names of columns in 
 # 'data' by their name or that start with a specific variable 
 # stem (i.e., 'var_stem')
-find_columns <- function(data,
+find_columns <- function(cols,
                          var_stem,
                          perl = FALSE,
                          ignore.case = FALSE,
@@ -375,7 +389,7 @@ find_columns <- function(data,
   
   cols_found <- grep(pattern = pattern,
                      ignore.case = ignore.case,
-                     x = colnames(data),
+                     x = cols,
                      perl = perl,
                      value = TRUE)
   
