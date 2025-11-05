@@ -44,6 +44,6 @@ sdoh
 \description{
 Subset of data from the 2020 Social Determinants of
 Health (SDOH) Database. For more information about the 2020 SDOH Database,
-visit: \url{www.ahrq.gov/sdoh/index.html}.
+visit: \url{https://www.ahrq.gov/sdoh/index.html}.
 }
 \keyword{datasets}
