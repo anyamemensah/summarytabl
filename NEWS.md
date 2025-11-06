@@ -1,3 +1,7 @@
+# summarytabl 0.2.1
+
+* Corrected package dependencies to resolve installation and compatibility issues. This update does not introduce new features or code changes.
+
 # summarytabl 0.2.0
 
 ## Breaking Changes
