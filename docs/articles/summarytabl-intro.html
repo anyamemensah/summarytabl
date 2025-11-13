@@ -774,8 +774,8 @@ variables. The <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> 
 descriptive statistics for either a set of continuous variables that
 share a common stem or for individual continuous variables. The
 resulting summary table includes key metrics such as the variable’s
-mean, standard deviation, minimum value, maximum value, and the count of
-non-missing observations for each variable.</p>
+mean, median, standard deviation, minimum value, maximum value, and the
+count of non-missing observations for each variable.</p>
 <p>The <code>sdoh</code> dataset contains six variables describing
 characteristics of health care facilities, all of which begin with the
 prefix <code>HHC_PCT</code>. Using the <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> function,
@@ -1036,7 +1036,7 @@ variable.</p>
 <code>only</code> argument.</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: all summary statistics returned</span></span>
-<span><span class="co"># (mean, sd, min, max, nobs)</span></span>
+<span><span class="co"># (mean, median, sd, min, max, nobs)</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>
 <span>               var_stem <span class="op">=</span> <span class="st">"symptoms"</span>,</span>
 <span>               group <span class="op">=</span> <span class="st">"_t\\d"</span>,</span>

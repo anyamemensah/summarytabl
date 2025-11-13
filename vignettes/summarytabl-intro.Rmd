@@ -332,7 +332,7 @@ select_group_tbl(data = stem_social_psych,
 
 ## Working with continuous variables
 
-Finally, let’s look at how to use the `mean_tbl()` and `mean_group_tbl()` functions to summarize continuous variables. The `mean_tbl()` function allows you to generate descriptive statistics for either a set of continuous variables that share a common stem or for individual continuous variables. The resulting summary table includes key metrics such as the variable's mean, standard deviation, minimum value, maximum value, and the count of non-missing observations for each variable.
+Finally, let’s look at how to use the `mean_tbl()` and `mean_group_tbl()` functions to summarize continuous variables. The `mean_tbl()` function allows you to generate descriptive statistics for either a set of continuous variables that share a common stem or for individual continuous variables. The resulting summary table includes key metrics such as the variable's mean, median, standard deviation, minimum value, maximum value, and the count of non-missing observations for each variable.
 
 The `sdoh` dataset contains six variables describing characteristics of health care facilities, all of which begin with the prefix `HHC_PCT`. Using the `mean_tbl()` function, you can generate summary statistics for these variables:
 
@@ -454,7 +454,7 @@ Finally, you can choose what information to return using the `only` argument.
 
 ```{r}
 # Default: all summary statistics returned
-# (mean, sd, min, max, nobs)
+# (mean, median, sd, min, max, nobs)
 mean_group_tbl(data = symptoms_data, 
                var_stem = "symptoms",
                group = "_t\\d",
