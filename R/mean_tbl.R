@@ -1,8 +1,8 @@
 #' @title Summarize continuous variables
 #'
 #' @description `mean_tbl()` calculates summary statistics (i.e., mean, 
-#' standard deviation, minimum, maximum, and count of non-missing values) 
-#' for continuous (i.e., interval and ratio-level) variables.
+#' median, standard deviation, minimum, maximum, and count of non-missing 
+#' values) for continuous (i.e., interval and ratio-level) variables.
 #'
 #' @param data A data frame.
 #' @param var_stem A character vector with one or more elements, where each 
@@ -21,12 +21,18 @@
 #' @param ignore_stem_case A logical value indicating whether the search for 
 #' columns matching the supplied `var_stem` is case-insensitive. Default is 
 #' `FALSE`.
-#' @param na_removal A character string that specifies the method for handling 
-#' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param na_removal A character string specifying how missing values are 
+#' handled. Must be one of `listwise` or `pairwise`. Defaults to `listwise`.
+#' - `listwise`: Removes any row that has at least one missing value 
+#' across all variables returned or analyzed. (Effectively uses complete cases 
+#' only.)
+#' - `pairwise`: Handles missing values per variable or per pair of variables, 
+#' using all available data, even if other variables in the row have missing 
+#' values.
 #' @param only A character string or vector of character strings specifying 
-#' which summary statistics to return. Defaults to NULL, which includes mean 
-#' (mean), standard deviation (sd), minimum (min), maximum (max), and count 
-#' of non-missing values (nobs).
+#' which summary statistics to return. Defaults to `NULL`, which includes mean 
+#' (mean), median (median) standard deviation (sd), minimum (min), maximum 
+#' (max), and count of non-missing values (nobs).
 #' @param var_labels An optional named character vector or list used to assign
 #' custom labels to variable names. Each element must be named and correspond 
 #' to a variable included in the returned table. If `var_input` is set to `stem`, 
@@ -122,7 +128,7 @@ mean_tbl <- function(data,
   mean_tabl <- 
     purrr::map(check_cols, ~ generate_mean_tabl(data_sub, .x, check_na_removal)) |>
     purrr::reduce(dplyr::bind_rows) |>
-    dplyr::select(variable, mean, sd, min, max, nobs)
+    dplyr::select(variable, mean, median, sd, min, max, nobs)
   
   if (!is.null(check_col_labels)) {
     mean_tabl <-
@@ -132,7 +138,7 @@ mean_tbl <- function(data,
         !!!generate_tbl_key(
           values_from = names(check_col_labels),
           values_to = unname(check_col_labels)),
-        .default = NA_character_
+        .default = variable
       )) |>
       dplyr::relocate(variable_label, .after = variable)
   }
@@ -157,6 +163,7 @@ generate_mean_tabl <- function(data, col, na_removal) {
   result <- data.frame(
     variable = col,
     mean = mean(data[[col]], na.rm = TRUE),
+    median = stats::median(data[[col]], na.rm = TRUE),
     sd = stats::sd(data[[col]], na.rm = TRUE),
     min = min(data[[col]], na.rm = TRUE),
     max = max(data[[col]], na.rm = TRUE),

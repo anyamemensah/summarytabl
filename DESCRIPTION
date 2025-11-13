@@ -1,7 +1,7 @@
 Package: summarytabl
 Type: Package
 Title: Generate Summary Tables for Categorical, Ordinal, and Continuous Data
-Version: 0.2.1
+Version: 0.2.1.9000
 Authors@R: c(
     person(given = "Ama", family = "Nyame-Mensah", 
     email = "ama@anyamemensah.com", role = c("aut", "cre")))

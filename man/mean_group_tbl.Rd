@@ -70,13 +70,21 @@ pattern (if \code{group_type} is \code{pattern}) should be case-insensitive. Def
 all non-alphanumeric characters (i.e., anything that is not a letter or
 number) from \code{group}. Default is \code{TRUE}.}
 
-\item{na_removal}{A character string that specifies the method for handling
-missing values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
+\item{na_removal}{A character string specifying how missing values are
+handled. Must be one of \code{listwise} or \code{pairwise}. Defaults to \code{listwise}.
+\itemize{
+\item \code{listwise}: Removes any row that has at least one missing value
+across all variables returned or analyzed. (Effectively uses complete cases
+only.)
+\item \code{pairwise}: Handles missing values per variable or per pair of variables,
+using all available data, even if other variables in the row have missing
+values.
+}}
 
-\item{only}{A character string or vector of character strings of the types of
-summary data to return. Default is \code{NULL}, which returns both counts and
-percentages. To return only counts or percentages, use \code{count} or \code{percent},
-respectively.}
+\item{only}{A character string or vector of character strings specifying
+which summary statistics to return. Defaults to \code{NULL}, which includes mean
+(mean), median (median) standard deviation (sd), minimum (min), maximum
+(max), and count of non-missing values (nobs).}
 
 \item{var_labels}{An optional named character vector or list used to assign
 custom labels to variable names. Each element must be named and correspond
@@ -99,10 +107,10 @@ names.
 }
 \description{
 \code{mean_group_tbl()} calculates summary statistics (i.e.,
-mean, standard deviation, minimum, maximum, and count of non-missing
-values) for continuous (i.e., interval and ratio-level) variables,
-grouped either by another variable in your dataset or by a matched
-pattern in the variable names.
+mean, median, standard deviation, minimum, maximum, and count of
+non-missing values) for continuous (i.e., interval and ratio-level)
+variables, grouped either by another variable in your dataset or by
+a matched pattern in the variable names.
 }
 \examples{
 sdoh_child_ages_region <- 

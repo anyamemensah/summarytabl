@@ -1,10 +1,10 @@
 #' @title Summarize multiple response variables by group or pattern
 #'
 #' @description `mean_group_tbl()` calculates summary statistics (i.e., 
-#' mean, standard deviation, minimum, maximum, and count of non-missing 
-#' values) for continuous (i.e., interval and ratio-level) variables, 
-#' grouped either by another variable in your dataset or by a matched 
-#' pattern in the variable names.
+#' mean, median, standard deviation, minimum, maximum, and count of 
+#' non-missing values) for continuous (i.e., interval and ratio-level) 
+#' variables, grouped either by another variable in your dataset or by 
+#' a matched pattern in the variable names.
 #'
 #' @param data A data frame.
 #' @param var_stem A character vector with one or more elements, where each 
@@ -42,12 +42,18 @@
 #' @param remove_group_non_alnum A logical value indicating whether to remove 
 #' all non-alphanumeric characters (i.e., anything that is not a letter or 
 #' number) from `group`. Default is `TRUE`.
-#' @param na_removal A character string that specifies the method for handling 
-#' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
-#' @param only A character string or vector of character strings of the types of 
-#' summary data to return. Default is `NULL`, which returns both counts and 
-#' percentages. To return only counts or percentages, use `count` or `percent`, 
-#' respectively.
+#' @param na_removal A character string specifying how missing values are 
+#' handled. Must be one of `listwise` or `pairwise`. Defaults to `listwise`.
+#' - `listwise`: Removes any row that has at least one missing value 
+#' across all variables returned or analyzed. (Effectively uses complete cases 
+#' only.)
+#' - `pairwise`: Handles missing values per variable or per pair of variables, 
+#' using all available data, even if other variables in the row have missing 
+#' values.
+#' @param only A character string or vector of character strings specifying 
+#' which summary statistics to return. Defaults to `NULL`, which includes mean 
+#' (mean), median (median) standard deviation (sd), minimum (min), maximum 
+#' (max), and count of non-missing values (nobs).
 #' @param var_labels An optional named character vector or list used to assign
 #' custom labels to variable names. Each element must be named and correspond 
 #' to a variable included in the returned table. If `var_input` is set to `stem`, 
@@ -245,6 +251,7 @@ generate_mean_group_tabl <- function(data,
     dplyr::summarize(
       variable = variable,
       mean = mean(.data[[variable]], na.rm = TRUE),
+      median = stats::median(.data[[variable]], na.rm = TRUE),
       sd = stats::sd(.data[[variable]], na.rm = TRUE),
       min = min(.data[[variable]], na.rm = TRUE),
       max = max(.data[[variable]], na.rm = TRUE),

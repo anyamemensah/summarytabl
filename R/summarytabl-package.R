@@ -30,6 +30,7 @@
 #' @importFrom rlang caller_env
 #' @importFrom rlang new_formula
 #' @importFrom rlang sym
+#' @importFrom stats median
 #' @importFrom stats na.omit
 #' @importFrom stats sd
 #' @importFrom stats setNames

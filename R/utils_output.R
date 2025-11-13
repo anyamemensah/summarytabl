@@ -453,7 +453,7 @@ only_type <- function(table_type) {
   switch(
     table_type,
     cat =  c("count", "percent"),
-    mean = c("mean", "sd", "min", "max", "nobs"),
+    mean = c("mean", "median", "sd", "min", "max", "nobs"),
     select = c("count", "percent")
   )
 }

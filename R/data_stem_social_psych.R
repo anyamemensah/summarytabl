@@ -6,7 +6,7 @@
 #' and Mathematics (STEM) intervention program. The dataset aims to represent real-
 #' world psychological factors relevant to STEM education contexts.
 #'
-#' @format A data.frame with 786 rows and 37 columns:
+#' @format A tibble with 786 rows and 37 columns:
 #' \describe{
 #' \item{id}{student id number)}
 #' \item{belong_belongStem_w1}{I feel like I belong in STEM (1=Strongly disagree,

@@ -433,7 +433,7 @@ test_that("test available summary statistics", {
   expected1 <- c("count", "percent")
   
   observed2 <- only_type("mean")
-  expected2 <- c("mean", "sd", "min", "max", "nobs")
+  expected2 <- c("mean", "median", "sd", "min", "max", "nobs")
   
   observed3 <- only_type("select")
   expected3 <- c("count", "percent")

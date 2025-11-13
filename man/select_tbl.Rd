@@ -41,8 +41,16 @@ regular expressions when searching for variable stems. Default is \code{FALSE}.}
 columns matching the supplied \code{var_stem} is case-insensitive. Default is
 \code{FALSE}.}
 
-\item{na_removal}{A character string that specifies the method for handling
-missing values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
+\item{na_removal}{A character string specifying how missing values are
+handled. Must be one of \code{listwise} or \code{pairwise}. Defaults to \code{listwise}.
+\itemize{
+\item \code{listwise}: Removes any row that has at least one missing value
+across all variables returned or analyzed. (Effectively uses complete cases
+only.)
+\item \code{pairwise}: Handles missing values per variable or per pair of variables,
+using all available data, even if other variables in the row have missing
+values.
+}}
 
 \item{pivot}{A character string that determines the format of the table. By
 default, \code{longer} returns the data in the long format. To receive the data in

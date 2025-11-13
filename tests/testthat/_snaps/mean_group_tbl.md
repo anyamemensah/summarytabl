@@ -124,7 +124,7 @@
     Condition
       Error in `mean_group_tbl()`:
       ! Invalid `only` argument.
-      i The `only` argument must be one or more of: "mean", "sd", "min", "max", and "nobs".
+      i The `only` argument must be one or more of: "mean", "median", "sd", "min", "max", and "nobs".
 
 # Failure: Invalid 'na_removal' argument
 

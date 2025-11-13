@@ -5,7 +5,7 @@
 \alias{social_psy_data}
 \title{Social Psychological (Simulated) Data}
 \format{
-A data.frame with 10,200 rows and 17 columns:
+A tibble with 10,200 rows and 17 columns:
 \describe{
 \item{id}{participant id number)}
 \item{belong_1}{I feel like I belong at this institution (1=Strongly Disagree,

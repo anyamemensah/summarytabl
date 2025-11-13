@@ -5,7 +5,7 @@
 \alias{stem_social_psych}
 \title{STEM Social Psychological (Simulated) Data}
 \format{
-A data.frame with 786 rows and 37 columns:
+A tibble with 786 rows and 37 columns:
 \describe{
 \item{id}{student id number)}
 \item{belong_belongStem_w1}{I feel like I belong in STEM (1=Strongly disagree,

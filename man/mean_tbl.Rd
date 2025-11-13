@@ -39,13 +39,21 @@ regular expressions when searching for variable stems. Default is \code{FALSE}.}
 columns matching the supplied \code{var_stem} is case-insensitive. Default is
 \code{FALSE}.}
 
-\item{na_removal}{A character string that specifies the method for handling
-missing values: \code{pairwise} or \code{listwise}. Defaults to \code{listwise}.}
+\item{na_removal}{A character string specifying how missing values are
+handled. Must be one of \code{listwise} or \code{pairwise}. Defaults to \code{listwise}.
+\itemize{
+\item \code{listwise}: Removes any row that has at least one missing value
+across all variables returned or analyzed. (Effectively uses complete cases
+only.)
+\item \code{pairwise}: Handles missing values per variable or per pair of variables,
+using all available data, even if other variables in the row have missing
+values.
+}}
 
 \item{only}{A character string or vector of character strings specifying
-which summary statistics to return. Defaults to NULL, which includes mean
-(mean), standard deviation (sd), minimum (min), maximum (max), and count
-of non-missing values (nobs).}
+which summary statistics to return. Defaults to \code{NULL}, which includes mean
+(mean), median (median) standard deviation (sd), minimum (min), maximum
+(max), and count of non-missing values (nobs).}
 
 \item{var_labels}{An optional named character vector or list used to assign
 custom labels to variable names. Each element must be named and correspond
@@ -65,8 +73,8 @@ A tibble showing summary statistics for continuous variables.
 }
 \description{
 \code{mean_tbl()} calculates summary statistics (i.e., mean,
-standard deviation, minimum, maximum, and count of non-missing values)
-for continuous (i.e., interval and ratio-level) variables.
+median, standard deviation, minimum, maximum, and count of non-missing
+values) for continuous (i.e., interval and ratio-level) variables.
 }
 \examples{
 sdoh_child_ages <- 

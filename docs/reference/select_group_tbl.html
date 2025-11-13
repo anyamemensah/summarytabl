@@ -24,7 +24,7 @@ pattern in the variable names.'><!-- mathjax --><script src="https://cdnjs.cloud
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">summarytabl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9000</span>
       </span>
     </div>
 
@@ -191,8 +191,14 @@ number) from <code>group</code>. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-na-removal">na_removal<a class="anchor" aria-label="anchor" href="#arg-na-removal"></a></dt>
-<dd><p>A character string that specifies the method for handling
-missing values: <code>pairwise</code> or <code>listwise</code>. Defaults to <code>listwise</code>.</p></dd>
+<dd><p>A character string specifying how missing values are
+handled. Must be one of <code>listwise</code> or <code>pairwise</code>. Defaults to <code>listwise</code>.</p><ul><li><p><code>listwise</code>: Removes any row that has at least one missing value
+across all variables returned or analyzed. (Effectively uses complete cases
+only.)</p></li>
+<li><p><code>pairwise</code>: Handles missing values per variable or per pair of variables,
+using all available data, even if other variables in the row have missing
+values.</p></li>
+</ul></dd>
 
 
 <dt id="arg-pivot">pivot<a class="anchor" aria-label="anchor" href="#arg-pivot"></a></dt>

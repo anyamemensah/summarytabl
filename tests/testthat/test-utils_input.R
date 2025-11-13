@@ -116,6 +116,7 @@ test_that("check 'only' argument", {
   observed10 <- check_only(only = c("min"), table_type = "mean")
   observed11 <- check_only(only = c("max"), table_type = "mean")
   observed12 <- check_only(only = c("nobs"), table_type = "mean")
+  observed13 <- check_only(only = c("median"), table_type = "mean")
   
   expected1 <- list(valid = TRUE, only = c("count", "percent"))
   expected2 <- list(valid = TRUE, only = c("count"))
@@ -123,12 +124,13 @@ test_that("check 'only' argument", {
   expected4 <- list(valid = TRUE, only = c("count", "percent"))
   expected5 <- list(valid = TRUE, only = c("count"))
   expected6 <- list(valid = TRUE, only = c("percent"))
-  expected7 <- list(valid = TRUE, only = c("mean", "sd", "min", "max", "nobs"))
+  expected7 <- list(valid = TRUE, only = c("mean", "median", "sd", "min", "max", "nobs"))
   expected8 <- list(valid = TRUE, only = c("mean"))
   expected9 <- list(valid = TRUE, only = c("sd"))
   expected10 <- list(valid = TRUE, only = c("min"))
   expected11 <- list(valid = TRUE, only = c("max"))
   expected12 <- list(valid = TRUE, only = c("nobs"))
+  expected13 <- list(valid = TRUE, only = c("median"))
   
   expect_equal(observed1, expected1)
   expect_equal(observed2, expected2)
@@ -142,6 +144,7 @@ test_that("check 'only' argument", {
   expect_equal(observed10,expected10)
   expect_equal(observed11,expected11)
   expect_equal(observed12,expected12)
+  expect_equal(observed13,expected13)
   
   expect_snapshot(error = TRUE, { check_only(only = character(0), table_type = "cat") })
   expect_snapshot(error = TRUE, { check_only(only = c("count", "per"), table_type = "cat") })

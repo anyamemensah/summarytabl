@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">summarytabl</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9000</span>
       </span>
     </div>
 
@@ -782,15 +782,15 @@ prefix <code>HHC_PCT</code>. Using the <code><a href="../reference/mean_tbl.html
 you can generate summary statistics for these variables:</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">##   variable                  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  100    49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  100    48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4   76.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1   50    47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2    0    46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1   95.2  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <p>Alternatively, if you want to generate summary statistics for only a
 subset of those variables, you can specify their names directly in the
 <code>var_stem</code> argument and set <code>var_input = "name"</code>
@@ -804,40 +804,40 @@ stem.</p>
 <span>               <span class="st">"HHC_PCT_HHA_SPEECH"</span><span class="op">)</span>,</span>
 <span>  var_input <span class="op">=</span> <span class="st">"name"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
-<span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
+<span><span class="co">##   variable                  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  100    48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_OCC_THERAPY   52.4   76.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_SPEECH        49.1   50    47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <p>You can also specify how missing values are removed, using the
 <code>na_removal</code> argument.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default listwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">##   variable                  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  100    49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  100    48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4   76.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1   50    47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2    0    46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1   95.2  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_tbl.html">mean_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
 <span>         var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>         na_removal <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
-<span><span class="co">##   variable                  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2  46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">##   variable                  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING       58.2  100    49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY  56.7  100    48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY   52.4   76.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH        49.1   50    47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL       42.2    0    46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE          55.1   95.2  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <p>Consider adding variable labels using the <code>var_labels</code>
 argument to help make the variable names easier to interpret.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
@@ -852,15 +852,15 @@ argument to help make the variable names easier to interpret.</p>
 <span>           HHC_PCT_HHA_MEDICAL<span class="op">=</span><span class="st">"% agencies offering medical social services"</span>,</span>
 <span>           HHC_PCT_HHA_AIDE<span class="op">=</span><span class="st">"% agencies offering home health aide services"</span></span>
 <span>         <span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">##   variable                 variable_label           mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING      % agencies offering nu…  58.2  49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY % agencies offering ph…  56.7  48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY  % agencies offering oc…  52.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH       % agencies offering sp…  49.1  47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL      % agencies offering me…  42.2  46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE         % agencies offering ho…  55.1  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##   variable                 variable_label    mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> HHC_PCT_HHA_NURSING      % agencies offe…  58.2  100    49.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> HHC_PCT_HHA_PHYS_THERAPY % agencies offe…  56.7  100    48.8     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> HHC_PCT_HHA_OCC_THERAPY  % agencies offe…  52.4   76.4  48.3     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> HHC_PCT_HHA_SPEECH       % agencies offe…  49.1   50    47.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> HHC_PCT_HHA_MEDICAL      % agencies offe…  42.2    0    46.2     0   100  <span style="text-decoration: underline;">3</span>227</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> HHC_PCT_HHA_AIDE         % agencies offe…  55.1   95.2  48.6     0   100  <span style="text-decoration: underline;">3</span>227</span></span></code></pre>
 <p>Similar to working with multiple response variables, it’s common
 practice to group continuous variables by another variable to enable
 meaningful comparisons across different segments of a dataset. The
@@ -875,19 +875,19 @@ gender, age, or race.</p>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span>
 <span>               group_type <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 7</span></span></span>
-<span><span class="co">##    variable                 REGION     mean    sd   min   max  nobs</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest    57.4  49.5     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      Northeast  74.2  43.9     0   100   217</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      South      58.8  49.2     0   100  <span style="text-decoration: underline;">1</span>422</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_NURSING      West       56    49.7     0   100   450</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY Midwest    55.2  48.9     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY Northeast  68.0  43.1     0   100   217</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_PHYS_THERAPY South      58.4  49.0     0   100  <span style="text-decoration: underline;">1</span>422</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_PHYS_THERAPY West       54.5  49.0     0   100   450</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  Midwest    52.9  48.7     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_OCC_THERAPY  Northeast  64.8  42.8     0   100   217</span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 8</span></span></span>
+<span><span class="co">##    variable                 REGION     mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest    57.4  100    49.5     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      Northeast  74.2  100    43.9     0   100   217</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      South      58.8  100    49.2     0   100  <span style="text-decoration: underline;">1</span>422</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_NURSING      West       56    100    49.7     0   100   450</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY Midwest    55.2  100    48.9     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY Northeast  68.0  100    43.1     0   100   217</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_PHYS_THERAPY South      58.4  100    49.0     0   100  <span style="text-decoration: underline;">1</span>422</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_PHYS_THERAPY West       54.5   95.4  49.0     0   100   450</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  Midwest    52.9   82.2  48.7     0   100  <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_OCC_THERAPY  Northeast  64.8   89.7  42.8     0   100   217</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
 <p>You can control which values to exclude and how missing data is
 handled using the <code>ignore</code> and <code>na_removal</code>
@@ -900,27 +900,27 @@ name.</p>
 <span>               var_stem <span class="op">=</span> <span class="st">"HHC_PCT"</span>,</span>
 <span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span>
 <span>               ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>HHC_PCT <span class="op">=</span> <span class="fl">0</span>, REGION <span class="op">=</span> <span class="st">"Northeast"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 7</span></span></span>
-<span><span class="co">##    variable                 REGION   mean    sd    min   max  nobs</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100    0    100      100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      South   100    0    100      100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      West    100    0    100      100   200</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.7  7.15  50      100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY South    99.2  4.78  50      100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY West     98.3  5.31  60      100   200</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3 10.4   33.3    100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_OCC_THERAPY  South    95.5 12.4   28.6    100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  West     94.8 12.2   25      100   200</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_SPEECH       Midwest  91.9 16.2   33.3    100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_SPEECH       South    93.4 15.3   25      100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_SPEECH       West     91.0 17.2   20      100   200</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> HHC_PCT_HHA_MEDICAL      Midwest  82.4 23.8    9.09   100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> HHC_PCT_HHA_MEDICAL      South    89.4 18.6   16.7    100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> HHC_PCT_HHA_MEDICAL      West     92.6 15.3   33.3    100   200</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  97.3  8.97  50      100   403</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.1 10.3   42.9    100   681</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4  9.96  50      100   200</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 8</span></span></span>
+<span><span class="co">##    variable                 REGION   mean median    sd    min   max  nobs</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100      100  0    100      100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      South   100      100  0    100      100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      West    100      100  0    100      100   200</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.7    100  7.15  50      100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY South    99.2    100  4.78  50      100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY West     98.3    100  5.31  60      100   200</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3    100 10.4   33.3    100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_OCC_THERAPY  South    95.5    100 12.4   28.6    100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  West     94.8    100 12.2   25      100   200</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_SPEECH       Midwest  91.9    100 16.2   33.3    100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_SPEECH       South    93.4    100 15.3   25      100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_SPEECH       West     91.0    100 17.2   20      100   200</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> HHC_PCT_HHA_MEDICAL      Midwest  82.4    100 23.8    9.09   100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> HHC_PCT_HHA_MEDICAL      South    89.4    100 18.6   16.7    100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> HHC_PCT_HHA_MEDICAL      West     92.6    100 15.3   33.3    100   200</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  97.3    100  8.97  50      100   403</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.1    100 10.3   42.9    100   681</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4    100  9.96  50      100   200</span></span></code></pre>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sdoh</span>, </span>
@@ -928,27 +928,27 @@ name.</p>
 <span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span>
 <span>               na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
 <span>               ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>HHC_PCT <span class="op">=</span> <span class="fl">0</span>, REGION <span class="op">=</span> <span class="st">"Northeast"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 7</span></span></span>
-<span><span class="co">##    variable                 REGION   mean    sd    min   max  nobs</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100    0    100      100   606</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      South   100    0    100      100   836</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      West    100    0    100      100   252</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.8  8.36  25      100   595</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY South    99.4  4.32  50      100   836</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY West     97.7  8.14  33.3    100   251</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3 11.5   25      100   579</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_OCC_THERAPY  South    95.8 12.2   28.6    100   787</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  West     94.5 13.0   25      100   232</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_SPEECH       Midwest  92.6 16.1   25      100   552</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_SPEECH       South    93.7 15.2   25      100   769</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_SPEECH       West     91.3 17.0   20      100   221</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> HHC_PCT_HHA_MEDICAL      Midwest  83.0 23.6    9.09   100   419</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> HHC_PCT_HHA_MEDICAL      South    89.7 18.6   16.7    100   724</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> HHC_PCT_HHA_MEDICAL      West     92.5 15.8   33.3    100   224</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  98.0  7.85  50      100   588</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.6  9.82  42.9    100   816</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4 10.8   33.3    100   247</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 8</span></span></span>
+<span><span class="co">##    variable                 REGION   mean median    sd    min   max  nobs</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100      100  0    100      100   606</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      South   100      100  0    100      100   836</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_NURSING      West    100      100  0    100      100   252</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.8    100  8.36  25      100   595</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_PHYS_THERAPY South    99.4    100  4.32  50      100   836</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_PHYS_THERAPY West     97.7    100  8.14  33.3    100   251</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3    100 11.5   25      100   579</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_OCC_THERAPY  South    95.8    100 12.2   28.6    100   787</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_OCC_THERAPY  West     94.5    100 13.0   25      100   232</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_SPEECH       Midwest  92.6    100 16.1   25      100   552</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_SPEECH       South    93.7    100 15.2   25      100   769</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_SPEECH       West     91.3    100 17.0   20      100   221</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> HHC_PCT_HHA_MEDICAL      Midwest  83.0    100 23.6    9.09   100   419</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> HHC_PCT_HHA_MEDICAL      South    89.7    100 18.6   16.7    100   724</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> HHC_PCT_HHA_MEDICAL      West     92.5    100 15.8   33.3    100   224</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> HHC_PCT_HHA_AIDE         Midwest  98.0    100  7.85  50      100   588</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> HHC_PCT_HHA_AIDE         South    96.6    100  9.82  42.9    100   816</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> HHC_PCT_HHA_AIDE         West     96.4    100 10.8   33.3    100   247</span></span></code></pre>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pairwise removal excluding several values from the same stem </span></span>
 <span><span class="co"># or group variable.</span></span>
@@ -957,21 +957,21 @@ name.</p>
 <span>               group <span class="op">=</span> <span class="st">"REGION"</span>,</span>
 <span>               na_removal <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
 <span>               ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>HHC_PCT <span class="op">=</span> <span class="fl">0</span>, REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Northeast"</span>, <span class="st">"South"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 12 × 7</span></span></span>
-<span><span class="co">##    variable                 REGION   mean    sd    min   max  nobs</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100    0    100      100   606</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      West    100    0    100      100   252</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.8  8.36  25      100   595</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY West     97.7  8.14  33.3    100   251</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3 11.5   25      100   579</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_OCC_THERAPY  West     94.5 13.0   25      100   232</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_SPEECH       Midwest  92.6 16.1   25      100   552</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_SPEECH       West     91.3 17.0   20      100   221</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_MEDICAL      Midwest  83.0 23.6    9.09   100   419</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_MEDICAL      West     92.5 15.8   33.3    100   224</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_AIDE         Midwest  98.0  7.85  50      100   588</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_AIDE         West     96.4 10.8   33.3    100   247</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 12 × 8</span></span></span>
+<span><span class="co">##    variable                 REGION   mean median    sd    min   max  nobs</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> HHC_PCT_HHA_NURSING      Midwest 100      100  0    100      100   606</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HHC_PCT_HHA_NURSING      West    100      100  0    100      100   252</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> HHC_PCT_HHA_PHYS_THERAPY Midwest  97.8    100  8.36  25      100   595</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> HHC_PCT_HHA_PHYS_THERAPY West     97.7    100  8.14  33.3    100   251</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> HHC_PCT_HHA_OCC_THERAPY  Midwest  96.3    100 11.5   25      100   579</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HHC_PCT_HHA_OCC_THERAPY  West     94.5    100 13.0   25      100   232</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> HHC_PCT_HHA_SPEECH       Midwest  92.6    100 16.1   25      100   552</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HHC_PCT_HHA_SPEECH       West     91.3    100 17.0   20      100   221</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> HHC_PCT_HHA_MEDICAL      Midwest  83.0    100 23.6    9.09   100   419</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> HHC_PCT_HHA_MEDICAL      West     92.5    100 15.8   33.3    100   224</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> HHC_PCT_HHA_AIDE         Midwest  98.0    100  7.85  50      100   588</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> HHC_PCT_HHA_AIDE         West     96.4    100 10.8   33.3    100   247</span></span></code></pre>
 <p>Another way to use <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> is to summarize
 responses based on a shared pattern, such as survey time points. To
 enable this feature, set <code>group_type = "pattern"</code> and specify
@@ -1005,12 +1005,12 @@ analysis.</p>
 <span>               group <span class="op">=</span> <span class="st">"_t\\d"</span>,</span>
 <span>               group_type <span class="op">=</span> <span class="st">"pattern"</span>,</span>
 <span>               ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>symptoms <span class="op">=</span> <span class="op">-</span><span class="fl">999</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
-<span><span class="co">##   variable    group  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1     4.03  3.14     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2     5.12  3.33     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3     4.64  3.29     0    10    33</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
+<span><span class="co">##   variable    group  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1     4.03      3  3.14     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2     5.12      5  3.33     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3     4.64      4  3.29     0    10    33</span></span></code></pre>
 <p>To make your output easier to understand, use the
 <code>group_name</code> argument to add a label to the column that shows
 grouping values or matched patterns. You can also use the
@@ -1026,12 +1026,12 @@ variable.</p>
 <span>               var_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>symptoms_t1 <span class="op">=</span> <span class="st">"# of symptoms at baseline"</span>,</span>
 <span>                              symptoms_t2 <span class="op">=</span> <span class="st">"# of symptoms at 6 months follow up"</span>,</span>
 <span>                              symptoms_t3 <span class="op">=</span> <span class="st">"# of symptoms at one-year follow up"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
-<span><span class="co">##   variable    variable_label            time_point  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 # of symptoms at baseline t1          4.03  3.14     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 # of symptoms at 6 month… t2          5.12  3.33     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 # of symptoms at one-yea… t3          4.64  3.29     0    10    33</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 9</span></span></span>
+<span><span class="co">##   variable    variable_label     time_point  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 # of symptoms at … t1          4.03      3  3.14     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 # of symptoms at … t2          5.12      5  3.33     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 # of symptoms at … t3          4.64      4  3.29     0    10    33</span></span></code></pre>
 <p>Finally, you can choose what information to return using the
 <code>only</code> argument.</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
@@ -1043,12 +1043,12 @@ variable.</p>
 <span>               group_type <span class="op">=</span> <span class="st">"pattern"</span>,</span>
 <span>               group_name <span class="op">=</span> <span class="st">"time_point"</span>,</span>
 <span>               ignore <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>symptoms <span class="op">=</span> <span class="op">-</span><span class="fl">999</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
-<span><span class="co">##   variable    time_point  mean    sd   min   max  nobs</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1          4.03  3.14     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2          5.12  3.33     0    10    33</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3          4.64  3.29     0    10    33</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
+<span><span class="co">##   variable    time_point  mean median    sd   min   max  nobs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> symptoms_t1 t1          4.03      3  3.14     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> symptoms_t2 t2          5.12      5  3.33     0    10    33</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> symptoms_t3 t3          4.64      4  3.29     0    10    33</span></span></code></pre>
 <div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Means and non-missing observations only</span></span>
 <span><span class="fu"><a href="../reference/mean_group_tbl.html">mean_group_tbl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">symptoms_data</span>, </span>

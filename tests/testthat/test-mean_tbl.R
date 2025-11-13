@@ -113,6 +113,7 @@ test_that("Expected output", {
     tibble::tibble(
       variable = c("belong_belongStem_w1", "belong_belongStem_w2"),
       mean = c(3.87, 3.97),
+      median = 4,
       sd = c(0.980, 1.016),
       min = c(1,1),
       max = c(5,5),
@@ -141,6 +142,7 @@ test_that("Expected output with ignore_stem_case", {
     tibble::tibble(
       variable = c("belong_belongStem_w1", "belong_belongStem_w2"),
       mean = c(3.87, 3.97),
+      median = 4,
       sd = c(0.980, 1.016),
       min = c(1,1),
       max = c(5,5),
@@ -171,6 +173,7 @@ test_that("Expected output with variable labels", {
       variable = c("belong_belongStem_w1", "belong_belongStem_w2"),
       variable_label = "I feel like I belong in STEM",
       mean = c(3.87, 3.97),
+      median = 4,
       sd = c(0.980, 1.016),
       min = c(1,1),
       max = c(5,5),

@@ -1,3 +1,11 @@
+# summarytabl 0.2.1.9000 (development version)
+
+## Minor improvements
+
+* Revised function argument documentation to correct errors and improve clarity of descriptions.
+* In `mean_tbl()`, if a user supplies variable labels and a match is not found (when `var_input` is `name`), the label now defaults to the original variable name instead of `NA`.
+* Both `mean_tbl` and `mean_group_tbl` now include the median as a summary statistic.
+
 # summarytabl 0.2.1
 
 * Corrected package dependencies to resolve installation and compatibility issues. This update does not introduce new features or code changes.

@@ -50,8 +50,14 @@
 #' @param remove_group_non_alnum A logical value indicating whether to remove 
 #' all non-alphanumeric characters (i.e., anything that is not a letter or 
 #' number) from `group`. Default is `TRUE`.
-#' @param na_removal A character string that specifies the method for handling 
-#' missing values: `pairwise` or `listwise`. Defaults to `listwise`.
+#' @param na_removal A character string specifying how missing values are 
+#' handled. Must be one of `listwise` or `pairwise`. Defaults to `listwise`.
+#' - `listwise`: Removes any row that has at least one missing value 
+#' across all variables returned or analyzed. (Effectively uses complete cases 
+#' only.)
+#' - `pairwise`: Handles missing values per variable or per pair of variables, 
+#' using all available data, even if other variables in the row have missing 
+#' values.
 #' @param pivot A character string that determines the format of the table. By 
 #' default, `longer` returns the data in the long format. To return the data in 
 #' the `wide` format, specify `wider`.
