@@ -82,7 +82,7 @@ the 'wider' format regardless of value inconsistencies.}
 }
 \value{
 A tibble displaying the count and percentage for each category in a
-multi-response variable.
+multiple response variable.
 }
 \description{
 \code{select_tbl()} displays frequency counts and percentages

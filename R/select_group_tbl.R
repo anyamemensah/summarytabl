@@ -84,7 +84,7 @@
 #' 'wider' format regardless of value inconsistencies.
 #'
 #' @returns A tibble displaying the count and percentage for each category in 
-#' a multi-response variable, grouped either by a specified variable in the 
+#' a multiple response variable, grouped either by a specified variable in the 
 #' dataset or by matching patterns in variable names.
 #'
 #' @author Ama Nyame-Mensah

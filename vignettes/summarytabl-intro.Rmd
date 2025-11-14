@@ -163,7 +163,7 @@ Using the `select_tbl()` function, we can summarize participants' responses to t
 select_tbl(data = depressive, var_stem = "dep")
 ```
 
-Alternatively, you can choose to summarize specific variables by passing their names to the `var_stem` argument and setting the `var_input` argument to `"name"`.
+Alternatively, you can summarize specific variables by passing their names to the `var_stem` argument and setting the `var_input` argument to `"name"`.
 
 ```{r}
 select_tbl(data = depressive, 
@@ -171,21 +171,43 @@ select_tbl(data = depressive,
            var_input = "name")
 ```
 
-By default, missing values are removed using listwise deletion. To switch to pairwise deletion instead, set `na_removal = "pairwise"`. 
+By default, missing values are removed using listwise deletion, which excludes any row containing at least one missing value in any of the variables returned or analyzed. To use pairwise deletion instead, set `na_removal = "pairwise"`. Pairwise deletion handles missing values per variable or per pair of variables, using all available data, even if other variables in the row have missing values.
+
+As a result, applying `select_tbl()` as shown below will yield different results from the previous example, as all three variables (`dep_1`, `dep_4`, `dep_6`) are analyzed independently when `na_removal = "pairwise"`.
 
 ```{r}
 select_tbl(data = depressive, 
-           var_stem = "dep",
+           var_stem = c("dep_1", "dep_4", "dep_6"),
+           var_input = "name",
            na_removal = "pairwise")
 ```
 
-To display the output in the wide format, set `pivot = "wider"`.
+You can display the output from `select_tbl()` in the wide format by setting `pivot = "wider"`, and choose which summary statistics to include with the `only` argument.
 
 ```{r}
+# Table in wide format; all summary statistics returned
+# (counts and percentages)
 select_tbl(data = depressive, 
-           var_stem = "dep",
+           var_stem = c("dep_1", "dep_4", "dep_6"),
+           var_input = "name",
            na_removal = "pairwise",
            pivot = "wider")
+
+# Table in wide format; counts only returned
+select_tbl(data = depressive, 
+           var_stem = c("dep_1", "dep_4", "dep_6"),
+           var_input = "name",
+           na_removal = "pairwise",
+           pivot = "wider",
+           only = "count")
+
+# Table in wide format; percentages only returned
+select_tbl(data = depressive, 
+           var_stem = c("dep_1", "dep_4", "dep_6"),
+           var_input = "name",
+           na_removal = "pairwise",
+           pivot = "wider",
+           only = "percent")
 ```
 
 It's common practice to group multiple response or ordinal variables by another variable. This type of descriptive analysis allows for meaningful comparisons across different segments of your dataset. With `select_group_tbl()`, you can create a summary table for multiple response and ordinal variables, grouped either by another variable in your dataset or by matching a pattern in the variable names. For example, we often want to summarize survey responses by race.
@@ -240,7 +262,7 @@ select_group_tbl(data = dep_recoded,
                  ignore = c(dep = "often", race = "Non-Black/Non-Hispanic"))
 ```    
 
-When `group_type` is set to `variable` (the default), the `margins` argument controls how percentages are calculated and presented.
+When `group_type` is set to `variable` (the default), the `margins` argument determines how percentages are calculated and displayed. To highlight the differences in percentages across tables, the `only` argument is set to `percent`, so that only percentages are returned.
 
 ```{r}
 # Default: percentages across each variable sum to one
@@ -248,7 +270,8 @@ select_group_tbl(data = dep_recoded,
                  var_stem = "dep",
                  group = "race",
                  na_removal = "pairwise",
-                 pivot = "wider")
+                 pivot = "wider",
+                 only = "percent")
 
 # Rowwise: for each value of the variable, the percentages 
 # across all levels of the grouping variable sum to one
@@ -257,7 +280,8 @@ select_group_tbl(data = dep_recoded,
                  group = "race",
                  margins = "rows",
                  na_removal = "pairwise",
-                 pivot = "wider")
+                 pivot = "wider",
+                 only = "percent")
 
 # Columnwise: for each level of the grouping variable, 
 # the percentages across all values of the variable sum 
@@ -267,7 +291,8 @@ select_group_tbl(data = dep_recoded,
                  group = "race",
                  margins = "columns",
                  na_removal = "pairwise",
-                 pivot = "wider")
+                 pivot = "wider",
+                 only = "percent")
 ```  
 
 Another way to use `select_group_tbl()` is to summarize responses that match a specific pattern, such as survey waves or time points. To enable this feature, set `group_type = "pattern"` and provide the desired pattern in the group argument. For example, the `stem_social_psych` dataset contains variables that capture student responses about their sense of belonging in the STEM community at two distinct time points: "w1" and "w2". You can summarize these responses using a pattern-based approach, where the time points (e.g., "w1" and "w2") serve as grouping variables.
@@ -303,36 +328,9 @@ select_group_tbl(data = stem_social_psych,
                  ))
 ```
 
-Finally, use the `only` argument to choose what information to return.
-
-```{r}
-# Default: counts and percentages
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern",
-                 group_name = "wave")
-
-# Counts only
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern",
-                 group_name = "wave",
-                 only = "count")
-
-# Percentages only
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern",
-                 group_name = "wave",
-                 only = "percent")
-```
-
 ## Working with continuous variables
 
-Finally, let’s look at how to use the `mean_tbl()` and `mean_group_tbl()` functions to summarize continuous variables. The `mean_tbl()` function allows you to generate descriptive statistics for either a set of continuous variables that share a common stem or for individual continuous variables. The resulting summary table includes key metrics such as the variable's mean, median, standard deviation, minimum value, maximum value, and the count of non-missing observations for each variable.
+Finally, let's look at how to use the `mean_tbl()` and `mean_group_tbl()` functions to summarize continuous variables. The `mean_tbl()` function allows you to generate descriptive statistics for either a set of continuous variables that share a common stem or for individual continuous variables. The resulting summary table includes key metrics such as the variable's mean, median, standard deviation, minimum value, maximum value, and the count of non-missing observations for each variable.
 
 The `sdoh` dataset contains six variables describing characteristics of health care facilities, all of which begin with the prefix `HHC_PCT`. Using the `mean_tbl()` function, you can generate summary statistics for these variables:
 
@@ -352,7 +350,7 @@ mean_tbl(
 )
 ``` 
 
-You can also specify how missing values are removed, using the `na_removal` argument.
+Like `select_tbl()` and `select_group_tbl()`, functions beginning with the prefix `mean_` (i.e., `mean_tbl()` and `mean_group_tbl()`) also remove missing values by default using listwise deletion, which excludes any row containing at least one missing value in any of the variables analyzed or returned. To use pairwise deletion instead, set `na_removal = "pairwise"`. With pairwise deletion, missing values are handled on a per-variable or per-variable-pair basis, so all available data is used even if some variables in the row have missing values.
 
 ```{r}
 # Default listwise removal

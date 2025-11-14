@@ -121,7 +121,7 @@ returned table. Set to \code{TRUE} to override this safeguard and pivot to the
 }
 \value{
 A tibble displaying the count and percentage for each category in
-a multi-response variable, grouped either by a specified variable in the
+a multiple response variable, grouped either by a specified variable in the
 dataset or by matching patterns in variable names.
 }
 \description{

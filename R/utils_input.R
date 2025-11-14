@@ -6,6 +6,7 @@ set_call <- function(env = parent.frame()) {
   invisible()
 }
 
+
 # Function to get environment; for use with cli::cli_abort() 
 # and cli::cli_warn()
 get_call <- function() {
@@ -357,7 +358,6 @@ check_group_var <- function(group_var,
       x = col_names,
       value = TRUE
     )
-    
     
     if (is.character(group_cols_matched) &&
         length(group_cols_matched) == 1) {

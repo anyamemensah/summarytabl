@@ -617,11 +617,18 @@ return_data_types <- function(table_type) {
       )
     )
   
-  valid_grp_types <- c(factor = "factor", character = "character", 
-                       logical = "logical", numeric = "numeric", 
-                       datetime = "POSIXt", datetime = "POSIXct", 
-                       datetime = "POSIXlt", datetime = "difftime", 
-                       datetime = "Date")
+  valid_grp_types <-
+    c(
+      factor = "factor",
+      character = "character",
+      logical = "logical",
+      numeric = "numeric",
+      datetime = "POSIXt",
+      datetime = "POSIXct",
+      datetime = "POSIXlt",
+      datetime = "difftime",
+      datetime = "Date"
+    )
   
   return (list(valid_var_types = valid_var_types, 
                valid_grp_types = valid_grp_types))
