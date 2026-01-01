@@ -74,7 +74,8 @@
 <ul><li>Revised argument documentation for main package functions to correct errors and enhance clarity of descriptions.</li>
 <li>Clarified how missing values are handled (i.e., listwise vs. pairwise) in <code><a href="../reference/select_tbl.html">select_tbl()</a></code>, <code><a href="../reference/select_group_tbl.html">select_group_tbl()</a></code>, <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code>, and <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> within the vignette.</li>
 <li>In <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code>, if a user supplies variable labels and a match is not found (when <code>var_input</code> is <code>name</code>), the label now defaults to the original variable name instead of <code>NA</code>.</li>
-<li>Both <code>mean_tbl</code> and <code>mean_group_tbl</code> now include the median as a summary statistic.</li>
+<li>Both <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> and <code><a href="../reference/mean_group_tbl.html">mean_group_tbl()</a></code> now include the median as a summary statistic.</li>
+<li>Updated <code><a href="../reference/cat_tbl.html">cat_tbl()</a></code>, <code><a href="../reference/cat_group_tbl.html">cat_group_tbl()</a></code>, and <code><a href="../reference/mean_tbl.html">mean_tbl()</a></code> to handle differences between data.frame and tibble objects when dropping NAs.</li>
 </ul></div>
 </div>
     <div class="section level2">

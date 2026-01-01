@@ -157,7 +157,7 @@ mean_tbl <- function(data,
 #' @keywords internal
 generate_mean_tabl <- function(data, col, na_removal) {
   if (na_removal == "pairwise") {
-    data <- data[!is.na(data[[col]]), ]
+    data <- stats::na.omit(data[col])
   }
   
   result <- data.frame(

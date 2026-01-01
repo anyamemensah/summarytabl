@@ -95,7 +95,7 @@ test_that("Expected output with 'ignore' values", {
       percent = c(0.37, 0.63)
     ) 
   
-  expect_equal(observed, expected)
+  expect_equal(observed, expected, ignore_attr = TRUE)
   
 })
 

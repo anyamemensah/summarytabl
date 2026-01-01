@@ -5,7 +5,8 @@
 * Revised argument documentation for main package functions to correct errors and enhance clarity of descriptions.
 * Clarified how missing values are handled (i.e., listwise vs. pairwise) in `select_tbl()`, `select_group_tbl()`, `mean_tbl()`, and `mean_group_tbl()` within the vignette.
 * In `mean_tbl()`, if a user supplies variable labels and a match is not found (when `var_input` is `name`), the label now defaults to the original variable name instead of `NA`.
-* Both `mean_tbl` and `mean_group_tbl` now include the median as a summary statistic.
+* Both `mean_tbl()` and `mean_group_tbl()` now include the median as a summary statistic.
+* Updated `cat_tbl()`, `cat_group_tbl()`, and `mean_tbl()` to handle differences between data.frame and tibble objects when dropping NAs.
 
 # summarytabl 0.2.1
 

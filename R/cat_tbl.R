@@ -72,7 +72,7 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
   }
   
   if (check_na.rm) {
-    data_sub <- data_sub[!is.na(data_sub[[check_var_name]]), ]
+    data_sub <- stats::na.omit(data_sub)
   }
   
   cat_tabl <- 
