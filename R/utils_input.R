@@ -105,7 +105,8 @@ check_margins <- function(margins) {
 check_na.rm <- function(na.rm, var_label) {
   if (!is.logical(na.rm) || length(na.rm) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg {var_label}} argument.", "i" = "The {.arg {var_label}} argument must be a logical vector of length one."),
+      c("Invalid {.arg {var_label}} argument.", 
+        "i" = "The {.arg {var_label}} argument must be a logical vector of length one."),
       call = get_call()
     )
   }
@@ -129,7 +130,8 @@ check_na.rm <- function(na.rm, var_label) {
 check_na_removal <- function(na_removal) {
   if (!is.character(na_removal) || length(na_removal) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg na_removal} argument.", "i" = "The {.arg na_removal} argument must be a character vector of length one."),
+      c("Invalid {.arg na_removal} argument.", 
+        "i" = "The {.arg na_removal} argument must be a character vector of length one."),
       call = get_call()
     )
   }
@@ -167,7 +169,8 @@ check_only <- function(only = NULL, table_type) {
   
   if (!(all(current_only %in% only_type(table_type)))) {
     cli::cli_abort(
-      c("Invalid {.arg only} argument.", "i" = "The {.arg only} argument must be one or more of: {.val {only_type(table_type)}}."),
+      c("Invalid {.arg only} argument.", 
+        "i" = "The {.arg only} argument must be one or more of: {.val {only_type(table_type)}}."),
       call = get_call()
     )
   }
@@ -269,14 +272,16 @@ check_var_stem <- function(var_stem) {
 check_var <- function(var_name, var_label, data) {
   if (!is.character(var_name) || length(var_name) != 1) {
     cli::cli_abort(
-      c("Invalid {.arg {var_label}} argument.", "i" = "The {.arg {var_label}} argument must be a character vector of length one."),
+      c("Invalid {.arg {var_label}} argument.", 
+        "i" = "The {.arg {var_label}} argument must be a character vector of length one."),
       call = get_call()
     )
   }
   
   if (!(var_name %in% colnames(data))) {
     cli::cli_abort(
-      c("Invalid {.arg {var_label}} argument.", "i" = "The {.arg {var_label}} argument, {.val {var_name}}, is not a column in {.arg data}."),
+      c("Invalid {.arg {var_label}} argument.", 
+        "i" = "The {.arg {var_label}} argument, {.val {var_name}}, is not a column in {.arg data}."),
       call = get_call()
     )
   }

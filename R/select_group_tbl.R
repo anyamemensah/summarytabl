@@ -144,14 +144,14 @@
 #'                  pivot = "wider",
 #'                  only = "percent",
 #'                  var_labels =
-#'                    c("dep_1" = "how often child feels sad and blue",
-#'                      "dep_2" = "how often child feels nervous, tense, or on edge",
-#'                      "dep_3" = "how often child feels happy",
-#'                      "dep_4" = "how often child feels bored",
-#'                      "dep_5" = "how often child feels lonely",
-#'                      "dep_6" = "how often child feels tired or worn out",
-#'                      "dep_7" = "how often child feels excited about something",
-#'                      "dep_8" = "how often child feels too busy to get everything"))
+#'                    c(dep_1 = "how often child feels sad and blue",
+#'                      dep_2 = "how often child feels nervous, tense, or on edge",
+#'                      dep_3 = "how often child feels happy",
+#'                      dep_4 = "how often child feels bored",
+#'                      dep_5 = "how often child feels lonely",
+#'                      dep_6 = "how often child feels tired or worn out",
+#'                      dep_7 = "how often child feels excited about something",
+#'                      dep_8 = "how often child feels too busy to get everything"))
 #'
 #' @export
 select_group_tbl <- function(data,
@@ -242,7 +242,7 @@ select_group_tbl <- function(data,
       .x = unique(check_cols),
       .f = ~ generate_select_group_tabl(data_sub, .x, checks, check_group_var)
     ) |>
-    purrr::reduce(dplyr::bind_rows)
+    dplyr::bind_rows()
 
   if (!is.null(check_group_name)) {
     select_group_tabl <-
@@ -318,7 +318,7 @@ generate_select_group_tabl <- function(data,
                                        variable,
                                        checks,
                                        group_var) {
-  sub_dat <- data[c(variable, group_var)]
+  subset_data <- data[c(variable, group_var)]
   
   if (checks$group_type == "pattern") {
     group_pattern <- 
@@ -330,12 +330,12 @@ generate_select_group_tabl <- function(data,
         remove_non_alum = checks$remove_group_non_alnum
       )
     
-    sub_dat <- sub_dat |> dplyr::mutate(group = group_pattern)
+    subset_data <- subset_data |> dplyr::mutate(group = group_pattern)
     group_var <- "group"
   }
   
-  temp_data <- 
-    sub_dat |>
+  summarized_data <- 
+    subset_data |>
     dplyr::select(dplyr::all_of(c(variable, group_var))) |>
     dplyr::filter(
       if (checks$na_removal == "pairwise") {
@@ -345,16 +345,16 @@ generate_select_group_tabl <- function(data,
       })
   
   if (checks$group_type == "variable") {
-    temp_data <- 
+    summarized_data <- 
       summarize_select_group(
-        data = temp_data,
+        data = summarized_data,
         var_col = variable,
         group_col = group_var,
         margins = checks$margins
       )
   } else {
-    temp_data <- 
-      temp_data |>
+    summarized_data <- 
+      summarized_data |>
       dplyr::group_by(.data[[group_var]], .data[[variable]]) |>
       dplyr::summarize(count = dplyr::n()) |>
       dplyr::ungroup() |>
@@ -366,7 +366,7 @@ generate_select_group_tabl <- function(data,
       dplyr::arrange(variable)
   }
   
-  return(temp_data)
+  return(summarized_data)
 }
 #'
 #' @keywords internal
@@ -380,7 +380,7 @@ summarize_select_group <- function(data, var_col, group_col, margins) {
     dplyr::ungroup()
   
   if (margins %in% c("rows", "columns")) {
-    grouped_data <- 
+    summarized_select_data <- 
       grouped_data |>
       dplyr::group_by(.data[[margin_col]]) |>
       dplyr::mutate(percent = count / sum(count)) |>
@@ -388,15 +388,18 @@ summarize_select_group <- function(data, var_col, group_col, margins) {
       dplyr::arrange(.data[[margin_col]])
   } else {
     total <- sum(grouped_data$count)
-    grouped_data <- 
+    summarized_select_data <- 
       grouped_data |>
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[group_col]], .data[[var_col]])
   }
   
-  grouped_data |>
+  summarized_select_data <- 
+    summarized_select_data |>
     dplyr::mutate(variable = var_col) |>
     dplyr::rename(values = !!rlang::sym(var_col)) |>
     dplyr::relocate(variable) |>
     dplyr::arrange(variable)
+  
+  return(summarized_select_data)
 }

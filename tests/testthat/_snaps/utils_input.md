@@ -16,6 +16,15 @@
       ! Invalid `data` argument.
       i The `data` argument must have at least one row and one column.
 
+---
+
+    Code
+      check_df(data.frame())
+    Condition
+      Error in `check_df()`:
+      ! Invalid `data` argument.
+      i The `data` argument must have at least one row and one column.
+
 # check logical argument
 
     Code

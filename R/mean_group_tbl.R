@@ -184,7 +184,7 @@ mean_group_tbl <- function(data,
       .x = unique(check_cols),
       .f = ~ generate_mean_group_tabl(data_sub, .x, checks, check_group_var)
     ) |>
-    purrr::reduce(dplyr::bind_rows)
+    dplyr::bind_rows()
   
   if (!is.null(check_group_name)) {
     mean_group_tabl <-
@@ -222,7 +222,7 @@ generate_mean_group_tabl <- function(data,
                                      variable,
                                      checks,
                                      group_var) {
-  sub_dat <- data[c(variable, group_var)]
+  subset_data <- data[c(variable, group_var)]
   
   if (checks$group_type == "pattern") {
     group_pattern <- 
@@ -234,12 +234,12 @@ generate_mean_group_tabl <- function(data,
         remove_non_alum = checks$remove_group_non_alnum
       )
     
-    sub_dat <- sub_dat |> dplyr::mutate(group = group_pattern)
+    subset_data <- subset_data |> dplyr::mutate(group = group_pattern)
     group_var <- "group"
   }
   
-  temp_data <- 
-    sub_dat |>
+  summarized_data <- 
+    subset_data |>
     dplyr::select(dplyr::all_of(c(variable, group_var))) |>
     dplyr::filter(
       if (checks$na_removal == "pairwise") {
@@ -259,5 +259,5 @@ generate_mean_group_tabl <- function(data,
     dplyr::ungroup() |>
     dplyr::relocate(!!rlang::sym(group_var), .after = variable)
   
-  return(temp_data)
+  return(summarized_data)
 }

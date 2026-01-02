@@ -2,5 +2,13 @@
   .summarytabl$env <- NULL
 }
 
-utils::globalVariables(c("variable", "values", "sd", "nobs", "group",
-                         "percent","count", "variable_label"))
+utils::globalVariables(c(
+  "variable",
+  "values",
+  "sd",
+  "nobs",
+  "group",
+  "percent",
+  "count",
+  "variable_label"
+))

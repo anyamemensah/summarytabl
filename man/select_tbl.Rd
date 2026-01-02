@@ -104,14 +104,14 @@ select_tbl(data = depressive,
            only = "percent")
 
 var_label_example <-
-  c("dep_1" = "how often child feels sad and blue",
-    "dep_2" = "how often child feels nervous, tense, or on edge",
-    "dep_3" = "how often child feels happy",
-    "dep_4" = "how often child feels bored",
-    "dep_5" = "how often child feels lonely",
-    "dep_6" = "how often child feels tired or worn out",
-    "dep_7" = "how often child feels excited about something",
-    "dep_8" = "how often child feels too busy to get everything")
+  c(dep_1 = "how often child feels sad and blue",
+    dep_2 = "how often child feels nervous, tense, or on edge",
+    dep_3 = "how often child feels happy",
+    dep_4 = "how often child feels bored",
+    dep_5 = "how often child feels lonely",
+    dep_6 = "how often child feels tired or worn out",
+    dep_7 = "how often child feels excited about something",
+    dep_8 = "how often child feels too busy to get everything")
 
 select_tbl(data = depressive,
            var_stem = "dep",

@@ -65,19 +65,21 @@ The function returns a tibble with three columns by default:
 You can exclude certain values and eliminate missing values from the data using the `ignore` and `na.rm` arguments, respectively.
 
 ```{r}
-cat_tbl(data = nlsy, 
-        var = "race",
-        ignore = "Hispanic",
-        na.rm = TRUE)
+cat_tbl(
+  data = nlsy,
+  var = "race",
+  ignore = "Hispanic",
+  na.rm = TRUE
+)
 ```
 
 Suppose we want to create a contingency table to summarize two categorical variables. We can do this using the `cat_group_tbl()` function. In this example, we summarize `race` by `bthwht`. Before applying `cat_group_tbl()`, we'll recode the values of `bthwht`, changing `0` to `regular_birthweight` and `1` to `low_birthweight`.
 
 ```{r}
-nlsy_cross_tab <- 
+nlsy_cross_tab <-
   nlsy |>
   dplyr::select(c(race, bthwht)) |>
-  dplyr::mutate(bthwht = ifelse(bthwht == 0, "regular_bithweight", "low_birthweight")) 
+  dplyr::mutate(bthwht = ifelse(bthwht == 0, "regular_bithweight", "low_birthweight"))
 
 cat_group_tbl(data = nlsy_cross_tab,
               row_var = "race",
@@ -94,57 +96,69 @@ The function returns a tibble with four columns by default:
 To pivot the output to the wide format, set `pivot = "wider"`. 
 
 ```{r}
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              pivot = "wider")
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  pivot = "wider"
+)
 ```
 
 To display only percentages, set `only = "percent"`. You can also control how those percentages are calculated and displayed using the `margins` argument.
 
 ```{r}
 # Default: percentages across the full table sum to one
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              pivot = "wider",
-              only = "percent")
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  pivot = "wider",
+  only = "percent"
+)
 
 # Rowwise: percentages sum to one across columns within each row
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              margins = "rows",
-              pivot = "wider",
-              only = "percent")
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  margins = "rows",
+  pivot = "wider",
+  only = "percent"
+)
 
 # Columnwise: percentages within each column sum to one
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              margins = "columns",
-              pivot = "wider",
-              only = "percent")
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  margins = "columns",
+  pivot = "wider",
+  only = "percent"
+)
 ```  
 
 Sometimes, you may want to exclude specific values from your analysis. To do this, use a named vector or list to specify which values to exclude from the `row_var` and `col_var` variables. For example, in the case below, the `Non-Black/Non-Hispanic` category is excluded from the race variable (i.e., `row_var`) and to ensure that NAs are not returned in the final table, `na.rm.row_var` is set to `TRUE`.
 
 ```{r}
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE,
-              ignore = c(race = "Non-Black,Non-Hispanic"))
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  na.rm.row_var = TRUE,
+  ignore = c(race = "Non-Black,Non-Hispanic")
+)
 ```    
 
 When you need to exclude more than one value from `row_var` or `col_var`, use a named list. In the example below, both the `Non-Black/Non-Hispanic` and `Hispanic` categories are excluded from the race variable.
 
 ```{r}
-cat_group_tbl(data = nlsy_cross_tab,
-              row_var = "race",
-              col_var = "bthwht",
-              na.rm.row_var = TRUE,
-              ignore = list(race = c("Non-Black,Non-Hispanic", "Hispanic")))
+cat_group_tbl(
+  data = nlsy_cross_tab,
+  row_var = "race",
+  col_var = "bthwht",
+  na.rm.row_var = TRUE,
+  ignore = list(race = c("Non-Black,Non-Hispanic", "Hispanic"))
+)
 ```  
 
 ## Working with multiple response and ordinal variables
@@ -166,9 +180,11 @@ select_tbl(data = depressive, var_stem = "dep")
 Alternatively, you can summarize specific variables by passing their names to the `var_stem` argument and setting the `var_input` argument to `"name"`.
 
 ```{r}
-select_tbl(data = depressive, 
-           var_stem = c("dep_1", "dep_4", "dep_6"),
-           var_input = "name")
+select_tbl(
+  data = depressive,
+  var_stem = c("dep_1", "dep_4", "dep_6"),
+  var_input = "name"
+)
 ```
 
 By default, missing values are removed using listwise deletion, which excludes any row containing at least one missing value in any of the variables returned or analyzed. To use pairwise deletion instead, set `na_removal = "pairwise"`. Pairwise deletion handles missing values per variable or per pair of variables, using all available data, even if other variables in the row have missing values.
@@ -176,10 +192,12 @@ By default, missing values are removed using listwise deletion, which excludes a
 As a result, applying `select_tbl()` as shown below will yield different results from the previous example, as all three variables (`dep_1`, `dep_4`, `dep_6`) are analyzed independently when `na_removal = "pairwise"`.
 
 ```{r}
-select_tbl(data = depressive, 
-           var_stem = c("dep_1", "dep_4", "dep_6"),
-           var_input = "name",
-           na_removal = "pairwise")
+select_tbl(
+  data = depressive,
+  var_stem = c("dep_1", "dep_4", "dep_6"),
+  var_input = "name",
+  na_removal = "pairwise"
+)
 ```
 
 You can display the output from `select_tbl()` in the wide format by setting `pivot = "wider"`, and choose which summary statistics to include with the `only` argument.
@@ -187,27 +205,33 @@ You can display the output from `select_tbl()` in the wide format by setting `pi
 ```{r}
 # Table in wide format; all summary statistics returned
 # (counts and percentages)
-select_tbl(data = depressive, 
-           var_stem = c("dep_1", "dep_4", "dep_6"),
-           var_input = "name",
-           na_removal = "pairwise",
-           pivot = "wider")
+select_tbl(
+  data = depressive,
+  var_stem = c("dep_1", "dep_4", "dep_6"),
+  var_input = "name",
+  na_removal = "pairwise",
+  pivot = "wider"
+)
 
 # Table in wide format; counts only returned
-select_tbl(data = depressive, 
-           var_stem = c("dep_1", "dep_4", "dep_6"),
-           var_input = "name",
-           na_removal = "pairwise",
-           pivot = "wider",
-           only = "count")
+select_tbl(
+  data = depressive,
+  var_stem = c("dep_1", "dep_4", "dep_6"),
+  var_input = "name",
+  na_removal = "pairwise",
+  pivot = "wider",
+  only = "count"
+)
 
 # Table in wide format; percentages only returned
-select_tbl(data = depressive, 
-           var_stem = c("dep_1", "dep_4", "dep_6"),
-           var_input = "name",
-           na_removal = "pairwise",
-           pivot = "wider",
-           only = "percent")
+select_tbl(
+  data = depressive,
+  var_stem = c("dep_1", "dep_4", "dep_6"),
+  var_input = "name",
+  na_removal = "pairwise",
+  pivot = "wider",
+  only = "percent"
+)
 ```
 
 It's common practice to group multiple response or ordinal variables by another variable. This type of descriptive analysis allows for meaningful comparisons across different segments of your dataset. With `select_group_tbl()`, you can create a summary table for multiple response and ordinal variables, grouped either by another variable in your dataset or by matching a pattern in the variable names. For example, we often want to summarize survey responses by race.
@@ -236,7 +260,7 @@ dep_recoded <-
 Next, use the `select_group_tbl()` function to summarize responses for all eight variables by `race`:
 
 ```{r}
-select_group_tbl(data = dep_recoded, 
+select_group_tbl(data = dep_recoded,
                  var_stem = "dep",
                  group = "race")
 ```
@@ -244,88 +268,104 @@ select_group_tbl(data = dep_recoded,
 As with `select_tbl()`, setting the pivot argument to `"wider"` reshapes the table into the wide format, while using `"pairwise"` for the `na_removal` argument ensures missing values are addressed through pairwise deletion.
 
 ```{r}
-select_group_tbl(data = dep_recoded, 
-                 var_stem = "dep",
-                 group = "race",
-                 na_removal = "pairwise",
-                 pivot = "wider")
+select_group_tbl(
+  data = dep_recoded,
+  var_stem = "dep",
+  group = "race",
+  na_removal = "pairwise",
+  pivot = "wider"
+)
 ```
 
 The `ignore` argument can be used to exclude specific values from analysis. In the example below, the value `often` is removed from all eight depression index variables, and the `Non-Black/Non-Hispanic` category is excluded from the race variable.
 
 ```{r}
-select_group_tbl(data = dep_recoded, 
-                 var_stem = "dep",
-                 group = "race",
-                 na_removal = "pairwise",
-                 pivot = "wider",
-                 ignore = c(dep = "often", race = "Non-Black/Non-Hispanic"))
+select_group_tbl(
+  data = dep_recoded,
+  var_stem = "dep",
+  group = "race",
+  na_removal = "pairwise",
+  pivot = "wider",
+  ignore = c(dep = "often", race = "Non-Black/Non-Hispanic")
+)
 ```    
 
 When `group_type` is set to `variable` (the default), the `margins` argument determines how percentages are calculated and displayed. To highlight the differences in percentages across tables, the `only` argument is set to `percent`, so that only percentages are returned.
 
 ```{r}
 # Default: percentages across each variable sum to one
-select_group_tbl(data = dep_recoded, 
-                 var_stem = "dep",
-                 group = "race",
-                 na_removal = "pairwise",
-                 pivot = "wider",
-                 only = "percent")
+select_group_tbl(
+  data = dep_recoded,
+  var_stem = "dep",
+  group = "race",
+  na_removal = "pairwise",
+  pivot = "wider",
+  only = "percent"
+)
 
 # Rowwise: for each value of the variable, the percentages 
 # across all levels of the grouping variable sum to one
-select_group_tbl(data = dep_recoded, 
-                 var_stem = "dep",
-                 group = "race",
-                 margins = "rows",
-                 na_removal = "pairwise",
-                 pivot = "wider",
-                 only = "percent")
+select_group_tbl(
+  data = dep_recoded,
+  var_stem = "dep",
+  group = "race",
+  margins = "rows",
+  na_removal = "pairwise",
+  pivot = "wider",
+  only = "percent"
+)
 
 # Columnwise: for each level of the grouping variable, 
 # the percentages across all values of the variable sum 
 # to one.
-select_group_tbl(data = dep_recoded, 
-                 var_stem = "dep",
-                 group = "race",
-                 margins = "columns",
-                 na_removal = "pairwise",
-                 pivot = "wider",
-                 only = "percent")
+select_group_tbl(
+  data = dep_recoded,
+  var_stem = "dep",
+  group = "race",
+  margins = "columns",
+  na_removal = "pairwise",
+  pivot = "wider",
+  only = "percent"
+)
 ```  
 
 Another way to use `select_group_tbl()` is to summarize responses that match a specific pattern, such as survey waves or time points. To enable this feature, set `group_type = "pattern"` and provide the desired pattern in the group argument. For example, the `stem_social_psych` dataset contains variables that capture student responses about their sense of belonging in the STEM community at two distinct time points: "w1" and "w2". You can summarize these responses using a pattern-based approach, where the time points (e.g., "w1" and "w2") serve as grouping variables.
 
 ```{r}
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern")
+select_group_tbl(
+  data = stem_social_psych,
+  var_stem = "belong_belong",
+  group = "_w\\d",
+  group_type = "pattern"
+)
 ``` 
 
 Use the `group_name` argument to assign a descriptive name to the column containing the matched pattern values.
 
 ```{r}
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern",
-                 group_name = "wave")
+select_group_tbl(
+  data = stem_social_psych,
+  var_stem = "belong_belong",
+  group = "_w\\d",
+  group_type = "pattern",
+  group_name = "wave"
+)
 ``` 
 
 You can also include variable labels in your summary table by using the `var_labels` argument.
 
 ```{r}
-select_group_tbl(data = stem_social_psych, 
-                 var_stem = "belong_belong",
-                 group = "_w\\d",
-                 group_type = "pattern",
-                 group_name = "wave",
-                 var_labels = c(
-                   belong_belongStem_w1 = "I feel like I belong in STEM (wave 1)",
-                   belong_belongStem_w2 = "I feel like I belong in STEM (wave 2)"
-                 ))
+select_group_tbl(
+  data = stem_social_psych,
+  var_stem = "belong_belong",
+  group = "_w\\d",
+  group_type = "pattern",
+  group_name = "wave",
+  var_labels = c(
+    belong_belongStem_w1 = "I feel like I belong in STEM (wave 1)",
+    belong_belongStem_w2 = "I feel like I belong in STEM (wave 2)"
+  )
+)
 ```
 
 ## Working with continuous variables
@@ -357,7 +397,7 @@ Like `select_tbl()` and `select_group_tbl()`, functions beginning with the prefi
 mean_tbl(data = sdoh, var_stem = "HHC_PCT")
 
 # Pairwise removal
-mean_tbl(data = sdoh, 
+mean_tbl(data = sdoh,
          var_stem = "HHC_PCT",
          na_removal = "pairwise")
 ``` 
@@ -365,51 +405,61 @@ mean_tbl(data = sdoh,
 Consider adding variable labels using the `var_labels` argument to help make the variable names easier to interpret.
 
 ```{r}
-mean_tbl(data = sdoh, 
-         var_stem = "HHC_PCT",
-         na_removal = "pairwise",
-         var_labels = c(
-           HHC_PCT_HHA_NURSING="% agencies offering nursing care services",
-           HHC_PCT_HHA_PHYS_THERAPY="% agencies offering physical therapy services",
-           HHC_PCT_HHA_OCC_THERAPY="% agencies offering occupational therapy services",
-           HHC_PCT_HHA_SPEECH="% agencies offering speech pathology services",
-           HHC_PCT_HHA_MEDICAL="% agencies offering medical social services",
-           HHC_PCT_HHA_AIDE="% agencies offering home health aide services"
-         ))
+mean_tbl(
+  data = sdoh,
+  var_stem = "HHC_PCT",
+  na_removal = "pairwise",
+  var_labels = c(
+    HHC_PCT_HHA_NURSING = "% agencies offering nursing care services",
+    HHC_PCT_HHA_PHYS_THERAPY = "% agencies offering physical therapy services",
+    HHC_PCT_HHA_OCC_THERAPY = "% agencies offering occupational therapy services",
+    HHC_PCT_HHA_SPEECH = "% agencies offering speech pathology services",
+    HHC_PCT_HHA_MEDICAL = "% agencies offering medical social services",
+    HHC_PCT_HHA_AIDE = "% agencies offering home health aide services"
+  )
+)
 ``` 
 
 Similar to working with multiple response variables, it's common practice to group continuous variables by another variable to enable meaningful comparisons across different segments of a dataset. The `mean_group_tbl()` function facilitates this type of descriptive analysis by generating summary statistics for continuous variables, grouped either by a specific variable in the dataset or by matching patterns in variable names. For example, it's often useful to present summary statistics by demographic categories such as region, gender, age, or race.
 
 ```{r}
-mean_group_tbl(data = sdoh, 
-               var_stem = "HHC_PCT",
-               group = "REGION",
-               group_type = "variable")
+mean_group_tbl(
+  data = sdoh,
+  var_stem = "HHC_PCT",
+  group = "REGION",
+  group_type = "variable"
+)
 ``` 
 
 You can control which values to exclude and how missing data is handled using the `ignore` and `na_removal` arguments. To specify values to ignore, use a named vector or list, where each name corresponds to a variable stem or specific variable name.
 
 ```{r}
 # Default listwise removal
-mean_group_tbl(data = sdoh, 
-               var_stem = "HHC_PCT",
-               group = "REGION",
-               ignore = c(HHC_PCT = 0, REGION = "Northeast"))
+mean_group_tbl(
+  data = sdoh,
+  var_stem = "HHC_PCT",
+  group = "REGION",
+  ignore = c(HHC_PCT = 0, REGION = "Northeast")
+)
 
 # Pairwise removal
-mean_group_tbl(data = sdoh, 
-               var_stem = "HHC_PCT",
-               group = "REGION",
-               na_removal = "pairwise",
-               ignore = c(HHC_PCT = 0, REGION = "Northeast"))
+mean_group_tbl(
+  data = sdoh,
+  var_stem = "HHC_PCT",
+  group = "REGION",
+  na_removal = "pairwise",
+  ignore = c(HHC_PCT = 0, REGION = "Northeast")
+)
 
 # Pairwise removal excluding several values from the same stem 
 # or group variable.
-mean_group_tbl(data = sdoh, 
-               var_stem = "HHC_PCT",
-               group = "REGION",
-               na_removal = "pairwise",
-               ignore = list(HHC_PCT = 0, REGION = c("Northeast", "South")))
+mean_group_tbl(
+  data = sdoh,
+  var_stem = "HHC_PCT",
+  group = "REGION",
+  na_removal = "pairwise",
+  ignore = list(HHC_PCT = 0, REGION = c("Northeast", "South"))
+)
 ``` 
 
 Another way to use `mean_group_tbl()` is to summarize responses based on a shared pattern, such as survey time points. To enable this feature, set `group_type = "pattern"` and specify the desired pattern in the group argument. 
@@ -427,25 +477,31 @@ symptoms_data <-
     symptoms_t3 = sample(c(NA, 0:10, -999), replace = TRUE, size = 50)
   )
 
-mean_group_tbl(data = symptoms_data, 
-               var_stem = "symptoms",
-               group = "_t\\d",
-               group_type = "pattern",
-               ignore = c(symptoms = -999))
+mean_group_tbl(
+  data = symptoms_data,
+  var_stem = "symptoms",
+  group = "_t\\d",
+  group_type = "pattern",
+  ignore = c(symptoms = -999)
+)
 ```
 
 To make your output easier to understand, use the `group_name` argument to add a label to the column that shows grouping values or matched patterns. You can also use the `var_labels` argument to display descriptive labels for each variable.
 
 ```{r}
-mean_group_tbl(data = symptoms_data, 
-               var_stem = "symptoms",
-               group = "_t\\d",
-               group_type = "pattern",
-               group_name = "time_point",
-               ignore = c(symptoms = -999), 
-               var_labels = c(symptoms_t1 = "# of symptoms at baseline",
-                              symptoms_t2 = "# of symptoms at 6 months follow up",
-                              symptoms_t3 = "# of symptoms at one-year follow up"))
+mean_group_tbl(
+  data = symptoms_data,
+  var_stem = "symptoms",
+  group = "_t\\d",
+  group_type = "pattern",
+  group_name = "time_point",
+  ignore = c(symptoms = -999),
+  var_labels = c(
+    symptoms_t1 = "# of symptoms at baseline",
+    symptoms_t2 = "# of symptoms at 6 months follow up",
+    symptoms_t3 = "# of symptoms at one-year follow up"
+  )
+)
 ``` 
 
 Finally, you can choose what information to return using the `only` argument.
@@ -453,28 +509,34 @@ Finally, you can choose what information to return using the `only` argument.
 ```{r}
 # Default: all summary statistics returned
 # (mean, median, sd, min, max, nobs)
-mean_group_tbl(data = symptoms_data, 
-               var_stem = "symptoms",
-               group = "_t\\d",
-               group_type = "pattern",
-               group_name = "time_point",
-               ignore = c(symptoms = -999))
+mean_group_tbl(
+  data = symptoms_data,
+  var_stem = "symptoms",
+  group = "_t\\d",
+  group_type = "pattern",
+  group_name = "time_point",
+  ignore = c(symptoms = -999)
+)
 
 # Means and non-missing observations only
-mean_group_tbl(data = symptoms_data, 
-               var_stem = "symptoms",
-               group = "_t\\d",
-               group_type = "pattern",
-               group_name = "time_point",
-               ignore = c(symptoms = -999),
-               only = c("mean", "nobs"))
+mean_group_tbl(
+  data = symptoms_data,
+  var_stem = "symptoms",
+  group = "_t\\d",
+  group_type = "pattern",
+  group_name = "time_point",
+  ignore = c(symptoms = -999),
+  only = c("mean", "nobs")
+)
 
 # Means and standard deviations only
-mean_group_tbl(data = symptoms_data, 
-               var_stem = "symptoms",
-               group = "_t\\d",
-               group_type = "pattern",
-               group_name = "time_point",
-               ignore = c(symptoms = -999),
-               only = c("mean", "sd"))
+mean_group_tbl(
+  data = symptoms_data,
+  var_stem = "symptoms",
+  group = "_t\\d",
+  group_type = "pattern",
+  group_name = "time_point",
+  ignore = c(symptoms = -999),
+  only = c("mean", "sd")
+)
 ```

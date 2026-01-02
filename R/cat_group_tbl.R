@@ -109,8 +109,10 @@ cat_group_tbl <- function(data,
     })
   }
   
-  if (!is.null(vars_to_filter)) {
-      data_sub <- stats::na.omit(data_sub)
+  if (!is.null(vars_to_filter) && length(vars_to_filter) > 0) {
+    for (var in vars_to_filter) {
+      data_sub <- data_sub[!is.na(data_sub[[var]]), , drop = FALSE]
+    }
   }
   
   cat_group_tabl <-
@@ -149,23 +151,23 @@ summarize_cat_group <- function(data,
                                 margins) {
   margin_col <- if (margins == "rows") row_var else col_var
   
-  grouped_data <- 
+  count_data <- 
     data |> dplyr::count(.data[[row_var]], .data[[col_var]], name = "count")
   
   if (margins %in% c("rows", "columns")) {
-    grouped_data <- 
-      grouped_data |>
+    summarized_data <- 
+      count_data |>
       dplyr::group_by(.data[[margin_col]]) |>
       dplyr::mutate(percent = count / sum(count)) |>
       dplyr::ungroup() |>
       dplyr::arrange(.data[[margin_col]])
   } else if (margins == "all") {
-    total <- sum(grouped_data$count)
-    grouped_data <- 
-      grouped_data |>
+    total <- sum(count_data$count)
+    summarized_data <- 
+      count_data |>
       dplyr::mutate(percent = count / total) |>
       dplyr::arrange(.data[[row_var]], .data[[col_var]])
   }
   
-  return(grouped_data)
+  return(summarized_data)
 }

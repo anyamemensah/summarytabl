@@ -73,14 +73,14 @@
 #'            only = "percent")
 #'
 #' var_label_example <-
-#'   c("dep_1" = "how often child feels sad and blue",
-#'     "dep_2" = "how often child feels nervous, tense, or on edge",
-#'     "dep_3" = "how often child feels happy",
-#'     "dep_4" = "how often child feels bored",
-#'     "dep_5" = "how often child feels lonely",
-#'     "dep_6" = "how often child feels tired or worn out",
-#'     "dep_7" = "how often child feels excited about something",
-#'     "dep_8" = "how often child feels too busy to get everything")
+#'   c(dep_1 = "how often child feels sad and blue",
+#'     dep_2 = "how often child feels nervous, tense, or on edge",
+#'     dep_3 = "how often child feels happy",
+#'     dep_4 = "how often child feels bored",
+#'     dep_5 = "how often child feels lonely",
+#'     dep_6 = "how often child feels tired or worn out",
+#'     dep_7 = "how often child feels excited about something",
+#'     dep_8 = "how often child feels too busy to get everything")
 #'
 #' select_tbl(data = depressive,
 #'            var_stem = "dep",
@@ -163,7 +163,7 @@ select_tbl <- function(data,
   
   select_tabl <- 
     purrr::map(check_cols, ~ generate_select_tabl(data_sub, .x, check_na_removal)) |>
-    purrr::reduce(dplyr::bind_rows)
+    dplyr::bind_rows()
   
   if (check_pivot == "wider" && 
       override_pivot(
@@ -206,7 +206,8 @@ select_tbl <- function(data,
 
 #' @keywords internal
 generate_select_tabl <- function(data, col, na_removal) {
-  data |>
+  summarized_data <- 
+    data |>
     dplyr::group_by(.data[[col]]) |>
     dplyr::summarize(count = dplyr::n()) |>
     dplyr::ungroup() |> 
@@ -215,6 +216,8 @@ generate_select_tabl <- function(data, col, na_removal) {
       variable = col,
       percent = count / sum(count)
     ) |>
-    dplyr::rename(values = 1) |>
+    dplyr::rename(values = !!rlang::sym(col)) |>
     dplyr::select(variable, values, count, percent)
+  
+  return(summarized_data)
 }

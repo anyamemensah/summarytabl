@@ -126,8 +126,8 @@ mean_tbl <- function(data,
   }
   
   mean_tabl <- 
-    purrr::map(check_cols, ~ generate_mean_tabl(data_sub, .x, check_na_removal)) |>
-    purrr::reduce(dplyr::bind_rows) |>
+    purrr::map(check_cols, ~ generate_mean_tabl(data_sub, .x)) |>
+    dplyr::bind_rows() |>
     dplyr::select(variable, mean, median, sd, min, max, nobs)
   
   if (!is.null(check_col_labels)) {
@@ -153,14 +153,9 @@ mean_tbl <- function(data,
   return(tibble::as_tibble(mean_tabl))
 }
 
-
 #' @keywords internal
-generate_mean_tabl <- function(data, col, na_removal) {
-  if (na_removal == "pairwise") {
-    data <- stats::na.omit(data[col])
-  }
-  
-  result <- data.frame(
+generate_mean_tabl <- function(data, col) {
+  summarized_data <- data.frame(
     variable = col,
     mean = mean(data[[col]], na.rm = TRUE),
     median = stats::median(data[[col]], na.rm = TRUE),
@@ -170,5 +165,5 @@ generate_mean_tabl <- function(data, col, na_removal) {
     nobs = sum(!is.na(data[[col]]))
   )
   
-  return(result)
+  return(summarized_data)
 }

@@ -35,8 +35,8 @@ test_that("check 'data' argument", {
   expect_equal(observed2, expected2)
   
   expect_snapshot(error = TRUE, { check_df(NA) })
-  
   expect_snapshot(error = TRUE, { check_df(tibble::tibble()) })
+  expect_snapshot(error = TRUE, { check_df(data.frame()) })
 })
 
 
@@ -265,7 +265,7 @@ test_that("check 'group_type' argument", {
   expect_equal(observed2, expected2)
   
   expect_snapshot(error = TRUE, { check_group_type(group_type = character(0)) })
-  expect_snapshot(error = TRUE, {check_group_type(group_type = "shape") })
+  expect_snapshot(error = TRUE, { check_group_type(group_type = "shape") })
 })
 
 
