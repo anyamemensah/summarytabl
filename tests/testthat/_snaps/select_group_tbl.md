@@ -72,8 +72,9 @@
       select_group_tbl(data = sample_select_data, var_stem = "var", group = NULL)
     Condition
       Error in `select_group_tbl()`:
-      ! Invalid `group` argument.
-      i The `group` argument must be a character vector of length one.
+      ! Invalid `data` argument.
+      x Column names must be unique.
+      i Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data.
 
 ---
 
@@ -91,8 +92,9 @@
       select_group_tbl(data = sample_select_data, var_stem = "var", group = "group")
     Condition
       Error in `select_group_tbl()`:
-      ! Invalid `group` argument.
-      i Multiple columns in `data` matched the `group` argument: "group" and "group".
+      ! Invalid `data` argument.
+      x Column names must be unique.
+      i Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data.
 
 # Failure: Invalid 'group_type' argument
 
