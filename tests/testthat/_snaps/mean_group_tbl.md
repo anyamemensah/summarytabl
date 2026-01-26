@@ -66,7 +66,7 @@
       Error in `mean_group_tbl()`:
       ! Invalid `data` argument.
       x Column names must be unique.
-      i Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data.
+      i Duplicate column names detected. Please ensure column names are unique before passing the data.
 
 ---
 
@@ -86,7 +86,7 @@
       Error in `mean_group_tbl()`:
       ! Invalid `data` argument.
       x Column names must be unique.
-      i Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data.
+      i Duplicate column names detected. Please ensure column names are unique before passing the data.
 
 # Failure: Invalid 'group_type' argument
 

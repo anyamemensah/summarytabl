@@ -58,7 +58,7 @@ check_df <- function(data) {
       cli::cli_abort(
         c("Invalid {.arg data} argument.",
           "x" = "Column names must be unique.",
-          "i" = "Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data."),
+          "i" = "Duplicate column names detected. Please ensure column names are unique before passing the data."),
         call = get_call()
       )
     }
