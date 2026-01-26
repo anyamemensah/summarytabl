@@ -111,7 +111,7 @@ cat_group_tbl <- function(data,
   
   if (!is.null(vars_to_filter) && length(vars_to_filter) > 0) {
     for (var in vars_to_filter) {
-      data_sub <- data_sub[!is.na(data_sub[[var]]), , drop = FALSE]
+      data_sub <- data_sub[!is.na(data_sub[[var]]), ]
     }
   }
   
