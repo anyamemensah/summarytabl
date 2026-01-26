@@ -155,7 +155,7 @@ mean_tbl <- function(data,
 
 #' @keywords internal
 generate_mean_tabl <- function(data, col) {
-  summarized_data <- data.frame(
+  summarized_data <- tibble::tibble(
     variable = col,
     mean = mean(data[[col]], na.rm = TRUE),
     median = stats::median(data[[col]], na.rm = TRUE),
