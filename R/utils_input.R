@@ -52,7 +52,7 @@ check_df <- function(data) {
     )
   }
   
-  return(list(valid = TRUE, df = data))
+  return(list(valid = TRUE, df = tibble::as_tibble(data)))
 }
 
 
