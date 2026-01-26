@@ -31,6 +31,7 @@
 #' @importFrom stats sd
 #' @importFrom stats setNames
 #' @importFrom tibble as_tibble
+#' @importFrom tibble tibble
 #' @importFrom tidyr pivot_wider
 #' @importFrom utils globalVariables
 ## usethis namespace: end
