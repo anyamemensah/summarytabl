@@ -141,7 +141,7 @@ cat_group_tbl <- function(data,
       only_type = only_type(check_table_type)
     )
   
-  return(tibble::as_tibble(cat_group_tabl))
+  return(cat_group_tabl)
 }
 
 #' @keywords internal

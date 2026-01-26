@@ -86,5 +86,5 @@ cat_tbl <- function(data, var, na.rm = FALSE, only = NULL, ignore = NULL) {
       only_type = only_type(check_table_type)
     )
   
-  return(tibble::as_tibble(cat_tabl))
+  return(cat_tabl)
 }

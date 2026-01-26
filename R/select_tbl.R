@@ -201,7 +201,7 @@ select_tbl <- function(data,
       only_type = only_type(check_table_type)
     )
   
-  return(tibble::as_tibble(select_tabl))
+  return(select_tabl)
 }
 
 #' @keywords internal

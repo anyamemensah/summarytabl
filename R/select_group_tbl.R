@@ -310,7 +310,7 @@ select_group_tbl <- function(data,
       only_type = only_type(check_table_type)
     )
 
-  return(tibble::as_tibble(select_group_tabl))
+  return(select_group_tabl)
 }
 
 #' @keywords internal

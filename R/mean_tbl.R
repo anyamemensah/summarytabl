@@ -150,7 +150,7 @@ mean_tbl <- function(data,
       only_type = only_type(check_table_type)
     )
   
-  return(tibble::as_tibble(mean_tabl))
+  return(mean_tabl)
 }
 
 #' @keywords internal
