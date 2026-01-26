@@ -52,7 +52,20 @@ check_df <- function(data) {
     )
   }
   
-  return(list(valid = TRUE, df = tibble::as_tibble(data)))
+  tibble_df <- tryCatch(
+    tibble::as_tibble(data),
+    error = function(e) {
+      cli::cli_abort(
+        c("Invalid {.arg data} argument.",
+          "x" = "Column names must be unique.",
+          "i" = "Duplicate column names detected. Consider cleaning names or using `.name_repair` before passing the data."),
+        call = get_call()
+      )
+    }
+  )
+  
+  
+  return(list(valid = TRUE, df = tibble_df))
 }
 
 
