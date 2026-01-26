@@ -28,7 +28,7 @@ test_that("check 'data' argument", {
   observed1 <- check_df(data.frame(x = c(1,2,3), y = c(4,5,6)))
   observed2 <- check_df(tibble::tibble(x = c(1,2,3), y = c(4,5,6)))
   
-  expected1 <- list(valid = TRUE, df = data.frame(x = c(1,2,3), y = c(4,5,6)))
+  expected1 <- list(valid = TRUE, df = tibble::tibble(x = c(1,2,3), y = c(4,5,6)))
   expected2 <- list(valid = TRUE, df = tibble::tibble(x = c(1,2,3), y = c(4,5,6)))
 
   expect_equal(observed1, expected1)
